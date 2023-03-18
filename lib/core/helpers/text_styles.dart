@@ -38,8 +38,8 @@ extension ExtendedTextStyle on TextStyle {
     return copyWith(fontWeight: FontWeight.w700, fontFamily: AppFonts.rubik);
   }
 
-  TextStyle get text1Color {
-    return copyWith(color: ColorPalette.text1Color, fontFamily: AppFonts.rubik);
+  TextStyle get blackText {
+    return copyWith(color: ColorPalette.blackText, fontFamily: AppFonts.rubik);
   }
 
   TextStyle get primaryTextColor {
@@ -53,7 +53,7 @@ extension ExtendedTextStyle on TextStyle {
 
   TextStyle get subTitleTextColor {
     return copyWith(
-        color: ColorPalette.subTitleColor, fontFamily: AppFonts.rubik);
+        color: ColorPalette.blackText, fontFamily: AppFonts.rubik);
   }
 
   // convenience functions
@@ -73,43 +73,43 @@ class TextStyles {
 
   static const TextStyle defaultStyle = TextStyle(
       fontSize: 14,
-      color: ColorPalette.text1Color,
+      color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);
   static const TextStyle h1 = TextStyle(
       fontSize: 30,
-      color: ColorPalette.text1Color,
+      color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);
   static const TextStyle h2 = TextStyle(
       fontSize: 27.2,
-      color: ColorPalette.text1Color,
+      color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);
   static const TextStyle h3 = TextStyle(
       fontSize: 24.4,
-      color: ColorPalette.text1Color,
+      color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);
   static const TextStyle h4 = TextStyle(
       fontSize: 21.6,
-      color: ColorPalette.text1Color,
+      color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);
   static const TextStyle h5 = TextStyle(
       fontSize: 18.8,
-      color: ColorPalette.text1Color,
+      color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);
   static const TextStyle h6 = TextStyle(
       fontSize: 16,
-      color: ColorPalette.text1Color,
+      color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Paradise',
       theme: ThemeData(
         primaryColor: ColorPalette.primaryColor,
-        scaffoldBackgroundColor: ColorPalette.backgroundScaffoldColor,
+        scaffoldBackgroundColor: ColorPalette.primaryColor,
       ),
       home: const SplashScreen(),
       routes: routes,
