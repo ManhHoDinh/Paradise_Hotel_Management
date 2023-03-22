@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/local_storage_helper.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -34,6 +35,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Container(
+        child: Image.asset(AssetHelper.avatar),
+      ),
+    );
   }
 }

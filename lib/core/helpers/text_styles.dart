@@ -47,13 +47,17 @@ extension ExtendedTextStyle on TextStyle {
         color: ColorPalette.primaryColor, fontFamily: AppFonts.rubik);
   }
 
+  TextStyle get DarkPrimaryTextColor {
+    return copyWith(
+        color: ColorPalette.darkBlueText, fontFamily: AppFonts.rubik);
+  }
+
   TextStyle get whiteTextColor {
     return copyWith(color: Colors.white, fontFamily: AppFonts.rubik);
   }
 
   TextStyle get subTitleTextColor {
-    return copyWith(
-        color: ColorPalette.blackText, fontFamily: AppFonts.rubik);
+    return copyWith(color: ColorPalette.blackText, fontFamily: AppFonts.rubik);
   }
 
   // convenience functions
@@ -73,6 +77,12 @@ class TextStyles {
 
   static const TextStyle defaultStyle = TextStyle(
       fontSize: 14,
+      color: ColorPalette.blackText,
+      fontWeight: FontWeight.w400,
+      height: 16 / 14,
+      fontFamily: AppFonts.rubik);
+  static const TextStyle subTextStyle = TextStyle(
+      fontSize: 12,
       color: ColorPalette.blackText,
       fontWeight: FontWeight.w400,
       height: 16 / 14,

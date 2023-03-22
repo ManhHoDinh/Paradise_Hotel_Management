@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
+import 'package:paradise/presentations/screens/home_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 
 import 'core/constants/color_palatte.dart';
@@ -22,9 +23,9 @@ class MyApp extends StatelessWidget {
       title: 'Paradise',
       theme: ThemeData(
         primaryColor: ColorPalette.primaryColor,
-        scaffoldBackgroundColor: ColorPalette.primaryColor,
+        scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: const SplashScreen(),
+      home: const HomeScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
