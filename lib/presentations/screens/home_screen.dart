@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../core/constants/color_palatte.dart';
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
@@ -37,7 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: ColorPalette.backgroundColor,
         leading: InkWell(
           onTap: () {},
-          child: Image.asset(AssetHelper.iconHome),
+          child: Container(
+            child: Icon(
+              FontAwesomeIcons.bars,
+              color: ColorPalette.primaryColor,
+            ),
+          ),
         ),
         title: Padding(
           padding: const EdgeInsets.only(left: 100),
@@ -88,7 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         prefixIcon: InkWell(
                           onTap: () {},
                           child: Icon(
-                            Icons.search,
+                            FontAwesomeIcons.magnifyingGlass,
+                            size: 16,
                             color: ColorPalette.greenText,
                           ),
                         ),
