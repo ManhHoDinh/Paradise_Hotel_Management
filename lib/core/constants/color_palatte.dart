@@ -6,7 +6,7 @@ class ColorPalette {
   static const Color greenText = Color(0xff57CC99);
   static const Color blueText = Color(0xff22577A);
   static const Color greyText = Color(0xffBFBFBF);
-  static const Color blackText = Color(0xffBFBFBF);
+  static const Color blackText = Color(0xff000000);
   static const Color yellowColor = Color(0xffBFBFBF);
   static const Color orangeColor = Color(0xffBFBFBF);
 }

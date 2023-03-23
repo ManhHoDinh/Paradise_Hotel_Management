@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/helpers/text_styles.dart';
 
 class ButtonWidget extends StatelessWidget {
-  ButtonWidget({super.key, title, onTap, color}) {
-    Title = title;
-    OnTap = onTap;
-    _color = color;
-  }
-  String? Title = '';
-  VoidCallback OnTap = () {};
-  Color _color = Colors.amberAccent;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  ButtonWidget({
+    super.key, 
+    required this.label, 
+    required this.color,
+    required this.onTap,
+  });
+  
   @override
   Widget build(BuildContext context) {
-    return Placeholder();
+    return InkWell(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+      onTap: onTap,
+      splashColor: Colors.amber,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          color: color
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32 * 4, vertical: 16),
+        child: Text(label,
+          style: TextStyles.h6
+                           .setColor(ColorPalette.blackText),
+        ),
+      ),
+    );
   }
 }

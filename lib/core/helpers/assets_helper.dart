@@ -1,10 +1,13 @@
 mixin AssetHelper {
   //Assets in icons
   static const String iconAssets = 'assets/icons/';
+
+  static const String icoSquareBlank = iconAssets + 'ico_square_blank.png';
+  static const String icoLine = iconAssets + 'ico_line.png';
+  static const String icoLock = iconAssets + 'ico_lock.png';
   static const String icoOvalTop = iconAssets + 'oval1.png';
   static const String icoOvalBottom = iconAssets + 'oval2.png';
- 
- 
+  static const String icoLogin = iconAssets + 'ico_login.png';
   static const String icoHotel = iconAssets + 'ico_hotel.png';
   static const String icoPlane = iconAssets + 'ico_plane.png';
   static const String icoHotelPlane = iconAssets + 'ico_hotel_plane.png';
@@ -26,12 +29,13 @@ mixin AssetHelper {
 
   //Assets in images
   static const String imgAssets = 'assets/images/';
+
   static const String backgroundSplash = imgAssets + 'Splash_Background.png';
   static const String circleSplash = imgAssets + 'Circle_Splash.png';
   static const String intro1 = imgAssets + 'intro1.png';
   static const String intro2 = imgAssets + 'intro2.png';
   static const String intro3 = imgAssets + 'intro3.png';
- static const String person = imgAssets + 'person.png';
+  static const String person = imgAssets + 'person.png';
 
   static const String hotelScreen = imgAssets + 'hotel_screen.png';
   static const String imageMap = imgAssets + 'image_map.png';
