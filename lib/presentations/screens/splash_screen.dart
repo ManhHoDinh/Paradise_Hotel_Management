@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/helpers/local_storage_helper.dart';
+
+import '../../core/models/user_model.dart';
 
 class SplashScreen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -34,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _nameController = TextEditingController();
     return Scaffold();
   }
 }
