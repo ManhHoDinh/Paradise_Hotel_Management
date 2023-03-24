@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final double itemWidth = (size.width - 72) / 2;
+
     final double itemHeight = 180;
     List<RoomModel> listRoom = [
       RoomModel(AssetHelper.room1, 'Room 1', 'Family Room', 200000),
@@ -131,12 +132,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
+              // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
               child: Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
                   mainAxisSpacing: 24,
                   crossAxisSpacing: 24,
-                  childAspectRatio: itemWidth / itemHeight,
+                  childAspectRatio: 0.8,
                   children: listRoom
                       .map((e) => RoomItem(e.image!, e.name!, e.type!, e.cost!))
                       .toList(),
