@@ -1,6 +1,8 @@
 import 'dart:developer';
-
+import 'package:paradise/presentations/screens/splash_screen.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isPressed = false;
+  int currentId = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -37,11 +41,19 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         backgroundColor: ColorPalette.backgroundColor,
         leading: InkWell(
+          customBorder: CircleBorder(),
+          onHighlightChanged: (param) {
+            setState(() {
+              isPressed = param;
+            });
+          },
           onTap: () {},
           child: Container(
             child: Icon(
               FontAwesomeIcons.bars,
-              color: ColorPalette.primaryColor,
+              color: isPressed
+                  ? ColorPalette.greenText
+                  : ColorPalette.primaryColor,
             ),
           ),
         ),
@@ -92,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: InputDecoration(
                         contentPadding: const EdgeInsets.only(top: 4),
                         prefixIcon: InkWell(
+                          customBorder: CircleBorder(),
                           onTap: () {},
                           child: Icon(
                             FontAwesomeIcons.magnifyingGlass,
@@ -100,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         suffixIcon: InkWell(
+                            customBorder: CircleBorder(),
                             onTap: () {},
                             child: Image.asset(AssetHelper.iconFilter)),
                         hintText: 'Search',
@@ -148,6 +162,39 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: SalomonBottomBar(
+          currentIndex: currentId,
+          onTap: (id) {
+            setState(() {
+              currentId = id;
+            });
+          },
+          items: [
+            SalomonBottomBarItem(
+                icon: Icon(
+                  FontAwesomeIcons.house,
+                  size: 20,
+                ),
+                title: Text('Home')),
+            SalomonBottomBarItem(
+                icon: Icon(
+                  FontAwesomeIcons.gear,
+                  size: 20,
+                ),
+                title: Text('Setting')),
+            SalomonBottomBarItem(
+                icon: Icon(
+                  FontAwesomeIcons.bell,
+                  size: 20,
+                ),
+                title: Text('Notification')),
+            SalomonBottomBarItem(
+                icon: Icon(
+                  FontAwesomeIcons.user,
+                  size: 20,
+                ),
+                title: Text('Account')),
+          ]),
     );
   }
 }
