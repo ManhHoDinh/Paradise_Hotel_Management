@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
 class ButtonWidget extends StatelessWidget {
@@ -17,15 +18,17 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.all(Radius.circular(12)),
+      borderRadius: kDefaultBorderRadius,
       onTap: onTap,
       splashColor: Colors.amber,
       child: Container(
+        alignment: Alignment.center,
+        width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderRadius: kDefaultBorderRadius,
           color: color
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 32 * 4, vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
         child: Text(label,
           style: TextStyles.h6
                            .setColor(ColorPalette.blackText),
