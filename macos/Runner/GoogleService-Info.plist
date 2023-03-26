@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>501893544696-dvlsbs7duhne135l7l93j7h3mnrb5l9u.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.501893544696-dvlsbs7duhne135l7l93j7h3mnrb5l9u</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAqSXoNreOpxF41qkseyWLw_a46Aww_EZM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>501893544696</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.paradise</string>
+	<key>PROJECT_ID</key>
+	<string>paradise-bac82</string>
+	<key>STORAGE_BUCKET</key>
+	<string>paradise-bac82.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:501893544696:ios:f9d39fc53a1bc3a8c3d90d</string>
+	<key>DATABASE_URL</key>
+	<string>https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
