@@ -5,6 +5,8 @@ import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/screens/login_screen.dart';
 
+import '../../core/models/user_model.dart';
+
 class SplashScreen extends StatefulWidget {
   static String routeName = 'splash_screen';
   const SplashScreen({super.key});

@@ -21,7 +21,6 @@ class RoomDetail {
       price: json['type'],
       images: json['images']);
 }
-
 class RoomModel {
   String? image;
   String? type;
