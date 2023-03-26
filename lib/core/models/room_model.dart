@@ -1,3 +1,4 @@
+
 class RoomDetail {
   String? roomID;
   int? type;
@@ -20,4 +21,10 @@ class RoomDetail {
       type: json['type'],
       price: json['type'],
       images: json['images']);
+class RoomModel {
+  String? image;
+  String? type;
+  int? cost;
+  String? name;
+  RoomModel(this.image, this.name, this.type, this.cost);
 }
