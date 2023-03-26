@@ -41,11 +41,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: ColorPalette.greenText,
+        backgroundColor: ColorPalette.greenColor.withOpacity(0.9),
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Container(),
             Container(
               height: size.height * 1 / 2,
               color: ColorPalette.greenColor,
@@ -54,11 +53,6 @@ class _SplashScreenState extends State<SplashScreen> {
               alignment: Alignment.center,
               color: Colors.transparent,
               child: Container(
-                // child: Image.asset(
-                //   AssetHelper.logo1,
-                //   width: 50,
-                //   height: 50,
-                // ),
                 height: size.width * 4 / 9,
                 width: size.width * 4 / 9,
                 decoration: BoxDecoration(
@@ -77,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 225),
+              padding: const EdgeInsets.only(bottom: 235),
               child: Text(
                 'Paradise',
                 style: TextStyles.slo.copyWith(shadows: [
