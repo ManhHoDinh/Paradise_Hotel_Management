@@ -3,8 +3,7 @@ mixin AssetHelper {
   static const String iconAssets = 'assets/icons/';
   static const String icoOvalTop = iconAssets + 'oval1.png';
   static const String icoOvalBottom = iconAssets + 'oval2.png';
- 
- 
+
   static const String icoHotel = iconAssets + 'ico_hotel.png';
   static const String icoPlane = iconAssets + 'ico_plane.png';
   static const String icoHotelPlane = iconAssets + 'ico_hotel_plane.png';
@@ -31,14 +30,15 @@ mixin AssetHelper {
   static const String intro1 = imgAssets + 'intro1.png';
   static const String intro2 = imgAssets + 'intro2.png';
   static const String intro3 = imgAssets + 'intro3.png';
- static const String person = imgAssets + 'person.png';
+  static const String person = imgAssets + 'person.png';
+  static const String logo1 = imgAssets + 'logo.png';
 
   static const String hotelScreen = imgAssets + 'hotel_screen.png';
   static const String imageMap = imgAssets + 'image_map.png';
   static const String slide1 = imgAssets + 'slide1.png';
   static const String slide2 = imgAssets + 'slide2.png';
   static const String slide3 = imgAssets + 'slide3.png';
-  
+
   static const String hotel1 = imgAssets + 'hotel1.png';
   static const String hotel2 = imgAssets + 'hotel2.png';
   static const String hotel3 = imgAssets + 'hotel3.png';
