@@ -9,12 +9,12 @@ class ButtonWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   ButtonWidget({
-    super.key, 
-    required this.label, 
+    super.key,
+    required this.label,
     required this.color,
     required this.onTap,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -24,14 +24,12 @@ class ButtonWidget extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: kDefaultBorderRadius,
-          color: color
-        ),
+        decoration:
+            BoxDecoration(borderRadius: kDefaultBorderRadius, color: color),
         padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-        child: Text(label,
-          style: TextStyles.h6
-                           .setColor(ColorPalette.blackText),
+        child: Text(
+          label,
+          style: TextStyles.h6.setColor(ColorPalette.blackText),
         ),
       ),
     );

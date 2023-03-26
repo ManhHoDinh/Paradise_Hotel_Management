@@ -1,4 +1,3 @@
-
 class RoomDetail {
   String? roomID;
   int? type;
@@ -9,7 +8,7 @@ class RoomDetail {
       required this.type,
       required this.price,
       required this.images});
-      
+
   Map<String, dynamic> toJson() => {
         'id': roomID,
         'name': type,
@@ -21,6 +20,7 @@ class RoomDetail {
       type: json['type'],
       price: json['type'],
       images: json['images']);
+}
 class RoomModel {
   String? image;
   String? type;

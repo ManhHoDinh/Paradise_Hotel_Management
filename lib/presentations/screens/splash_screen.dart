@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/local_storage_helper.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/presentations/screens/login_screen.dart';
 
 import '../../core/models/user_model.dart';
 
@@ -25,7 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // ignore: non_constant_identifier_names
   void NextIntroScreen() async {
-    await (Future.delayed(Duration(seconds: 2)));
+    await (Future.delayed(Duration(seconds: 3)));
+    Navigator.of(context).pushNamed(LoginScreen.routeName);
     final ignoreIntroScreen =
         LocalStorageHelper.getValue('ignoreIntro') as bool?;
     if (ignoreIntroScreen != null && ignoreIntroScreen) {
@@ -42,13 +43,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: ColorPalette.greenColor.withOpacity(0.9),
+        backgroundColor: ColorPalette.primaryColor.withOpacity(0.9),
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Container(
               height: size.height * 1 / 2,
-              color: ColorPalette.greenColor,
+              color: ColorPalette.primaryColor,
             ),
             Container(
               alignment: Alignment.center,
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: size.width * 4 / 9,
                 width: size.width * 4 / 9,
                 decoration: BoxDecoration(
-                  color: ColorPalette.greenColor,
+                  color: ColorPalette.primaryColor,
                   borderRadius: BorderRadius.circular(size.width * 4 / 9),
                 ),
               ),
@@ -72,7 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: size.height * 1 / 3),
+              padding: EdgeInsets.only(
+                  bottom: size.height * 1 / 2 - size.width * 2 / 7),
               child: Text(
                 'Paradise',
                 style: TextStyles.slo.copyWith(shadows: [
