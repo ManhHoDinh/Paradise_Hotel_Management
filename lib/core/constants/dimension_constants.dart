@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+const double kMaxPadding = 48.0; // maximum default padding
 const double kMediumPadding = 24.0; // bigger default padding
 const double kBottomBarIconSize = 20.0; // size of icon on the bottom bar
 const double kDefaultPadding = 16.0; // standard padding using default items
