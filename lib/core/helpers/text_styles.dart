@@ -126,7 +126,7 @@ class TextStyles {
   static const TextStyle slo = TextStyle(
     fontFamily: AppFonts.lexend,
     fontSize: 32,
-    color: ColorPalette.primaryColor,
+    color: ColorPalette.backgroundColor,
     fontWeight: FontWeight.w400,
   );
 }
