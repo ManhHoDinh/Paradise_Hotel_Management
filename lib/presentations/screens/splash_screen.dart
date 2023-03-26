@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 235),
+              padding: EdgeInsets.only(bottom: size.height * 1 / 3),
               child: Text(
                 'Paradise',
                 style: TextStyles.slo.copyWith(shadows: [
