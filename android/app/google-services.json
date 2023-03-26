@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "501893544696",
+    "firebase_url": "https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "paradise-bac82",
+    "storage_bucket": "paradise-bac82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501893544696:android:cb93f6cbec5d49adc3d90d",
+        "android_client_info": {
+          "package_name": "com.example.paradise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501893544696-dro2vpevm8clj5sk74mbirom2ljntsrn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuH1Rl6Zu_NNGEjJk47ci9X8ZAfa1yvTo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501893544696-dro2vpevm8clj5sk74mbirom2ljntsrn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
