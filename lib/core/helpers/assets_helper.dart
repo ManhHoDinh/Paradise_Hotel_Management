@@ -1,13 +1,18 @@
 class AssetHelper {
   //Assets in icons
   static const String iconAssets = 'assets/icons/';
+
+  static const String icoSquareBlank = iconAssets + 'ico_square_blank.png';
+  static const String icoLine = iconAssets + 'ico_line.png';
+  static const String icoLock = iconAssets + 'ico_lock.png';
   static const String icoOvalTop = iconAssets + 'oval1.png';
   static const String icoOvalBottom = iconAssets + 'oval2.png';
+
   static const String iconFilter = iconAssets + 'ico_filter.png';
   static const String iconHome = iconAssets + 'ico_home.png';
   static const String iconSearch = iconAssets + 'ico_search.png';
   static const String iconTypeRoom = iconAssets + 'ico_typeroom.png';
-
+  static const String icoLogin = iconAssets + 'ico_login.png';
   static const String icoHotel = iconAssets + 'ico_hotel.png';
   static const String icoPlane = iconAssets + 'ico_plane.png';
   static const String icoHotelPlane = iconAssets + 'ico_hotel_plane.png';
@@ -46,6 +51,22 @@ class AssetHelper {
   // static const String hotel1 = imgAssets + 'hotel1.png';
   // static const String hotel2 = imgAssets + 'hotel2.png';
   // static const String hotel3 = imgAssets + 'hotel3.png';
+  static const String backgroundSplash = imgAssets + 'Splash_Background.png';
+  static const String circleSplash = imgAssets + 'Circle_Splash.png';
+  static const String intro1 = imgAssets + 'intro1.png';
+  static const String intro2 = imgAssets + 'intro2.png';
+  static const String intro3 = imgAssets + 'intro3.png';
+  static const String person = imgAssets + 'person.png';
+  static const String logo1 = imgAssets + 'logo.png';
+  static const String hotelScreen = imgAssets + 'hotel_screen.png';
+  static const String imageMap = imgAssets + 'image_map.png';
+  static const String slide1 = imgAssets + 'slide1.png';
+  static const String slide2 = imgAssets + 'slide2.png';
+  static const String slide3 = imgAssets + 'slide3.png';
+
+  static const String hotel1 = imgAssets + 'hotel1.png';
+  static const String hotel2 = imgAssets + 'hotel2.png';
+  static const String hotel3 = imgAssets + 'hotel3.png';
   static const String room1 = imgAssets + 'room1.png';
   static const String room2 = imgAssets + 'room2.png';
   static const String room3 = imgAssets + 'room3.png';

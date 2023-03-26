@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
+
 import 'package:paradise/presentations/screens/home_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: const HomeScreen(),
+      home: LoginScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

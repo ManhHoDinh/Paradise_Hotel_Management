@@ -123,6 +123,12 @@ class TextStyles {
       fontWeight: FontWeight.w400,
       height: 16 / 14,
       fontFamily: AppFonts.rubik);
+  static const TextStyle slo = TextStyle(
+    fontFamily: AppFonts.lexend,
+    fontSize: 32,
+    color: ColorPalette.primaryColor,
+    fontWeight: FontWeight.w400,
+  );
 }
 
 // How to use?
@@ -130,4 +136,5 @@ class TextStyles {
 // Text('test text', style: TextStyles.itemText.whiteColor.bold);
 class AppFonts {
   static const String rubik = 'Rubik';
+  static const String lexend = 'Lexend';
 }
