@@ -84,13 +84,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Rubik
+fonts:
+  #   - family: Rubik
+  #     fonts:
+  #       - asset: assets/fonts/rubik/Rubik-Regular.ttf
+  #       - asset: assets/fonts/rubik/Rubik-Light.ttf
+    - family: Lexend
       fonts:
-        - asset: assets/fonts/rubik/Rubik-Regular.ttf
-        - asset: assets/fonts/rubik/Rubik-Light.ttf
-   - family: Lexend
-     fonts:
        - asset: assets/fonts/lexend/Lexend-Regular.ttf
   #   - family: Trajan Pro
   #     fonts:
