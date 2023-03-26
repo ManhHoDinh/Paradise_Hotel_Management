@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ColorPalette {
-  static const Color primaryColor = Color(0xffFFFFFF);
-  static const Color greenColor = Color(0xff38A3A5);
+  static const Color backgroundColor = Color(0xffFFFFFF);
+  static const Color primaryColor = Color(0xff38A3A5);
   static const Color greenText = Color(0xff57CC99);
-  static const Color blueText = Color(0xff22577A);
-  static const Color greyText = Color(0xffBFBFBF);
-  static const Color blackText = Color(0xffBFBFBF);
+  static const Color darkBlueText = Color(0xff22577A);
+  static const Color grayText = Color(0xffBFBFBF);
+  static const Color blackText = Color(0xff000000);
   static const Color yellowColor = Color(0xffBFBFBF);
   static const Color orangeColor = Color(0xffBFBFBF);
 }
@@ -17,7 +17,7 @@ class Gradients {
     begin: Alignment.topLeft,
     end: Alignment.bottomLeft,
     colors: [
-      ColorPalette.greenColor,
+      ColorPalette.darkBlueText,
       ColorPalette.primaryColor,
     ],
   );
