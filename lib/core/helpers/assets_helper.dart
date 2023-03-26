@@ -36,13 +36,13 @@ mixin AssetHelper {
   static const String intro2 = imgAssets + 'intro2.png';
   static const String intro3 = imgAssets + 'intro3.png';
   static const String person = imgAssets + 'person.png';
-
+  static const String logo1 = imgAssets + 'logo.png';
   static const String hotelScreen = imgAssets + 'hotel_screen.png';
   static const String imageMap = imgAssets + 'image_map.png';
   static const String slide1 = imgAssets + 'slide1.png';
   static const String slide2 = imgAssets + 'slide2.png';
   static const String slide3 = imgAssets + 'slide3.png';
-  
+
   static const String hotel1 = imgAssets + 'hotel1.png';
   static const String hotel2 = imgAssets + 'hotel2.png';
   static const String hotel3 = imgAssets + 'hotel3.png';
