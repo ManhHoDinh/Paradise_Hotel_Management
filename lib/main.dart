@@ -1,15 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
-import 'package:paradise/presentations/screens/home_screen.dart';
+import 'package:paradise/presentations/screens/UserViewer.dart';
+import 'package:paradise/presentations/screens/login_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
-
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 
-void main() async {
+Future main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -25,7 +28,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: const HomeScreen(),
+      home: SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

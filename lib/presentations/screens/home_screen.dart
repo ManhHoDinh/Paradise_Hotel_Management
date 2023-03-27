@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
