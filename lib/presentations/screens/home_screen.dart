@@ -1,3 +1,4 @@
+import 'package:paradise/presentations/screens/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = false;
   int currentId = 0;
+  int currentRoomId = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -27,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final double itemHeight = 180;
     List<RoomModel> listRoom = [
+      RoomModel(AssetHelper.room1, 'Room 1', 'Family Room', 200000),
+      RoomModel(AssetHelper.room2, 'Room 2', 'Master Room', 170000),
+      RoomModel(AssetHelper.room3, 'Room 3', 'Couple Room', 150000),
+      RoomModel(AssetHelper.room4, 'Room 4', 'Couple Room', 150000),
+      RoomModel(AssetHelper.room5, 'Room 5', 'Family Room', 200000),
+      RoomModel(AssetHelper.room6, 'Room 6', 'Master Room', 170000),
       RoomModel(AssetHelper.room1, 'Room 1', 'Family Room', 200000),
       RoomModel(AssetHelper.room2, 'Room 2', 'Master Room', 170000),
       RoomModel(AssetHelper.room3, 'Room 3', 'Couple Room', 150000),
@@ -139,7 +147,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('Room',
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SeeAllScreen(listRoom: listRoom)));
+                      },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],
               ),
@@ -148,14 +162,19 @@ class _HomeScreenState extends State<HomeScreen> {
               // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
               child: Expanded(
                 child: GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 24,
-                  crossAxisSpacing: 24,
-                  childAspectRatio: 0.8,
-                  children: listRoom
-                      .map((e) => RoomItem(e.image!, e.name!, e.type!, e.cost!))
-                      .toList(),
-                ),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 24,
+                    crossAxisSpacing: 24,
+                    childAspectRatio: 0.8,
+                    children: listRoom.length > 6
+                        ? listRoom.sublist(0, 6).map((e) {
+                            return RoomItem(
+                                e.image!, e.name!, e.type!, e.cost!);
+                          }).toList()
+                        : listRoom
+                            .map((e) =>
+                                RoomItem(e.image!, e.name!, e.type!, e.cost!))
+                            .toList()),
               ),
             )
           ],
