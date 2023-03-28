@@ -8,6 +8,9 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 
+import '../../core/helpers/assets_helper.dart';
+import '../../core/helpers/image_helper.dart';
+
 class SeeAllScreen extends StatelessWidget {
   final List<RoomModel> listRoom;
   const SeeAllScreen({super.key, required this.listRoom});
@@ -15,14 +18,59 @@ class SeeAllScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: ColorPalette.backgroundColor,
+        leading: InkWell(
+          customBorder: CircleBorder(),
+          onTap: () {},
+          child: Container(
+            child: Icon(
+              FontAwesomeIcons.bars,
+              color: ColorPalette.primaryColor,
+            ),
+          ),
+        ),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 100),
+          child: Container(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text('WELCOME',
+                            style: TextStyle(
+                                fontSize: 10, color: ColorPalette.grayText)),
+                        Text(
+                          'Vinpearl Hotel',
+                          style: TextStyle(
+                              fontSize: 16, color: ColorPalette.primaryColor),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 24),
+                    InkWell(
+                      onTap: () {},
+                      child: ImageHelper.loadFromAsset(AssetHelper.avatar,
+                          height: 40),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
       body: Container(
           padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
           color: ColorPalette.backgroundColor,
           // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
           child: Column(children: [
             Container(
-              padding:
-                  const EdgeInsets.only(top: kMaxPadding, bottom: kMinPadding),
+              padding: const EdgeInsets.only(bottom: kMinPadding),
               alignment: Alignment.centerLeft,
               child: Row(children: [
                 Material(
