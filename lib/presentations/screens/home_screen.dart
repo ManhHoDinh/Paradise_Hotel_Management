@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool nameDecrease = false;
   bool priceDecrease = false;
   String? kindRoom;
+  String? valueSearch;
   int currentId = 0;
   int currentRoomId = 0;
   String? dropdownValue;
@@ -37,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final double itemHeight = 180;
     List<RoomModel> loadListRoom(List<RoomModel> list) {
-      List<RoomModel> newList;
+      List<RoomModel> newList = List.from(list);
       if (nameDecrease) {
         list.sort(
             (a, b) => b.name!.toLowerCase().compareTo(a.name!.toLowerCase()));
@@ -63,6 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
           break;
         default:
           newList = list;
+      }
+      if (valueSearch != null) {
+        newList = newList
+            .where((e) =>
+                e.type!.toLowerCase().contains(valueSearch!.toLowerCase()))
+            .toList();
       }
 
       return newList;
@@ -160,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 42,
                   width: double.infinity,
                   child: TextField(
+                    onChanged: (value) => valueSearch = value,
                     decoration: InputDecoration(
                         contentPadding: const EdgeInsets.only(top: 4),
                         prefixIcon: InkWell(
