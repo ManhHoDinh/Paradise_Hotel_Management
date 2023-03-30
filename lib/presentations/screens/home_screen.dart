@@ -71,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 e.type!.toLowerCase().contains(valueSearch!.toLowerCase()))
             .toList();
       }
-
       return newList;
     }
 
@@ -93,13 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
       RoomModel(AssetHelper.room3, 'Room 3', 'Couple Room', 150000),
       RoomModel(AssetHelper.room4, 'Room 4', 'Couple Room', 150000),
       RoomModel(AssetHelper.room5, 'Room 5', 'Family Room', 200000),
-      // RoomModel(AssetHelper.room6, 'Room 6', 'Master Room', 170000),
-      // RoomModel(AssetHelper.room1, 'Room 1', 'Family Room', 200000),
-      // RoomModel(AssetHelper.room2, 'Room 2', 'Master Room', 170000),
-      // RoomModel(AssetHelper.room3, 'Room 3', 'Couple Room', 150000),
-      // RoomModel(AssetHelper.room4, 'Room 4', 'Couple Room', 150000),
-      // RoomModel(AssetHelper.room5, 'Room 5', 'Family Room', 200000),
-      // RoomModel(AssetHelper.room6, 'Room 6', 'Master Room', 170000),
+      RoomModel(AssetHelper.room6, 'Room 6', 'Master Room', 170000),
+      RoomModel(AssetHelper.room1, 'Room 1', 'Family Room', 200000),
+      RoomModel(AssetHelper.room2, 'Room 2', 'Master Room', 170000),
+      RoomModel(AssetHelper.room3, 'Room 3', 'Couple Room', 150000),
+      RoomModel(AssetHelper.room4, 'Room 4', 'Couple Room', 150000),
+      RoomModel(AssetHelper.room5, 'Room 5', 'Family Room', 200000),
+      RoomModel(AssetHelper.room6, 'Room 6', 'Master Room', 170000),
     ];
 
     return Scaffold(
@@ -161,152 +160,152 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 36),
-            Container(
-              child: Container(
-                child: SizedBox(
-                  height: 42,
-                  width: double.infinity,
-                  child: TextField(
-                    onChanged: (value) => valueSearch = value,
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(top: 4),
-                        prefixIcon: InkWell(
-                          customBorder: CircleBorder(),
-                          onTap: () {},
-                          child: Icon(
-                            FontAwesomeIcons.magnifyingGlass,
-                            size: 16,
-                            color: ColorPalette.greenText,
-                          ),
-                        ),
-                        suffixIcon: InkWell(
-                            customBorder: CircleBorder(),
-                            onTap: () {
-                              setState(() {
-                                isVisibleFilter = !isVisibleFilter;
-                              });
-                            },
-                            child: Image.asset(AssetHelper.iconFilter)),
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: ColorPalette.grayText,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorPalette.primaryColor, width: 2))),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Container(
-                alignment: Alignment.centerLeft,
-                child: Visibility(
-                    visible: isVisibleFilter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FilterContainerWidget(
-                          name: 'name',
-                          icon1: Icon(
-                            FontAwesomeIcons.arrowDown,
-                            size: 12,
-                            color: nameDecrease
-                                ? ColorPalette.primaryColor
-                                : ColorPalette.blackText,
-                          ),
-                          icon2: Icon(
-                            FontAwesomeIcons.arrowUp,
-                            size: 12,
-                            color: nameDecrease
-                                ? ColorPalette.blackText
-                                : ColorPalette.primaryColor,
-                          ),
-                          onTapIconDown: () {
-                            setState(() {
-                              nameDecrease = true;
-                            });
-                          },
-                          onTapIconUp: () {
-                            setState(() {
-                              nameDecrease = false;
-                            });
-                          },
-                        ),
-                        FilterContainerWidget(
-                          name: 'price',
-                          icon1: Icon(
-                            FontAwesomeIcons.arrowDown,
-                            size: 12,
-                            color: priceDecrease
-                                ? ColorPalette.primaryColor
-                                : ColorPalette.blackText,
-                          ),
-                          icon2: Icon(
-                            FontAwesomeIcons.arrowUp,
-                            size: 12,
-                            color: priceDecrease
-                                ? ColorPalette.blackText
-                                : ColorPalette.primaryColor,
-                          ),
-                          onTapIconDown: () {
-                            setState(() {
-                              priceDecrease = true;
-                            });
-                          },
-                          onTapIconUp: () {
-                            setState(() {
-                              priceDecrease = false;
-                            });
-                          },
-                        ),
-                        Container(
-                          width: 100,
-                          height: 28,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: ColorPalette.grayText),
-                              borderRadius:
-                                  BorderRadius.circular(kMediumPadding)),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                                value: dropdownValue,
-                                items: items.map(buildMenuItem).toList(),
-                                icon: Icon(FontAwesomeIcons.caretDown),
-                                iconSize: 12,
-                                hint: Text(
-                                  "Kind",
-                                  style: TextStyles.defaultStyle.grayText,
-                                ),
-                                iconEnabledColor: ColorPalette.primaryColor,
-                                onChanged: (value) {
-                                  setState(() {
-                                    this.dropdownValue = value;
-                                  });
-                                }),
-                          ),
-                        )
-                        // FilterContainerWidget(
-                        //   name: 'Kind',
-                        //   icon1: Icon(
-                        //     FontAwesomeIcons.caretDown,
-                        //     size: 12,
-                        //     color: ColorPalette.primaryColor,
-                        //   ),
-                        //   onTapIconDown: () {},
+            // Container(
+            //   child: Container(
+            //     child: SizedBox(
+            //       height: 42,
+            //       width: double.infinity,
+            //       child: TextField(
+            //         onChanged: (value) => valueSearch = value,
+            //         decoration: InputDecoration(
+            //             contentPadding: const EdgeInsets.only(top: 4),
+            //             prefixIcon: InkWell(
+            //               customBorder: CircleBorder(),
+            //               onTap: () {},
+            //               child: Icon(
+            //                 FontAwesomeIcons.magnifyingGlass,
+            //                 size: 16,
+            //                 color: ColorPalette.greenText,
+            //               ),
+            //             ),
+            //             suffixIcon: InkWell(
+            //                 customBorder: CircleBorder(),
+            //                 onTap: () {
+            //                   setState(() {
+            //                     isVisibleFilter = !isVisibleFilter;
+            //                   });
+            //                 },
+            //                 child: Image.asset(AssetHelper.iconFilter)),
+            //             hintText: 'Search',
+            //             hintStyle: TextStyle(
+            //               fontSize: 14,
+            //               color: ColorPalette.grayText,
+            //             ),
+            //             border: OutlineInputBorder(
+            //               borderRadius: BorderRadius.circular(8),
+            //             ),
+            //             focusedBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                     color: ColorPalette.primaryColor, width: 2))),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 24),
+            // Container(
+            //     alignment: Alignment.centerLeft,
+            //     child: Visibility(
+            //         visible: isVisibleFilter,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             FilterContainerWidget(
+            //               name: 'name',
+            //               icon1: Icon(
+            //                 FontAwesomeIcons.arrowDown,
+            //                 size: 12,
+            //                 color: nameDecrease
+            //                     ? ColorPalette.primaryColor
+            //                     : ColorPalette.blackText,
+            //               ),
+            //               icon2: Icon(
+            //                 FontAwesomeIcons.arrowUp,
+            //                 size: 12,
+            //                 color: nameDecrease
+            //                     ? ColorPalette.blackText
+            //                     : ColorPalette.primaryColor,
+            //               ),
+            //               onTapIconDown: () {
+            //                 setState(() {
+            //                   nameDecrease = true;
+            //                 });
+            //               },
+            //               onTapIconUp: () {
+            //                 setState(() {
+            //                   nameDecrease = false;
+            //                 });
+            //               },
+            //             ),
+            //             FilterContainerWidget(
+            //               name: 'price',
+            //               icon1: Icon(
+            //                 FontAwesomeIcons.arrowDown,
+            //                 size: 12,
+            //                 color: priceDecrease
+            //                     ? ColorPalette.primaryColor
+            //                     : ColorPalette.blackText,
+            //               ),
+            //               icon2: Icon(
+            //                 FontAwesomeIcons.arrowUp,
+            //                 size: 12,
+            //                 color: priceDecrease
+            //                     ? ColorPalette.blackText
+            //                     : ColorPalette.primaryColor,
+            //               ),
+            //               onTapIconDown: () {
+            //                 setState(() {
+            //                   priceDecrease = true;
+            //                 });
+            //               },
+            //               onTapIconUp: () {
+            //                 setState(() {
+            //                   priceDecrease = false;
+            //                 });
+            //               },
+            //             ),
+            //             Container(
+            //               width: 100,
+            //               height: 28,
+            //               alignment: Alignment.center,
+            //               decoration: BoxDecoration(
+            //                   border: Border.all(color: ColorPalette.grayText),
+            //                   borderRadius:
+            //                       BorderRadius.circular(kMediumPadding)),
+            //               child: DropdownButtonHideUnderline(
+            //                 child: DropdownButton<String>(
+            //                     value: dropdownValue,
+            //                     items: items.map(buildMenuItem).toList(),
+            //                     icon: Icon(FontAwesomeIcons.caretDown),
+            //                     iconSize: 12,
+            //                     hint: Text(
+            //                       "Kind",
+            //                       style: TextStyles.defaultStyle.grayText,
+            //                     ),
+            //                     iconEnabledColor: ColorPalette.primaryColor,
+            //                     onChanged: (value) {
+            //                       setState(() {
+            //                         this.dropdownValue = value;
+            //                       });
+            //                     }),
+            //               ),
+            //             )
+            //             // FilterContainerWidget(
+            //             //   name: 'Kind',
+            //             //   icon1: Icon(
+            //             //     FontAwesomeIcons.caretDown,
+            //             //     size: 12,
+            //             //     color: ColorPalette.primaryColor,
+            //             //   ),
+            //             //   onTapIconDown: () {},
 
-                        //   // icon2: Icon(
-                        //   //   FontAwesomeIcons.arrowDown,
-                        //   //   size: 12,
-                        //   //   color: ColorPalette.blackText,
-                        //   // ),
-                        // )
-                      ],
-                    ))),
+            //             //   // icon2: Icon(
+            //             //   //   FontAwesomeIcons.arrowDown,
+            //             //   //   size: 12,
+            //             //   //   color: ColorPalette.blackText,
+            //             //   // ),
+            //             // )
+            //           ],
+            //         ))),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),
               child: Row(
@@ -350,21 +349,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisSpacing: 24,
                         crossAxisSpacing: 24,
                         childAspectRatio: 0.8,
-                        children: loadListRoom(listRoom)
-                            .map((e) =>
-                                RoomItem(e.image!, e.name!, e.type!, e.cost!))
-                            .toList()
-
-                        // listRoom.length > 6
-                        //     ? listRoom.sublist(0, 6).map((e) {
-                        //         return RoomItem(
-                        //             e.image!, e.name!, e.type!, e.cost!);
-                        //       }).toList()
-                        //     : listRoom
-                        //         .map((e) =>
-                        //             RoomItem(e.image!, e.name!, e.type!, e.cost!))
-                        //         .toList()
-                        ),
+                        children: listRoom.length > 6
+                            ? listRoom.sublist(0, 6).map((e) {
+                                return RoomItem(
+                                    e.image!, e.name!, e.type!, e.cost!);
+                              }).toList()
+                            : listRoom
+                                .map((e) => RoomItem(
+                                    e.image!, e.name!, e.type!, e.cost!))
+                                .toList()),
               ),
             )
           ],
