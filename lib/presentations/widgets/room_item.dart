@@ -35,7 +35,7 @@ Widget RoomItem(String image, String name, String type, int cost) {
               ),
               Row(
                 children: [
-                  Image.asset(AssetHelper.iconTypeRoom),
+                  Image.asset(AssetHelper.icoTypeRoom),
                   Container(
                     padding: const EdgeInsets.only(left: 6),
                     child: Text(type, style: TextStyles.subTextStyle.light),

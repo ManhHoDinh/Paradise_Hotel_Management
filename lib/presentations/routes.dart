@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradise/presentations/screens/AddUser_screen.dart';
+import 'package:paradise/presentations/screens/createRoom_screen.dart';
 import 'package:paradise/presentations/screens/home_screen.dart';
 import 'package:paradise/presentations/screens/login_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
@@ -9,4 +10,5 @@ final Map<String, WidgetBuilder> routes = {
   HomeScreen.routeName: (context) => HomeScreen(),
   LoginScreen.routeName: (context) => LoginScreen(),
   AddUserScreen.routeName: (context) => AddUserScreen(),
+  CreateRoomScreen.routeName: (context) => CreateRoomScreen(),
 };

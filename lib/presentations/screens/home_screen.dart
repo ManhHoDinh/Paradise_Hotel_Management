@@ -1,3 +1,4 @@
+import 'package:paradise/presentations/screens/createRoom_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         suffixIcon: InkWell(
                             customBorder: CircleBorder(),
                             onTap: () {},
-                            child: Image.asset(AssetHelper.iconFilter)),
+                            child: Image.asset(AssetHelper.icoFilter)),
                         hintText: 'Search',
                         hintStyle: TextStyle(
                           fontSize: 14,
@@ -139,7 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('Room',
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        
+                      },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],
               ),
