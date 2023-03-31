@@ -1,30 +1,24 @@
-class RoomDetail {
-  String? roomID;
-  int? type;
-  double? price;
-  List<String> images = [];
-  RoomDetail(
-      {required this.roomID,
-      required this.type,
-      required this.price,
-      required this.images});
-
-  Map<String, dynamic> toJson() => {
-        'id': roomID,
-        'name': type,
-        'age': price,
-        'birthday': images,
-      };
-  static RoomDetail fromJson(Map<String, dynamic> json) => RoomDetail(
-      roomID: json['roomID'],
-      type: json['type'],
-      price: json['type'],
-      images: json['images']);
-}
 class RoomModel {
-  String? image;
+  String? roomID;
+  String? PrimaryImage;
   String? type;
-  int? cost;
+  int? price;
   String? name;
-  RoomModel(this.image, this.name, this.type, this.cost);
+  //String? hotelID;
+  //List<String> images = [];
+  RoomModel({this.roomID, this.PrimaryImage, this.name, this.type, this.price});
+  Map<String, dynamic> toJson() => {
+        'roomID': roomID,
+        'name': name,
+        'type': type,
+        'price': price,
+        'PrimaryImage': PrimaryImage
+      };
+
+  static RoomModel fromJson(Map<String, dynamic> json) => RoomModel(
+      roomID: json['roomID'],
+      name: json['name'],
+      type: json['type'],
+      price: int.parse(json['price']),
+      PrimaryImage: json['PrimaryImage']);
 }

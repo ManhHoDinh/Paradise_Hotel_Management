@@ -7,13 +7,13 @@ class ButtonWidget extends StatelessWidget {
   final String label;
   final Color color;
   final VoidCallback onTap;
-
-  ButtonWidget({
-    super.key,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
+  Color? textColor;
+  ButtonWidget(
+      {super.key,
+      required this.label,
+      required this.color,
+      required this.onTap,
+      this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ButtonWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
         child: Text(
           label,
-          style: TextStyles.h6.setColor(ColorPalette.blackText),
+          style: TextStyles.h6.setColor(textColor ?? ColorPalette.blackText),
         ),
       ),
     );
