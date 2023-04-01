@@ -1,14 +1,21 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
 class CheckBoxWidget extends StatefulWidget {
   final String label;
-  final Color color;
+  final int value;
+  final int groupValue;
+  final void Function(bool?)? onChanged;
 
   const CheckBoxWidget({
     super.key, 
     required this.label,
-    required this.color,
+    required this.value,
+    required this.groupValue,
+    required this.onChanged,
   });
 
   @override
@@ -16,6 +23,8 @@ class CheckBoxWidget extends StatefulWidget {
 }
 
 class _CheckBoxWidgetState extends State<CheckBoxWidget> {
+  Color color = ColorPalette.grayText;
+
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -23,42 +32,43 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
       MaterialState.focused,
     };
     if (states.any(interactiveStates.contains)) {
-      return widget.color;
+      return color;
     }
-    return widget.color;
+    return color;
   }
-
-  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
+    color = widget.value == widget.groupValue
+        ? ColorPalette.primaryColor
+        : ColorPalette.grayText;
+
     return Row(
       children: [
         StatefulBuilder(
           builder: (context, setState) {
-            return Transform.scale(
-              scale: 0.7,
-              child: Checkbox(
-                checkColor: Colors.white,
-                fillColor: MaterialStateColor.resolveWith(
-                    (states) => getColor(states)),
-                value: isChecked,
-                onChanged: (value) {
-                  setState(() {
-                    isChecked = !isChecked;
-                  });
-                },
+            return Container(
+              width: kDefaultIconSize * 1,
+              child: Transform.scale(
+                alignment: Alignment.centerLeft,
+                scale: 0.8,
+                child: Checkbox(
+                  checkColor: Colors.white,
+                  fillColor: MaterialStateColor.resolveWith(
+                      (states) => getColor(states)),
+                  value: widget.value == widget.groupValue,
+                  onChanged: widget.onChanged,
+                ),
               ),
             );
           }
         ),
-        Container(
-          padding: const EdgeInsets.only(left: 3),
-          child: Text(widget.label,
-            style: TextStyles.h6.light.copyWith(
-              color: widget.color,
-              fontSize: 13,
-            ),
+        AutoSizeText(widget.label,
+        overflow: TextOverflow.fade,
+          minFontSize: 6,
+          style: TextStyles.h6.light.copyWith(
+            color: ColorPalette.grayText,
+            fontSize: 12,
           ),
         ),
       ],

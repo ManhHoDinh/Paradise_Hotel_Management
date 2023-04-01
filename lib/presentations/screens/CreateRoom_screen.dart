@@ -20,7 +20,7 @@ class CreateRoomScreen extends StatefulWidget {
 }
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
-  int currentId = 0;
+  int currentId = 0, _value = 1;
   bool isPressed = false;
 
   @override
@@ -40,17 +40,17 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
         ),
         title: Container(
           child: Text('ROOMS',
-            style: TextStyles.slo.bold,
+            style: TextStyles.slo.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
+                )
+              ],
+            ),
           ),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                offset: Offset(3, 6),
-                blurRadius: 9
-              )
-            ]
-          ),
+          alignment: Alignment.center,
         ),
         toolbarHeight: kToolbarHeight * 1.5,
         actions: [
@@ -63,7 +63,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             },
             splashColor: ColorPalette.primaryColor,
             onTap: () {
-              print('object');
+              // print('object');
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2),
@@ -137,26 +137,37 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             ),
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: kMaxPadding + 6),
+              margin: const EdgeInsets.symmetric(horizontal: kMaxPadding * 1.5),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    child: CheckBoxWidget(
-                      label: '150.000',
-                      color: ColorPalette.grayText,
-                    ),
+                  CheckBoxWidget(label: '150.000',
+                    value: 1,
+                    groupValue: _value,
+                    onChanged: (value) {
+                      setState(() {
+                        _value = 1;
+                      });
+                    },
                   ),
-                  Container(
-                    child: CheckBoxWidget(
-                      label: '170.000',
-                      color: ColorPalette.grayText,
-                    ),),
-                  Container(
-                    child: CheckBoxWidget(
-                      label: '200.000',
-                      color: ColorPalette.grayText,
-                    ),),
+                  CheckBoxWidget(label: '170.000',
+                    value: 2,
+                    groupValue: _value,
+                    onChanged: (value) {
+                      setState(() {
+                        _value = 2;
+                      });
+                    },
+                  ),
+                  CheckBoxWidget(label: '200.000',
+                    value: 3,
+                    groupValue: _value,
+                    onChanged: (value) {
+                      setState(() {
+                        _value = 3;
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
@@ -201,44 +212,44 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: SalomonBottomBar(
-        currentIndex: currentId,
-        onTap: (id) {
-          setState(() {
-            currentId = id;
-          });
-        },
-        items: [
-          SalomonBottomBarItem(
-            icon: Icon(
-              FontAwesomeIcons.house,
-              size: 20,
-            ),
-            title: Text('Home')
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(
-              FontAwesomeIcons.gear,
-              size: 20,
-            ),
-            title: Text('Setting')
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(
-              FontAwesomeIcons.bell,
-              size: 20,
-            ),
-            title: Text('Notification')
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(
-              FontAwesomeIcons.user,
-              size: 20,
-            ),
-            title: Text('Account')
-          ),
-        ]
-      ),
+      // bottomNavigationBar: SalomonBottomBar(
+      //   currentIndex: currentId,
+      //   onTap: (id) {
+      //     setState(() {
+      //       currentId = id;
+      //     });
+      //   },
+      //   items: [
+      //     SalomonBottomBarItem(
+      //       icon: Icon(
+      //         FontAwesomeIcons.house,
+      //         size: 20,
+      //       ),
+      //       title: Text('Home')
+      //     ),
+      //     SalomonBottomBarItem(
+      //       icon: Icon(
+      //         FontAwesomeIcons.gear,
+      //         size: 20,
+      //       ),
+      //       title: Text('Setting')
+      //     ),
+      //     SalomonBottomBarItem(
+      //       icon: Icon(
+      //         FontAwesomeIcons.bell,
+      //         size: 20,
+      //       ),
+      //       title: Text('Notification')
+      //     ),
+      //     SalomonBottomBarItem(
+      //       icon: Icon(
+      //         FontAwesomeIcons.user,
+      //         size: 20,
+      //       ),
+      //       title: Text('Account')
+      //     ),
+      //   ]
+      // ),
     );
   }
 }

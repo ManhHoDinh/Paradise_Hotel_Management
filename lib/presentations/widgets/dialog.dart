@@ -16,12 +16,14 @@ class DialogOverlay extends StatelessWidget {
         excludeFromSemantics: true,
         height: 120,
       ),
+      backgroundColor: Colors.white.withOpacity(0),
+      shadowColor: Colors.white.withOpacity(0),
       content: Text(isSuccess
           ? 'Create Successfully!'
           : 'Error!\nRoom ID is Exist',
         textAlign: TextAlign.center,
         style: TextStyles.h5.copyWith(
-          // color: Colors.white,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       ),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
-import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
 class UploadButton extends StatefulWidget {
@@ -34,38 +33,41 @@ class _UploadButtonState extends State<UploadButton> {
     });
   }
 
-  Widget _previewImages() {
-    if (!_images!.isEmpty) {
-      return Container(
-        width: double.infinity,
-        height: 133,
-        child: ListView.builder(
-          
-          itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-              child: Image.file(File(_images![index].path),
-                width: 178,
-                height: 133,
-                fit: BoxFit.scaleDown,
-              ),
-            );
-          },
-          itemCount: _images!.length,
-          scrollDirection: Axis.horizontal,
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
 
-  Widget _handlePreview() {
-    return _previewImages();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    Widget _previewImages() {
+      if (!_images!.isEmpty) {
+        return Container(
+          width: width,
+          height: height * 0.18,
+          child: PageView.builder(
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+                child: Image.file(File(_images![index].path),
+                  fit: BoxFit.scaleDown,
+                ),
+              );
+            },
+            itemCount: _images!.length,
+            scrollDirection: Axis.horizontal,
+          ),
+        );
+      } else {
+        return Container();
+      }
+    }
+    
+    Widget _handlePreview() {
+      return _previewImages();
+    }
+
     return Column(
       children: [
         _handlePreview(),
