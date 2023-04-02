@@ -16,7 +16,6 @@ class ButtonDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: kMaxPadding * 3),
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(100)),
         onTap: onTap,

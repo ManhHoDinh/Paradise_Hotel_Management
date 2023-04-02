@@ -12,10 +12,12 @@ class InputDefault extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+
     return Container(
       height: kDefaultIconSize * 2,
       child: TextField(
-        controller: TextEditingController(),
+        controller: controller,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 14, bottom: 14),
           border: OutlineInputBorder(

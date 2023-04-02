@@ -33,9 +33,6 @@ class _UploadButtonState extends State<UploadButton> {
     });
   }
 
-
-  
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -45,7 +42,7 @@ class _UploadButtonState extends State<UploadButton> {
       if (!_images!.isEmpty) {
         return Container(
           width: width,
-          height: height * 0.18,
+          height: height * 0.25,
           child: PageView.builder(
             itemBuilder: (context, index) {
               return Container(

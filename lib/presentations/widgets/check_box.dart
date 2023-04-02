@@ -45,23 +45,19 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
 
     return Row(
       children: [
-        StatefulBuilder(
-          builder: (context, setState) {
-            return Container(
-              width: kDefaultIconSize * 1,
-              child: Transform.scale(
-                alignment: Alignment.centerLeft,
-                scale: 0.8,
-                child: Checkbox(
-                  checkColor: Colors.white,
-                  fillColor: MaterialStateColor.resolveWith(
-                      (states) => getColor(states)),
-                  value: widget.value == widget.groupValue,
-                  onChanged: widget.onChanged,
-                ),
-              ),
-            );
-          }
+        Container(
+          width: kDefaultIconSize * 1,
+          child: Transform.scale(
+            alignment: Alignment.centerLeft,
+            scale: 0.8,
+            child: Checkbox(
+              checkColor: Colors.white,
+              fillColor: MaterialStateColor.resolveWith(
+                  (states) => getColor(states)),
+              value: widget.value == widget.groupValue,
+              onChanged: widget.onChanged,
+            ),
+          ),
         ),
         AutoSizeText(widget.label,
         overflow: TextOverflow.fade,
