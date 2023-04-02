@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/UserViewer.dart';
+import 'package:paradise/presentations/screens/edit_rental_form.dart';
 import 'package:paradise/presentations/screens/login_screen.dart';
+import 'package:paradise/presentations/screens/main_screen.dart';
+import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: EditForm(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
