@@ -49,6 +49,7 @@ class _UploadButtonState extends State<UploadButton> {
                 margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
                 child: Image.file(File(_images![index].path),
                   fit: BoxFit.scaleDown,
+                  scale: 0.75,
                 ),
               );
             },
