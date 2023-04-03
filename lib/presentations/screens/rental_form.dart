@@ -961,17 +961,49 @@ class _RentalFormState extends State<RentalForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${_soNgay * _gia} VND',
-                            style: TextStyles.h8.copyWith(
-                                color: ColorPalette.greenText, fontSize: 12),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    '${_soNgay * _gia}',
+                                    style: TextStyles.h8.copyWith(
+                                        color: ColorPalette.greenText,
+                                        fontSize: 12,
+                                        letterSpacing: 1.5),
+                                  ),
+                                  Text(
+                                    ' VND',
+                                    style: TextStyles.h8.copyWith(
+                                        color: ColorPalette.greenText,
+                                        fontSize: 12),
+                                  )
+                                ],
+                              )
+                            ],
                           ),
-                          Text(
-                            '$_gia VND per night',
-                            style: TextStyles.h8.copyWith(
-                                color: Color(0xff9B9B9B),
-                                fontSize: 10,
-                                fontWeight: FontWeight.w300),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    '$_gia',
+                                    style: TextStyles.h8.copyWith(
+                                        color: Color(0xff9B9B9B),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w300,
+                                        letterSpacing: 1.5),
+                                  ),
+                                  Text(
+                                    ' VND per night',
+                                    style: TextStyles.h8.copyWith(
+                                        color: Color(0xff9B9B9B),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ],
                       ),
