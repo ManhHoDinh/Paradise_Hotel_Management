@@ -711,7 +711,7 @@ class _RentalFormState extends State<RentalForm> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: size.width / 2 - 70,
+                            width: size.width / 2 - 60,
                             child: ListTile(
                               title: const Text('Male'),
                               leading: Radio(
@@ -728,7 +728,7 @@ class _RentalFormState extends State<RentalForm> {
                             ),
                           ),
                           Container(
-                            width: size.width / 2 - 30,
+                            width: size.width / 2 - 36,
                             child: ListTile(
                               title: const Text('Female'),
                               leading: Radio(
@@ -934,7 +934,7 @@ class _RentalFormState extends State<RentalForm> {
                               _selectedDay = null;
                               _focusedDay = focusedDay;
                               _rangeStart = start;
-                              _rangeEnd = end;
+                              _rangeEnd = end ?? start;
                               _rangeSelectionMode =
                                   RangeSelectionMode.toggledOn;
                             });

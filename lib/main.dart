@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: EditForm(),
+      home: RentalForm(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
