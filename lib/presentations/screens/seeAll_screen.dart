@@ -268,27 +268,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                         )))
                                     .toList(),
                               ),
-                            )
-                            // DropdownButtonHideUnderline(
-                            //   child: DropdownButton<String>(
-                            //       value: dropdownStatusValue,
-                            //       items: statusItems
-                            //           .map(buildMenuStatusItem)
-                            //           .toList(),
-                            //       icon: Icon(FontAwesomeIcons.caretDown),
-                            //       iconSize: 12,
-                            //       hint: Text(
-                            //         "Status",
-                            //         style: TextStyles.defaultStyle.grayText,
-                            //       ),
-                            //       iconEnabledColor: ColorPalette.primaryColor,
-                            //       onChanged: (value) {
-                            //         setState(() {
-                            //           this.dropdownStatusValue = value;
-                            //         });
-                            //       }),
-                            // ),
-                            ),
+                            )),
                         Container(
                             height: 28,
                             width: 120,
@@ -340,41 +320,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                   });
                                 },
                               ),
-                            )
-                            //  DropdownButtonHideUnderline(
-                            //   child: DropdownButton<String>(
-                            //       value: dropdownKindValue,
-                            //       items:
-                            //           kindItems.map(buildMenuKindItem).toList(),
-                            //       icon: Icon(FontAwesomeIcons.caretDown),
-                            //       iconSize: 12,
-                            //       hint: Text(
-                            //         "Kind",
-                            //         style: TextStyles.defaultStyle.grayText,
-                            //       ),
-                            //       iconEnabledColor: ColorPalette.primaryColor,
-                            //       onChanged: (value) {
-                            //         setState(() {
-                            //           this.dropdownKindValue = value;
-                            //         });
-                            //       }),
-                            // ),
-                            )
-                        // FilterContainerWidget(
-                        //   name: 'Kind',
-                        //   icon1: Icon(
-                        //     FontAwesomeIcons.caretDown,
-                        //     size: 12,
-                        //     color: ColorPalette.primaryColor,
-                        //   ),
-                        //   onTapIconDown: () {},
-
-                        //   // icon2: Icon(
-                        //   //   FontAwesomeIcons.arrowDown,
-                        //   //   size: 12,
-                        //   //   color: ColorPalette.blackText,
-                        //   // ),
-                        // )
+                            ))
                       ],
                     ))),
             Container(
@@ -408,118 +354,19 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
               ]),
             ),
             Expanded(
-                child: GridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 24,
-                    crossAxisSpacing: 24,
-                    childAspectRatio: 0.8,
-                    children: loadListRoom(widget.listRoom)
-                        .map((e) =>
-                            RoomItem(e.image!, e.name!, e.type!, e.cost!))
-                        .toList())),
+                child: Container(
+              //padding: const EdgeInsets.only(bottom: kMediumPadding),
+              child: GridView.count(
+                  padding: const EdgeInsets.only(bottom: kMediumPadding),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 24,
+                  crossAxisSpacing: 24,
+                  childAspectRatio: 0.8,
+                  children: loadListRoom(widget.listRoom)
+                      .map((e) => RoomItem(e.image!, e.name!, e.type!, e.cost!))
+                      .toList()),
+            )),
           ])),
     );
   }
 }
-// class SeeAllScreen extends StatelessWidget {
-//   final List<RoomModel> listRoom;
-//   const SeeAllScreen({super.key, required this.listRoom});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         elevation: 0,
-//         backgroundColor: ColorPalette.backgroundColor,
-//         leading: InkWell(
-//           customBorder: CircleBorder(),
-//           onTap: () {},
-//           child: Container(
-//             child: Icon(
-//               FontAwesomeIcons.bars,
-//               color: ColorPalette.primaryColor,
-//             ),
-//           ),
-//         ),
-//         title: Padding(
-//           padding: const EdgeInsets.only(left: 100),
-//           child: Container(
-//             child: Column(
-//               children: [
-//                 Row(
-//                   children: [
-//                     Column(
-//                       crossAxisAlignment: CrossAxisAlignment.end,
-//                       children: const [
-//                         Text('WELCOME',
-//                             style: TextStyle(
-//                                 fontSize: 10, color: ColorPalette.grayText)),
-//                         Text(
-//                           'Vinpearl Hotel',
-//                           style: TextStyle(
-//                               fontSize: 16, color: ColorPalette.primaryColor),
-//                         ),
-//                       ],
-//                     ),
-//                     const SizedBox(width: 24),
-//                     InkWell(
-//                       onTap: () {},
-//                       child: ImageHelper.loadFromAsset(AssetHelper.avatar,
-//                           height: 40),
-//                     )
-//                   ],
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//       body: Container(
-//           padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
-//           color: ColorPalette.backgroundColor,
-//           // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
-//           child: Column(children: [
-//             Container(
-//               padding: const EdgeInsets.only(bottom: kMinPadding),
-//               alignment: Alignment.centerLeft,
-//               child: Row(children: [
-//                 Material(
-//                   child: InkWell(
-//                     onTap: () {
-//                       Navigator.pop(context);
-//                     },
-//                     customBorder: CircleBorder(),
-//                     child: Container(
-//                       width: 26,
-//                       height: 26,
-//                       child: Icon(
-//                         FontAwesomeIcons.arrowLeft,
-//                         size: 18,
-//                         color: ColorPalette.primaryColor,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   width: 4,
-//                 ),
-//                 Text(
-//                   'All room',
-//                   style: TextStyles.defaultStyle.primaryTextColor,
-//                 ),
-//               ]),
-//             ),
-//             Expanded(
-//                 child: GridView.count(
-//                     crossAxisCount: 2,
-//                     mainAxisSpacing: 24,
-//                     crossAxisSpacing: 24,
-//                     childAspectRatio: 0.8,
-//                     children: listRoom
-//                         .map((e) =>
-//                             RoomItem(e.image!, e.name!, e.type!, e.cost!))
-//                         .toList())),
-//           ])),
-//     );
-//   }
-// }
