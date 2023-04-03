@@ -232,7 +232,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                     BorderRadius.circular(kMediumPadding)),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton2(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.centerLeft,
                                 value: dropdownStatusValue,
                                 hint: Text(
                                   "Status",
@@ -242,9 +242,12 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                     iconEnabledColor:
                                         ColorPalette.primaryColor),
                                 onChanged: (value) {
-                                  dropdownStatusValue = value;
+                                  setState(() {
+                                    dropdownStatusValue = value;
+                                  });
                                 },
                                 buttonStyleData: const ButtonStyleData(
+                                  padding: const EdgeInsets.only(left: 12),
                                   height: 28,
                                   width: 120,
                                 ),
@@ -296,7 +299,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                     BorderRadius.circular(kMediumPadding)),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton2(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.centerLeft,
                                 iconStyleData: IconStyleData(
                                     iconEnabledColor:
                                         ColorPalette.primaryColor),
@@ -318,6 +321,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                         )))
                                     .toList(),
                                 buttonStyleData: const ButtonStyleData(
+                                  padding: const EdgeInsets.only(left: 12),
                                   height: 28,
                                   width: 120,
                                 ),
