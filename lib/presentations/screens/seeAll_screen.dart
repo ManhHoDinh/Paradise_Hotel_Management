@@ -314,6 +314,11 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                 items: kindItems
                                     .map((e) => DropdownMenuItem<String>(
                                         value: e,
+                                        onTap: () {
+                                          setState(() {
+                                            kindRoom = e;
+                                          });
+                                        },
                                         child: Text(
                                           e,
                                           style:
