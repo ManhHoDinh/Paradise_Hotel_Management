@@ -2,6 +2,7 @@ class RoomDetail {
   String? roomID;
   int? type;
   double? price;
+  String? status;
   List<String> images = [];
   RoomDetail(
       {required this.roomID,

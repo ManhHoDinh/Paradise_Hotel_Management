@@ -8,7 +8,7 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
 
@@ -22,13 +22,15 @@ class SeeAllScreen extends StatefulWidget {
 
 class _SeeAllScreenState extends State<SeeAllScreen> {
   bool isVisibleFilter = false;
-  bool nameDecrease = false;
   bool priceDecrease = false;
   String? kindRoom;
+  String? status;
   String? valueSearch;
-  String? dropdownValue;
-  final items = ['Family room', 'Master room', 'Couple room'];
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+  String? dropdownKindValue;
+  String? dropdownStatusValue;
+  final kindItems = ['All', 'Family room', 'Master room', 'Couple room'];
+  final statusItems = ['All', 'Booked', 'Available'];
+  DropdownMenuItem<String> buildMenuKindItem(String item) => DropdownMenuItem(
       value: item,
       onTap: () {
         setState(() {
@@ -39,15 +41,20 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
         item,
         style: TextStyles.defaultStyle.grayText,
       ));
+  DropdownMenuItem<String> buildMenuStatusItem(String item) => DropdownMenuItem(
+      value: item,
+      onTap: () {
+        setState(() {
+          status = item;
+        });
+      },
+      child: Text(
+        item,
+        style: TextStyles.defaultStyle.grayText,
+      ));
   List<RoomModel> loadListRoom(List<RoomModel> list) {
     List<RoomModel> newList = List.from(list);
-    if (nameDecrease) {
-      list.sort(
-          (a, b) => b.name!.toLowerCase().compareTo(a.name!.toLowerCase()));
-    } else {
-      list.sort(
-          (a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
-    }
+
     if (priceDecrease) {
       list.sort((a, b) => b.cost!.compareTo(a.cost!));
     } else {
@@ -55,6 +62,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
     }
 
     switch (kindRoom) {
+      case "All":
+        newList = list;
+        break;
       case "Family room":
         newList = list.where((room) => room.type! == 'Family Room').toList();
         break;
@@ -185,33 +195,6 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FilterContainerWidget(
-                          name: 'name',
-                          icon1: Icon(
-                            FontAwesomeIcons.arrowDown,
-                            size: 12,
-                            color: nameDecrease
-                                ? ColorPalette.primaryColor
-                                : ColorPalette.blackText,
-                          ),
-                          icon2: Icon(
-                            FontAwesomeIcons.arrowUp,
-                            size: 12,
-                            color: nameDecrease
-                                ? ColorPalette.blackText
-                                : ColorPalette.primaryColor,
-                          ),
-                          onTapIconDown: () {
-                            setState(() {
-                              nameDecrease = true;
-                            });
-                          },
-                          onTapIconUp: () {
-                            setState(() {
-                              nameDecrease = false;
-                            });
-                          },
-                        ),
-                        FilterContainerWidget(
                           name: 'price',
                           icon1: Icon(
                             FontAwesomeIcons.arrowDown,
@@ -239,31 +222,135 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                           },
                         ),
                         Container(
-                          width: 100,
-                          height: 28,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: ColorPalette.grayText),
-                              borderRadius:
-                                  BorderRadius.circular(kMediumPadding)),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                                value: dropdownValue,
-                                items: items.map(buildMenuItem).toList(),
-                                icon: Icon(FontAwesomeIcons.caretDown),
-                                iconSize: 12,
+                            width: 100,
+                            height: 28,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: ColorPalette.grayText),
+                                borderRadius:
+                                    BorderRadius.circular(kMediumPadding)),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                alignment: Alignment.centerRight,
+                                value: dropdownStatusValue,
                                 hint: Text(
-                                  "Kind",
+                                  "Status",
                                   style: TextStyles.defaultStyle.grayText,
                                 ),
-                                iconEnabledColor: ColorPalette.primaryColor,
+                                iconStyleData: IconStyleData(
+                                    iconEnabledColor:
+                                        ColorPalette.primaryColor),
+                                onChanged: (value) {
+                                  dropdownStatusValue = value;
+                                },
+                                buttonStyleData: const ButtonStyleData(
+                                  height: 28,
+                                  width: 120,
+                                ),
+                                menuItemStyleData: const MenuItemStyleData(
+                                  height: 28,
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kMinPadding))),
+                                items: statusItems
+                                    .map((e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(
+                                          e,
+                                          style:
+                                              TextStyles.defaultStyle.grayText,
+                                        )))
+                                    .toList(),
+                              ),
+                            )
+                            // DropdownButtonHideUnderline(
+                            //   child: DropdownButton<String>(
+                            //       value: dropdownStatusValue,
+                            //       items: statusItems
+                            //           .map(buildMenuStatusItem)
+                            //           .toList(),
+                            //       icon: Icon(FontAwesomeIcons.caretDown),
+                            //       iconSize: 12,
+                            //       hint: Text(
+                            //         "Status",
+                            //         style: TextStyles.defaultStyle.grayText,
+                            //       ),
+                            //       iconEnabledColor: ColorPalette.primaryColor,
+                            //       onChanged: (value) {
+                            //         setState(() {
+                            //           this.dropdownStatusValue = value;
+                            //         });
+                            //       }),
+                            // ),
+                            ),
+                        Container(
+                            height: 28,
+                            width: 120,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: ColorPalette.grayText),
+                                borderRadius:
+                                    BorderRadius.circular(kMediumPadding)),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                alignment: Alignment.centerRight,
+                                iconStyleData: IconStyleData(
+                                    iconEnabledColor:
+                                        ColorPalette.primaryColor),
+                                dropdownStyleData: DropdownStyleData(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kMinPadding))),
+                                hint: Text(
+                                  'Kind',
+                                  style: TextStyles.defaultStyle.grayText,
+                                ),
+                                items: kindItems
+                                    .map((e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(
+                                          e,
+                                          style:
+                                              TextStyles.defaultStyle.grayText,
+                                        )))
+                                    .toList(),
+                                buttonStyleData: const ButtonStyleData(
+                                  height: 28,
+                                  width: 120,
+                                ),
+                                menuItemStyleData: const MenuItemStyleData(
+                                  height: 28,
+                                ),
+                                value: dropdownKindValue,
                                 onChanged: (value) {
                                   setState(() {
-                                    this.dropdownValue = value;
+                                    dropdownKindValue = value;
                                   });
-                                }),
-                          ),
-                        )
+                                },
+                              ),
+                            )
+                            //  DropdownButtonHideUnderline(
+                            //   child: DropdownButton<String>(
+                            //       value: dropdownKindValue,
+                            //       items:
+                            //           kindItems.map(buildMenuKindItem).toList(),
+                            //       icon: Icon(FontAwesomeIcons.caretDown),
+                            //       iconSize: 12,
+                            //       hint: Text(
+                            //         "Kind",
+                            //         style: TextStyles.defaultStyle.grayText,
+                            //       ),
+                            //       iconEnabledColor: ColorPalette.primaryColor,
+                            //       onChanged: (value) {
+                            //         setState(() {
+                            //           this.dropdownKindValue = value;
+                            //         });
+                            //       }),
+                            // ),
+                            )
                         // FilterContainerWidget(
                         //   name: 'Kind',
                         //   icon1: Icon(
