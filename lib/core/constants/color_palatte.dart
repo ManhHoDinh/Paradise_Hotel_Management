@@ -9,6 +9,7 @@ class ColorPalette {
   static const Color blackText = Color(0xff000000);
   static const Color yellowColor = Color(0xffBFBFBF);
   static const Color orangeColor = Color(0xffBFBFBF);
+  static const Color calendarGround = Color(0xff002270);
 }
 
 // Color(0xff+x) | Mã hex bỏ # ví dụ #123410 => Color(0xFF123410)

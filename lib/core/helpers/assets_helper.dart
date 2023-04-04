@@ -6,6 +6,12 @@ class AssetHelper {
   static const String icoUser = iconAssets + 'ico_user.png';
   static const String iconFilter = iconAssets + 'ico_filter.png';
   static const String iconTypeRoom = iconAssets + 'ico_typeroom.png';
+  static const String iconHome = iconAssets + 'ico_home.png';
+  static const String iconBack = iconAssets + 'ico_back.png';
+  static const String iconMenu = iconAssets + 'ico_menu.png';
+  static const String iconInRoom = iconAssets + 'ico_inroom.png';
+  static const String iconLine = iconAssets + 'ico_line.png';
+  static const String iconLine6 = iconAssets + 'ico_line6.png';
 
   //Assets in images
   static const String imgAssets = 'assets/images/';
