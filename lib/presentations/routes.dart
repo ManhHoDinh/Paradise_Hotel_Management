@@ -4,10 +4,12 @@ import 'package:paradise/presentations/screens/home_screen.dart';
 import 'package:paradise/presentations/screens/login_screen.dart';
 import 'package:paradise/presentations/screens/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
+import 'package:paradise/presentations/screens/createRoom_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => SplashScreen(),
   HomeScreen.routeName: (context) => HomeScreen(),
   LoginScreen.routeName: (context) => LoginScreen(),
   AddUserScreen.routeName: (context) => AddUserScreen(),
+  CreateRoomScreen.routeName: (context) => CreateRoomScreen(),
 };
