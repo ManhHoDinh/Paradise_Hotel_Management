@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paradise/presentations/screens/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -23,15 +24,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = false;
-  bool isVisibleFilter = false;
-  bool nameDecrease = false;
-  bool priceDecrease = false;
-  String? kindRoom;
-  String? valueSearch;
   int currentId = 0;
   int currentRoomId = 0;
-  String? dropdownValue;
-  final items = ['Family room', 'Master room', 'Couple room'];
+  late var listRoom;
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
@@ -362,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text('Something went wrong! ${snapshot.error}'),
                         );
                       } else if (snapshot.hasData) {
-                        final listRoom = snapshot.data!;
+                        listRoom = snapshot.data!;
                         return GridView.builder(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(

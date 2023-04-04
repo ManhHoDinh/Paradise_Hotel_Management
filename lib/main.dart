@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

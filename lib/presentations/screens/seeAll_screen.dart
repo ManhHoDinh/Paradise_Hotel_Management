@@ -56,9 +56,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
     List<RoomModel> newList = List.from(list);
 
     if (priceDecrease) {
-      list.sort((a, b) => b.cost!.compareTo(a.cost!));
+      list.sort((a, b) => b.price!.compareTo(a.price!));
     } else {
-      list.sort((a, b) => a.cost!.compareTo(b.cost!));
+      list.sort((a, b) => a.price!.compareTo(b.price!));
     }
 
     switch (kindRoom) {
@@ -363,7 +363,11 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                   crossAxisSpacing: 24,
                   childAspectRatio: 0.8,
                   children: loadListRoom(widget.listRoom)
-                      .map((e) => RoomItem(e.image!, e.name!, e.type!, e.cost!))
+                      .map((e) =>  RoomItem(
+                              e.PrimaryImage ?? AssetHelper.room1,
+                              e.name ?? '',
+                              e.type ?? '',
+                              e.price ?? 0),)
                       .toList()),
             )),
           ])),
