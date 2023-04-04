@@ -12,6 +12,7 @@ import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
 import '../../core/models/firebase_request.dart';
 import '../../core/models/room_model.dart';
+import '../widgets/filter_containter_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -22,7 +23,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = false;
+  bool isVisibleFilter = false;
+  bool nameDecrease = false;
+  bool priceDecrease = false;
+  String? kindRoom;
+  String? valueSearch;
   int currentId = 0;
+  int currentRoomId = 0;
+  String? dropdownValue;
+  final items = ['Family room', 'Master room', 'Couple room'];
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
@@ -176,52 +185,167 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 36),
+            // Container(
+            //   child: Container(
+            //     child: SizedBox(
+            //       height: 42,
+            //       width: double.infinity,
+            //       child: TextField(
+            //         onChanged: (value) => valueSearch = value,
+            //         decoration: InputDecoration(
+            //             contentPadding: const EdgeInsets.only(top: 4),
+            //             prefixIcon: InkWell(
+            //               customBorder: CircleBorder(),
+            //               onTap: () {},
+            //               child: Icon(
+            //                 FontAwesomeIcons.magnifyingGlass,
+            //                 size: 16,
+            //                 color: ColorPalette.greenText,
+            //               ),
+            //             ),
+            //             suffixIcon: InkWell(
+            //                 customBorder: CircleBorder(),
+            //                 onTap: () {
+            //                   setState(() {
+            //                     isVisibleFilter = !isVisibleFilter;
+            //                   });
+            //                 },
+            //                 child: Image.asset(AssetHelper.iconFilter)),
+            //             hintText: 'Search',
+            //             hintStyle: TextStyle(
+            //               fontSize: 14,
+            //               color: ColorPalette.grayText,
+            //             ),
+            //             border: OutlineInputBorder(
+            //               borderRadius: BorderRadius.circular(8),
+            //             ),
+            //             focusedBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                     color: ColorPalette.primaryColor, width: 2))),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 24),
+            // Container(
+            //     alignment: Alignment.centerLeft,
+            //     child: Visibility(
+            //         visible: isVisibleFilter,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             FilterContainerWidget(
+            //               name: 'name',
+            //               icon1: Icon(
+            //                 FontAwesomeIcons.arrowDown,
+            //                 size: 12,
+            //                 color: nameDecrease
+            //                     ? ColorPalette.primaryColor
+            //                     : ColorPalette.blackText,
+            //               ),
+            //               icon2: Icon(
+            //                 FontAwesomeIcons.arrowUp,
+            //                 size: 12,
+            //                 color: nameDecrease
+            //                     ? ColorPalette.blackText
+            //                     : ColorPalette.primaryColor,
+            //               ),
+            //               onTapIconDown: () {
+            //                 setState(() {
+            //                   nameDecrease = true;
+            //                 });
+            //               },
+            //               onTapIconUp: () {
+            //                 setState(() {
+            //                   nameDecrease = false;
+            //                 });
+            //               },
+            //             ),
+            //             FilterContainerWidget(
+            //               name: 'price',
+            //               icon1: Icon(
+            //                 FontAwesomeIcons.arrowDown,
+            //                 size: 12,
+            //                 color: priceDecrease
+            //                     ? ColorPalette.primaryColor
+            //                     : ColorPalette.blackText,
+            //               ),
+            //               icon2: Icon(
+            //                 FontAwesomeIcons.arrowUp,
+            //                 size: 12,
+            //                 color: priceDecrease
+            //                     ? ColorPalette.blackText
+            //                     : ColorPalette.primaryColor,
+            //               ),
+            //               onTapIconDown: () {
+            //                 setState(() {
+            //                   priceDecrease = true;
+            //                 });
+            //               },
+            //               onTapIconUp: () {
+            //                 setState(() {
+            //                   priceDecrease = false;
+            //                 });
+            //               },
+            //             ),
+            //             Container(
+            //               width: 100,
+            //               height: 28,
+            //               alignment: Alignment.center,
+            //               decoration: BoxDecoration(
+            //                   border: Border.all(color: ColorPalette.grayText),
+            //                   borderRadius:
+            //                       BorderRadius.circular(kMediumPadding)),
+            //               child: DropdownButtonHideUnderline(
+            //                 child: DropdownButton<String>(
+            //                     value: dropdownValue,
+            //                     items: items.map(buildMenuItem).toList(),
+            //                     icon: Icon(FontAwesomeIcons.caretDown),
+            //                     iconSize: 12,
+            //                     hint: Text(
+            //                       "Kind",
+            //                       style: TextStyles.defaultStyle.grayText,
+            //                     ),
+            //                     iconEnabledColor: ColorPalette.primaryColor,
+            //                     onChanged: (value) {
+            //                       setState(() {
+            //                         this.dropdownValue = value;
+            //                       });
+            //                     }),
+            //               ),
+            //             )
+            //             // FilterContainerWidget(
+            //             //   name: 'Kind',
+            //             //   icon1: Icon(
+            //             //     FontAwesomeIcons.caretDown,
+            //             //     size: 12,
+            //             //     color: ColorPalette.primaryColor,
+            //             //   ),
+            //             //   onTapIconDown: () {},
+
+            //             //   // icon2: Icon(
+            //             //   //   FontAwesomeIcons.arrowDown,
+            //             //   //   size: 12,
+            //             //   //   color: ColorPalette.blackText,
+            //             //   // ),
+            //             // )
+            //           ],
+            //         ))),
             Container(
-              child: Container(
-                child: SizedBox(
-                  height: 42,
-                  width: double.infinity,
-                  child: TextField(
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(top: 4),
-                        prefixIcon: InkWell(
-                          customBorder: CircleBorder(),
-                          onTap: () {},
-                          child: Icon(
-                            FontAwesomeIcons.magnifyingGlass,
-                            size: 16,
-                            color: ColorPalette.greenText,
-                          ),
-                        ),
-                        suffixIcon: InkWell(
-                            customBorder: CircleBorder(),
-                            onTap: () {},
-                            child: Image.asset(AssetHelper.iconFilter)),
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: ColorPalette.grayText,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorPalette.primaryColor, width: 2))),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.only(bottom: 10),
+              // padding: const EdgeInsets.only(bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Room',
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SeeAllScreen(listRoom: listRoom)));
+                      },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],
               ),

@@ -42,6 +42,10 @@ extension ExtendedTextStyle on TextStyle {
     return copyWith(color: ColorPalette.blackText, fontFamily: AppFonts.rubik);
   }
 
+  TextStyle get grayText {
+    return copyWith(color: ColorPalette.grayText, fontFamily: AppFonts.rubik);
+  }
+
   TextStyle get primaryTextColor {
     return copyWith(
         color: ColorPalette.primaryColor, fontFamily: AppFonts.rubik);
