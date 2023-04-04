@@ -4,6 +4,7 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/check_box.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
@@ -80,7 +81,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 Container(
                     margin:
                         const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child: ButtonDefault(label: 'Book Room', onTap: () {})),
+                    child: ButtonDefault(
+                        label: 'Book Room',
+                        onTap: () {
+                          Navigator.of(context).pushNamed(RentalForm.routeName);
+                        })),
                 Container(
                     margin:
                         const EdgeInsets.symmetric(vertical: kDefaultPadding),

@@ -123,8 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextButton(
                         child: Text(
                           'Register',
-                          style:
-                              TextStyles.h6.bold.setColor(ColorPalette.greenText),
+                          style: TextStyles.h6.bold
+                              .setColor(ColorPalette.greenText),
                         ),
                         onPressed: () {},
                       ),
@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-      onTap:() {
+      onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
     );

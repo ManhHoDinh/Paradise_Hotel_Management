@@ -60,7 +60,9 @@ class _RentalFormState extends State<RentalForm> {
                 isPressed = param;
               });
             },
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pop();
+            },
             child: Container(
               child: Icon(
                 FontAwesomeIcons.arrowLeft,
