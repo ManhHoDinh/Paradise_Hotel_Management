@@ -1,6 +1,6 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/UserViewer.dart';
 import 'package:paradise/presentations/screens/login_screen.dart';
@@ -12,7 +12,7 @@ Future main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  FireBaseDataBase.initializeDB();
   runApp(const MyApp());
 }
 
