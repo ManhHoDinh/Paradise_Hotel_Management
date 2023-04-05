@@ -42,6 +42,10 @@ extension ExtendedTextStyle on TextStyle {
     return copyWith(color: ColorPalette.blackText, fontFamily: AppFonts.rubik);
   }
 
+  TextStyle get grayText {
+    return copyWith(color: ColorPalette.grayText, fontFamily: AppFonts.rubik);
+  }
+
   TextStyle get primaryTextColor {
     return copyWith(
         color: ColorPalette.primaryColor, fontFamily: AppFonts.rubik);
@@ -129,6 +133,21 @@ class TextStyles {
     color: ColorPalette.backgroundColor,
     fontWeight: FontWeight.w400,
   );
+  static const TextStyle h7 = TextStyle(
+      fontSize: 24,
+      color: ColorPalette.blackText,
+      fontWeight: FontWeight.w400,
+      fontFamily: AppFonts.poppins);
+  static const TextStyle h8 = TextStyle(
+      fontSize: 24,
+      color: ColorPalette.backgroundColor,
+      fontWeight: FontWeight.w600,
+      fontFamily: AppFonts.poppins);
+  static const TextStyle h9 = TextStyle(
+      fontSize: 24,
+      color: ColorPalette.blackText,
+      fontWeight: FontWeight.w600,
+      fontFamily: AppFonts.inter);
 }
 
 // How to use?
@@ -137,4 +156,6 @@ class TextStyles {
 class AppFonts {
   static const String rubik = 'Rubik';
   static const String lexend = 'Lexend';
+  static const String poppins = 'Poppins';
+  static const String inter = 'Inter';
 }

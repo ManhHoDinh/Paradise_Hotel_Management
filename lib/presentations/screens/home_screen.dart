@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paradise/presentations/screens/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
+import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
@@ -8,7 +11,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../core/constants/color_palatte.dart';
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
+import '../../core/models/firebase_request.dart';
 import '../../core/models/room_model.dart';
+import '../widgets/filter_containter_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -20,33 +25,114 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = false;
   int currentId = 0;
+  int currentRoomId = 0;
+  late var listRoom;
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+
     Size size = MediaQuery.of(context).size;
     final double itemWidth = (size.width - 72) / 2;
 
     final double itemHeight = 180;
-    List<RoomModel> listRoom = [
-      RoomModel(AssetHelper.room1, 'Room 1', 'Family Room', 200000),
-      RoomModel(AssetHelper.room2, 'Room 2', 'Master Room', 170000),
-      RoomModel(AssetHelper.room3, 'Room 3', 'Couple Room', 150000),
-      RoomModel(AssetHelper.room4, 'Room 4', 'Couple Room', 150000),
-      RoomModel(AssetHelper.room5, 'Room 5', 'Family Room', 200000),
-      RoomModel(AssetHelper.room6, 'Room 6', 'Master Room', 170000),
-    ];
-
+    Stream<List<RoomModel>> readRooms() => FirebaseFirestore.instance
+        .collection('Rooms')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => RoomModel.fromJson(doc.data()))
+            .toList());
     return Scaffold(
+      key: _globalKey,
+      drawer: Drawer(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            child: Image.asset(AssetHelper.avatar),
+          ),
+          Container(
+              margin: EdgeInsets.only(
+                top: 30,
+                bottom: 10,
+              ),
+              child: Text(
+                'WHAT WOULD YOU DO?',
+                style: TextStyles.h5.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: ColorPalette.primaryColor),
+              )),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Hotel Information',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Room',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Guest',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Staff',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Service',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Report',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Receipt',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+        ]),
+      ),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ColorPalette.backgroundColor,
         leading: InkWell(
           customBorder: CircleBorder(),
-          onHighlightChanged: (param) {
-            setState(() {
-              isPressed = param;
-            });
+          onTap: () {
+            return _globalKey.currentState!.openDrawer();
           },
-          onTap: () {},
           child: Container(
             child: Icon(
               FontAwesomeIcons.bars,
@@ -94,52 +180,167 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 36),
+            // Container(
+            //   child: Container(
+            //     child: SizedBox(
+            //       height: 42,
+            //       width: double.infinity,
+            //       child: TextField(
+            //         onChanged: (value) => valueSearch = value,
+            //         decoration: InputDecoration(
+            //             contentPadding: const EdgeInsets.only(top: 4),
+            //             prefixIcon: InkWell(
+            //               customBorder: CircleBorder(),
+            //               onTap: () {},
+            //               child: Icon(
+            //                 FontAwesomeIcons.magnifyingGlass,
+            //                 size: 16,
+            //                 color: ColorPalette.greenText,
+            //               ),
+            //             ),
+            //             suffixIcon: InkWell(
+            //                 customBorder: CircleBorder(),
+            //                 onTap: () {
+            //                   setState(() {
+            //                     isVisibleFilter = !isVisibleFilter;
+            //                   });
+            //                 },
+            //                 child: Image.asset(AssetHelper.iconFilter)),
+            //             hintText: 'Search',
+            //             hintStyle: TextStyle(
+            //               fontSize: 14,
+            //               color: ColorPalette.grayText,
+            //             ),
+            //             border: OutlineInputBorder(
+            //               borderRadius: BorderRadius.circular(8),
+            //             ),
+            //             focusedBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                     color: ColorPalette.primaryColor, width: 2))),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 24),
+            // Container(
+            //     alignment: Alignment.centerLeft,
+            //     child: Visibility(
+            //         visible: isVisibleFilter,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             FilterContainerWidget(
+            //               name: 'name',
+            //               icon1: Icon(
+            //                 FontAwesomeIcons.arrowDown,
+            //                 size: 12,
+            //                 color: nameDecrease
+            //                     ? ColorPalette.primaryColor
+            //                     : ColorPalette.blackText,
+            //               ),
+            //               icon2: Icon(
+            //                 FontAwesomeIcons.arrowUp,
+            //                 size: 12,
+            //                 color: nameDecrease
+            //                     ? ColorPalette.blackText
+            //                     : ColorPalette.primaryColor,
+            //               ),
+            //               onTapIconDown: () {
+            //                 setState(() {
+            //                   nameDecrease = true;
+            //                 });
+            //               },
+            //               onTapIconUp: () {
+            //                 setState(() {
+            //                   nameDecrease = false;
+            //                 });
+            //               },
+            //             ),
+            //             FilterContainerWidget(
+            //               name: 'price',
+            //               icon1: Icon(
+            //                 FontAwesomeIcons.arrowDown,
+            //                 size: 12,
+            //                 color: priceDecrease
+            //                     ? ColorPalette.primaryColor
+            //                     : ColorPalette.blackText,
+            //               ),
+            //               icon2: Icon(
+            //                 FontAwesomeIcons.arrowUp,
+            //                 size: 12,
+            //                 color: priceDecrease
+            //                     ? ColorPalette.blackText
+            //                     : ColorPalette.primaryColor,
+            //               ),
+            //               onTapIconDown: () {
+            //                 setState(() {
+            //                   priceDecrease = true;
+            //                 });
+            //               },
+            //               onTapIconUp: () {
+            //                 setState(() {
+            //                   priceDecrease = false;
+            //                 });
+            //               },
+            //             ),
+            //             Container(
+            //               width: 100,
+            //               height: 28,
+            //               alignment: Alignment.center,
+            //               decoration: BoxDecoration(
+            //                   border: Border.all(color: ColorPalette.grayText),
+            //                   borderRadius:
+            //                       BorderRadius.circular(kMediumPadding)),
+            //               child: DropdownButtonHideUnderline(
+            //                 child: DropdownButton<String>(
+            //                     value: dropdownValue,
+            //                     items: items.map(buildMenuItem).toList(),
+            //                     icon: Icon(FontAwesomeIcons.caretDown),
+            //                     iconSize: 12,
+            //                     hint: Text(
+            //                       "Kind",
+            //                       style: TextStyles.defaultStyle.grayText,
+            //                     ),
+            //                     iconEnabledColor: ColorPalette.primaryColor,
+            //                     onChanged: (value) {
+            //                       setState(() {
+            //                         this.dropdownValue = value;
+            //                       });
+            //                     }),
+            //               ),
+            //             )
+            //             // FilterContainerWidget(
+            //             //   name: 'Kind',
+            //             //   icon1: Icon(
+            //             //     FontAwesomeIcons.caretDown,
+            //             //     size: 12,
+            //             //     color: ColorPalette.primaryColor,
+            //             //   ),
+            //             //   onTapIconDown: () {},
+
+            //             //   // icon2: Icon(
+            //             //   //   FontAwesomeIcons.arrowDown,
+            //             //   //   size: 12,
+            //             //   //   color: ColorPalette.blackText,
+            //             //   // ),
+            //             // )
+            //           ],
+            //         ))),
             Container(
-              child: Container(
-                child: SizedBox(
-                  height: 42,
-                  width: double.infinity,
-                  child: TextField(
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(top: 4),
-                        prefixIcon: InkWell(
-                          customBorder: CircleBorder(),
-                          onTap: () {},
-                          child: Icon(
-                            FontAwesomeIcons.magnifyingGlass,
-                            size: 16,
-                            color: ColorPalette.greenText,
-                          ),
-                        ),
-                        suffixIcon: InkWell(
-                            customBorder: CircleBorder(),
-                            onTap: () {},
-                            child: Image.asset(AssetHelper.iconFilter)),
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: ColorPalette.grayText,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorPalette.primaryColor, width: 2))),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.only(bottom: 10),
+              // padding: const EdgeInsets.only(bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Room',
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SeeAllScreen(listRoom: listRoom)));
+                      },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],
               ),
@@ -147,15 +348,50 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
               child: Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 24,
-                  crossAxisSpacing: 24,
-                  childAspectRatio: 0.8,
-                  children: listRoom
-                      .map((e) => RoomItem(e.image!, e.name!, e.type!, e.cost!))
-                      .toList(),
-                ),
+                child: StreamBuilder<List<RoomModel>>(
+                    stream: readRooms(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child:
+                              Text('Something went wrong! ${snapshot.error}'),
+                        );
+                      } else if (snapshot.hasData) {
+                        listRoom = snapshot.data!;
+                        return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 24,
+                            crossAxisSpacing: 24,
+                            // width / height: fixed for *all* items
+                            childAspectRatio: 0.8,
+                          ),
+                          // return a custom ItemCard
+                          itemBuilder: (context, i) => RoomItem(
+                              listRoom[i].PrimaryImage ?? AssetHelper.room1,
+                              listRoom[i].name ?? '',
+                              listRoom[i].type ?? '',
+                              listRoom[i].price ?? 0),
+                          itemCount: listRoom.length < 6 ? listRoom.length : 6,
+                        );
+                        // return GridView.count(
+                        //   crossAxisCount: 2,
+                        //   mainAxisSpacing: 24,
+                        //   crossAxisSpacing: 24,
+                        //   childAspectRatio: 0.8,
+
+                        //   children: listRoom.map((e) {
+                        //     return RoomItem(
+                        //         e.PrimaryImage ?? AssetHelper.avatar,
+                        //         e.name ?? '',
+                        //         e.type ?? '',
+                        //         e.price ?? 0);
+                        //   }).toList(),
+                        // );
+                      } else
+                        return Container();
+                    }),
               ),
             )
           ],
