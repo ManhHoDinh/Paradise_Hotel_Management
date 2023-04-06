@@ -60,22 +60,35 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
     } else {
       list.sort((a, b) => a.price!.compareTo(b.price!));
     }
+    switch (status) {
+      case "All":
+        newList = list;
+        break;
+      case "Booked":
+        newList = newList.where((room) => room.State! == 'Booked').toList();
+        break;
+      case "Available":
+        newList = newList.where((room) => room.State! == 'Available').toList();
+        break;
+      default:
+        newList = newList;
+    }
 
     switch (kindRoom) {
       case "All":
         newList = list;
         break;
       case "Family room":
-        newList = list.where((room) => room.type! == 'Family Room').toList();
+        newList = newList.where((room) => room.type! == 'Family Room').toList();
         break;
       case "Couple room":
-        newList = list.where((room) => room.type! == 'Couple Room').toList();
+        newList = newList.where((room) => room.type! == 'Couple Room').toList();
         break;
       case "Master room":
-        newList = list.where((room) => room.type! == 'Master Room').toList();
+        newList = newList.where((room) => room.type! == 'Master Room').toList();
         break;
       default:
-        newList = list;
+        newList = newList;
     }
     if (valueSearch != null) {
       newList = newList
@@ -261,6 +274,12 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                 items: statusItems
                                     .map((e) => DropdownMenuItem(
                                         value: e,
+                                        onTap: () {
+                                          setState(() {
+                                            status = e;
+                                            print(status);
+                                          });
+                                        },
                                         child: Text(
                                           e,
                                           style:
@@ -363,11 +382,22 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                   crossAxisSpacing: 24,
                   childAspectRatio: 0.8,
                   children: loadListRoom(widget.listRoom)
-                      .map((e) =>  RoomItem(
-                              e.PrimaryImage ?? AssetHelper.room1,
-                              e.name ?? '',
-                              e.type ?? '',
-                              e.price ?? 0),)
+                      .map(
+                        (e) => RoomItem(
+                            image: e.PrimaryImage ?? AssetHelper.room1,
+                            name: e.name ?? '',
+                            type: e.type ?? '',
+                            cost: e.price ?? 0,
+                            status: e.State ?? '')
+                        //  RoomItem(
+                        //         e.PrimaryImage ?? AssetHelper.room1,
+                        //         e.name ?? '',
+                        //         e.type ?? '',
+                        //         e.State?? '',
+
+                        //         e.price ?? 0)
+                        ,
+                      )
                       .toList()),
             )),
           ])),
