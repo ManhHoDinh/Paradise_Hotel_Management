@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = false;
   int currentId = 0;
   int currentRoomId = 0;
-  late var listRoom;
+  late List<RoomModel> listRoom;
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
@@ -369,10 +369,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // return a custom ItemCard
                           itemBuilder: (context, i) => RoomItem(
-                              listRoom[i].PrimaryImage ?? AssetHelper.room1,
-                              listRoom[i].name ?? '',
-                              listRoom[i].type ?? '',
-                              listRoom[i].price ?? 0),
+                              image: listRoom[i].PrimaryImage ?? '',
+                              name: listRoom[i].name ?? '',
+                              type: listRoom[i].type ?? '',
+                              cost: listRoom[i].price ?? 0,
+                              status: listRoom[i].State ?? ''),
+                          // RoomItem(
+
+                          //     listRoom[i].PrimaryImage ?? AssetHelper.room1,
+                          //     listRoom[i].name ?? '',
+                          //     listRoom[i].type ?? '',
+                          //     listRoom[i].
+                          //     listRoom[i].price ?? 0),
                           itemCount: listRoom.length < 6 ? listRoom.length : 6,
                         );
                         // return GridView.count(

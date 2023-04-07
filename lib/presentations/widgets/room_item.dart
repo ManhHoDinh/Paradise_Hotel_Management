@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
 import '../../core/helpers/assets_helper.dart';
