@@ -15,7 +15,7 @@ Widget RoomItem(String image, String name, String type, int cost) {
         border: Border.all(color: ColorPalette.grayText),
       ),
       child: Column(children: [
-        ImageHelper.loadFromAsset(
+        ImageHelper.loadFromNetwork(
           image,
           width: double.maxFinite,
           radius: BorderRadius.only(
