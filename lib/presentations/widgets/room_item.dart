@@ -6,7 +6,6 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
 
-
 class RoomItem extends StatefulWidget {
   final String image;
   final String name;
@@ -42,6 +41,8 @@ class _RoomItemState extends State<RoomItem> {
               ImageHelper.loadFromNetwork(
                 widget.image,
                 width: double.maxFinite,
+                height: 105,
+                fit: BoxFit.fitWidth,
                 radius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)),

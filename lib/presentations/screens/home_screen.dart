@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
@@ -35,12 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final double itemWidth = (size.width - 72) / 2;
 
     final double itemHeight = 180;
-    Stream<List<RoomModel>> readRooms() => FirebaseFirestore.instance
-        .collection('Rooms')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => RoomModel.fromJson(doc.data()))
-            .toList());
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
@@ -74,7 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ButtonWidget(
               label: 'Room',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),
@@ -349,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
               child: Expanded(
                 child: StreamBuilder<List<RoomModel>>(
-                    stream: readRooms(),
+                    stream: FireBaseDataBase.readRooms(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Center(

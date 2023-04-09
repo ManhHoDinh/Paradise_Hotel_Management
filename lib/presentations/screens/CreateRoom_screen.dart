@@ -1,9 +1,14 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/check_box.dart';
@@ -20,8 +25,19 @@ class CreateRoomScreen extends StatefulWidget {
 }
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
-  int currentId = 0, _value = 1;
+  int currentId = 0, _price = 150000, _value = 1;
   bool isPressed = false;
+  TextEditingController roomIdController = new TextEditingController();
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController typeController = new TextEditingController();
+  TextEditingController descriptionController = new TextEditingController();
+  String PrimaryImageUrl = '';
+  List<String> SubImageUrls = [];
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +139,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
               Container(
-                child: InputDefault(labelText: 'Type here'),
+                child: InputDefault(
+                  labelText: 'Type here',
+                  controller: roomIdController,
+                ),
                 margin: const EdgeInsets.symmetric(
                     horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
               ),
@@ -136,7 +155,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
               Container(
-                child: InputDefault(labelText: 'Type here'),
+                child: InputDefault(
+                  labelText: 'Type here',
+                  controller: nameController,
+                ),
                 margin: const EdgeInsets.symmetric(
                     horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
               ),
@@ -149,7 +171,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
               Container(
-                child: InputDefault(labelText: 'Type here'),
+                child: InputDefault(
+                    labelText: 'Type here', controller: typeController),
                 margin: const EdgeInsets.symmetric(
                     horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
               ),
@@ -176,6 +199,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                           groupValue: _value,
                           onChanged: (value) {
                             setState(() {
+                              _price = 150000;
                               _value = 1;
                             });
                           },
@@ -186,6 +210,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                           groupValue: _value,
                           onChanged: (value) {
                             setState(() {
+                              _price = 170000;
                               _value = 2;
                             });
                           },
@@ -196,6 +221,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                           groupValue: _value,
                           onChanged: (value) {
                             setState(() {
+                              _price = 200000;
                               _value = 3;
                             });
                           },
@@ -214,7 +240,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
               Container(
-                child: InputDefault(labelText: 'Type here'),
+                child: InputDefault(
+                  labelText: 'Type here',
+                  controller: descriptionController,
+                ),
                 margin: const EdgeInsets.symmetric(
                     horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
               ),
@@ -230,10 +259,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 // padding: const EdgeInsets.only(top: 200),
                 margin: const EdgeInsets.symmetric(
                     horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-                // child: UploadButton(
-                //   label: 'Upload here',
-                //   icon: AssetHelper.icoUpload,
-                // ),
+                child: UploadButton(
+                  label: 'Upload here',
+                  icon: AssetHelper.icoUpload,
+                ),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(
@@ -242,61 +271,123 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 child: ButtonDefault(
                   label: 'Create',
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return DialogOverlay(
-                            isSuccess: true,
-                          );
-                        });
+                    createRoom(
+                        PrimaryImagePath: UploadButton.PrimaryImagePath,
+                        name: nameController.text,
+                        type: typeController.text,
+                        State: 'Available',
+                        price: _price,
+                        RoomID: roomIdController.text);
                   },
                 ),
               ),
             ],
           ),
         ),
-        // bottomNavigationBar: SalomonBottomBar(
-        //   currentIndex: currentId,
-        //   onTap: (id) {
-        //     setState(() {
-        //       currentId = id;
-        //     });
-        //   },
-        //   items: [
-        //     SalomonBottomBarItem(
-        //       icon: Icon(
-        //         FontAwesomeIcons.house,
-        //         size: 20,
-        //       ),
-        //       title: Text('Home')
-        //     ),
-        //     SalomonBottomBarItem(
-        //       icon: Icon(
-        //         FontAwesomeIcons.gear,
-        //         size: 20,
-        //       ),
-        //       title: Text('Setting')
-        //     ),
-        //     SalomonBottomBarItem(
-        //       icon: Icon(
-        //         FontAwesomeIcons.bell,
-        //         size: 20,
-        //       ),
-        //       title: Text('Notification')
-        //     ),
-        //     SalomonBottomBarItem(
-        //       icon: Icon(
-        //         FontAwesomeIcons.user,
-        //         size: 20,
-        //       ),
-        //       title: Text('Account')
-        //     ),
-        //   ]
-        // ),
       ),
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
     );
   }
+
+  void createRoom(
+      {required String PrimaryImagePath,
+      required String type,
+      required int price,
+      required String name,
+      required String State,
+      required String RoomID}) async {
+    PrimaryImageUrl = '';
+    SubImageUrls.clear();
+
+    final docUser = FirebaseFirestore.instance.collection('Rooms').doc(RoomID);
+    bool existId = await checkIfDocExists(RoomID);
+    if (existId) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+            );
+          });
+    } else {
+      await UploadImages(
+          PrimaryImagePath: UploadButton.PrimaryImagePath,
+          SubImagePaths: UploadButton.SubImagePath);
+      print("----------------------" + SubImageUrls.length.toString());
+      RoomModel _room = await RoomModel(
+          roomID: roomIdController.text,
+          PrimaryImage: PrimaryImageUrl,
+          type: type,
+          price: price,
+          name: name,
+          State: State,
+          SubImages: SubImageUrls);
+      final json = _room.toJson();
+      await docUser.set(json);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: true,
+            );
+          });
+      setState(() {
+        roomIdController.text = '';
+        nameController.text = '';
+        descriptionController.text = '';
+        typeController.text = '';
+        _value = 1;
+        price = 150000;
+        UploadButton.ResetUploadButton();
+      });
+    }
+  }
+
+  UploadImages(
+      {required String PrimaryImagePath,
+      required List<String> SubImagePaths}) async {
+    await UploadImage(
+        imagePath: PrimaryImagePath,
+        name: 'PrimaryImage.png',
+        isPrimaryImage: true);
+    for (int i = 0; i < SubImagePaths.length; i++)
+      await UploadImage(
+          imagePath: SubImagePaths[i],
+          name: 'SubImage' + '${i}' + '.png',
+          isPrimaryImage: false);
+  }
+
+  UploadImage(
+      {required String imagePath,
+      required String name,
+      required isPrimaryImage}) async {
+    var imageFile = File(imagePath);
+    Reference ref =
+        FirebaseStorage.instance.ref(roomIdController.text).child(name);
+    await ref.putFile(imageFile);
+    await ref.getDownloadURL().then((value) {
+      print(value);
+      if (isPrimaryImage)
+        PrimaryImageUrl = value.toString();
+      else
+        SubImageUrls.add(value.toString());
+    });
+  }
+}
+
+Future<bool> checkIfDocExists(String docId) async {
+  bool result = false;
+  await FirebaseFirestore.instance
+      .collection('Rooms')
+      .doc(docId)
+      .get()
+      .then((DocumentSnapshot documentSnapshot) {
+    print('-----before' + result.toString());
+    result = documentSnapshot.exists;
+    print('set-----' + result.toString());
+  });
+  print('Return' + result.toString());
+  return result;
 }

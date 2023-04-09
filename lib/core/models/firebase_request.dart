@@ -5,7 +5,6 @@ import 'package:paradise/firebase_options.dart';
 
 class FireBaseDataBase {
   static CollectionReference? _referenceRooms;
-  static Stream<QuerySnapshot>? _streamRooms;
   static Stream<List<RoomModel>> readRooms() => FirebaseFirestore.instance
       .collection('Rooms')
       .snapshots()
@@ -15,6 +14,5 @@ class FireBaseDataBase {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
     _referenceRooms = await FirebaseFirestore.instance.collection('Rooms');
-    _streamRooms = await _referenceRooms!.snapshots();
   }
 }
