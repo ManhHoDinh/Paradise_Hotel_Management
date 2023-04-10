@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
@@ -33,6 +34,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   TextEditingController descriptionController = new TextEditingController();
   String PrimaryImageUrl = '';
   List<String> SubImageUrls = [];
+  bool isLoading = false;
   @override
   void setState(VoidCallback fn) {
     // TODO: implement setState
@@ -115,175 +117,187 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: kDefaultPadding * 2),
-                child: Text(
-                  'CREATE NEW ROOM',
-                  style: TextStyles.h4.copyWith(
-                      color: ColorPalette.primaryColor,
-                      fontWeight: FontWeight.bold),
+        body: isLoading
+            ? Center(
+                child: LoadingAnimationWidget.discreteCircle(
+                  color: ColorPalette.primaryColor,
+                  size: 100,
                 ),
-                alignment: Alignment.center,
-              ),
-              Container(
-                child: Text(
-                  'Room ID',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                child: InputDefault(
-                  labelText: 'Type here',
-                  controller: roomIdController,
-                ),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-              ),
-              Container(
-                child: Text(
-                  'Name of room',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                child: InputDefault(
-                  labelText: 'Type here',
-                  controller: nameController,
-                ),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-              ),
-              Container(
-                child: Text(
-                  'Type of room',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                child: InputDefault(
-                    labelText: 'Type here', controller: typeController),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-              ),
-              Container(
-                child: Text(
-                  'Price',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              StatefulBuilder(
-                builder: (context, setState) {
-                  return Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: kMaxPadding * 1.5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CheckBoxWidget(
-                          label: '150.000',
-                          value: 1,
-                          groupValue: _value,
-                          onChanged: (value) {
-                            setState(() {
-                              _price = 150000;
-                              _value = 1;
-                            });
-                          },
-                        ),
-                        CheckBoxWidget(
-                          label: '170.000',
-                          value: 2,
-                          groupValue: _value,
-                          onChanged: (value) {
-                            setState(() {
-                              _price = 170000;
-                              _value = 2;
-                            });
-                          },
-                        ),
-                        CheckBoxWidget(
-                          label: '200.000',
-                          value: 3,
-                          groupValue: _value,
-                          onChanged: (value) {
-                            setState(() {
-                              _price = 200000;
-                              _value = 3;
-                            });
-                          },
-                        ),
-                      ],
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: kDefaultPadding * 2),
+                      child: Text(
+                        'CREATE NEW ROOM',
+                        style: TextStyles.h4.copyWith(
+                            color: ColorPalette.primaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      alignment: Alignment.center,
                     ),
-                  );
-                },
-              ),
-              Container(
-                child: Text(
-                  'Note',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
+                    Container(
+                      child: Text(
+                        'Room ID',
+                        style: TextStyles.h6
+                            .copyWith(color: ColorPalette.darkBlueText),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    Container(
+                      child: InputDefault(
+                        labelText: 'Type here',
+                        controller: roomIdController,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: kMaxPadding * 1.5,
+                          vertical: kItemPadding),
+                    ),
+                    Container(
+                      child: Text(
+                        'Name of room',
+                        style: TextStyles.h6
+                            .copyWith(color: ColorPalette.darkBlueText),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    Container(
+                      child: InputDefault(
+                        labelText: 'Type here',
+                        controller: nameController,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: kMaxPadding * 1.5,
+                          vertical: kItemPadding),
+                    ),
+                    Container(
+                      child: Text(
+                        'Type of room',
+                        style: TextStyles.h6
+                            .copyWith(color: ColorPalette.darkBlueText),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    Container(
+                      child: InputDefault(
+                          labelText: 'Type here', controller: typeController),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: kMaxPadding * 1.5,
+                          vertical: kItemPadding),
+                    ),
+                    Container(
+                      child: Text(
+                        'Price',
+                        style: TextStyles.h6
+                            .copyWith(color: ColorPalette.darkBlueText),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        return Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: kMaxPadding * 1.5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CheckBoxWidget(
+                                label: '150.000',
+                                value: 1,
+                                groupValue: _value,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _price = 150000;
+                                    _value = 1;
+                                  });
+                                },
+                              ),
+                              CheckBoxWidget(
+                                label: '170.000',
+                                value: 2,
+                                groupValue: _value,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _price = 170000;
+                                    _value = 2;
+                                  });
+                                },
+                              ),
+                              CheckBoxWidget(
+                                label: '200.000',
+                                value: 3,
+                                groupValue: _value,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _price = 200000;
+                                    _value = 3;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    Container(
+                      child: Text(
+                        'Note',
+                        style: TextStyles.h6
+                            .copyWith(color: ColorPalette.darkBlueText),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    Container(
+                      child: InputDefault(
+                        labelText: 'Type here',
+                        controller: descriptionController,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: kMaxPadding * 1.5,
+                          vertical: kItemPadding),
+                    ),
+                    Container(
+                      child: Text(
+                        'Pictures',
+                        style: TextStyles.h6
+                            .copyWith(color: ColorPalette.darkBlueText),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    Container(
+                      // padding: const EdgeInsets.only(top: 200),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: kMaxPadding * 1.5,
+                          vertical: kItemPadding),
+                      child: UploadButton(
+                        label: 'Upload here',
+                        icon: AssetHelper.icoUpload,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: kMediumPadding * 1.5,
+                          horizontal: kMaxPadding * 3),
+                      child: ButtonDefault(
+                        label: 'Create',
+                        onTap: () {
+                          createRoom(
+                              PrimaryImagePath: UploadButton.PrimaryImagePath,
+                              name: nameController.text,
+                              type: typeController.text,
+                              State: 'Available',
+                              price: _price,
+                              RoomID: roomIdController.text);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
-              Container(
-                child: InputDefault(
-                  labelText: 'Type here',
-                  controller: descriptionController,
-                ),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-              ),
-              Container(
-                child: Text(
-                  'Pictures',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                // padding: const EdgeInsets.only(top: 200),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-                child: UploadButton(
-                  label: 'Upload here',
-                  icon: AssetHelper.icoUpload,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: kMediumPadding * 1.5,
-                    horizontal: kMaxPadding * 3),
-                child: ButtonDefault(
-                  label: 'Create',
-                  onTap: () {
-                    createRoom(
-                        PrimaryImagePath: UploadButton.PrimaryImagePath,
-                        name: nameController.text,
-                        type: typeController.text,
-                        State: 'Available',
-                        price: _price,
-                        RoomID: roomIdController.text);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -298,6 +312,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
       required String name,
       required String State,
       required String RoomID}) async {
+    setState(() {
+      isLoading = true;
+    });
     PrimaryImageUrl = '';
     SubImageUrls.clear();
 
@@ -323,7 +340,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           price: price,
           name: name,
           State: State,
-          SubImages: SubImageUrls);
+          SubImages: SubImageUrls,
+          Description: descriptionController.text);
       final json = _room.toJson();
       await docUser.set(json);
       showDialog(
@@ -333,6 +351,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               isSuccess: true,
             );
           });
+      setState(() {
+        isLoading = false;
+      });
       setState(() {
         roomIdController.text = '';
         nameController.text = '';
