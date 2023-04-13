@@ -24,7 +24,7 @@ class DialogOverlay extends StatelessWidget {
       shadowColor: Colors.white.withOpacity(0),
       content: Text(isSuccess
           ? task + ' Successed!'
-          : task + 'Failed!\nRoom ID is Exist',
+          : task + ' Failed!\nRoom ID is Exist',
         textAlign: TextAlign.center,
         style: TextStyles.h5.copyWith(
           color: Colors.white,

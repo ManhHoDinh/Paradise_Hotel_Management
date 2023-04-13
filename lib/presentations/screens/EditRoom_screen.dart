@@ -220,7 +220,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                         builder: (context) {
                           return DialogOverlay(
                             task: 'Edit',
-                            isSuccess: true,
+                            isSuccess: false,
                           );
                         });
                   },
