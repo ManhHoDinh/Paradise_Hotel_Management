@@ -47,6 +47,7 @@ dependencies:
   keyboard_dismisser: ^3.0.0
   image_picker: ^0.8.7+1
   auto_size_text: ^3.0.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

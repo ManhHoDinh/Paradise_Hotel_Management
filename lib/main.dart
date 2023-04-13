@@ -3,6 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
+import 'package:paradise/presentations/screens/EditRoom_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: EditRoomScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

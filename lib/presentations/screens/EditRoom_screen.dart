@@ -11,17 +11,17 @@ import 'package:paradise/presentations/widgets/dialog.dart';
 import 'package:paradise/presentations/widgets/input_default.dart';
 import 'package:paradise/presentations/widgets/upload_button.dart';
 
-class CreateRoomScreen extends StatefulWidget {
-  static String routeName = 'CreateRoom_screen';
-  const CreateRoomScreen({super.key});
+class EditRoomScreen extends StatefulWidget {
+  static String routeName = 'EditRoom_screen';
+  const EditRoomScreen({super.key});
 
   @override
-  State<CreateRoomScreen> createState() => _CreateRoomScreenState();
+  State<EditRoomScreen> createState() => _EditRoomScreenState();
 }
 
-class _CreateRoomScreenState extends State<CreateRoomScreen> {
-  int currentId = 0, _value = 1;
-  bool isPressed = false;
+class _EditRoomScreenState extends State<EditRoomScreen> {
+  int _value = 1;
+  String roomID = 'P001';
 
   @override
   Widget build(BuildContext context) {
@@ -58,47 +58,46 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 ],
               ),
             ),
-            alignment: Alignment.center,
           ),
           toolbarHeight: kToolbarHeight * 1.5,
         ),
-        endDrawer: Drawer(
-          child: Container(
-            margin:
-                const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
-                  child: Text(
-                    'ROOM OPTIONS',
-                    style: TextStyles.h2.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: ColorPalette.primaryColor),
-                  ),
-                ),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child: ButtonDefault(
-                        label: 'Book Room',
-                        onTap: () {
-                          Navigator.of(context).pushNamed(RentalForm.routeName);
-                        })),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child:
-                        ButtonDefault(label: 'Create New Room', onTap: () {})),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child: ButtonDefault(label: 'Edit Room', onTap: () {})),
-              ],
-            ),
-          ),
-        ),
+        // endDrawer: Drawer(
+        //   child: Container(
+        //     margin:
+        //         const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Container(
+        //           margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
+        //           child: Text(
+        //             'ROOM OPTIONS',
+        //             style: TextStyles.h2.copyWith(
+        //                 fontWeight: FontWeight.bold,
+        //                 color: ColorPalette.primaryColor),
+        //           ),
+        //         ),
+        //         Container(
+        //             margin:
+        //                 const EdgeInsets.symmetric(vertical: kDefaultPadding),
+        //             child: ButtonDefault(
+        //                 label: 'Book Room',
+        //                 onTap: () {
+        //                   Navigator.of(context).pushNamed(RentalForm.routeName);
+        //                 })),
+        //         Container(
+        //             margin:
+        //                 const EdgeInsets.symmetric(vertical: kDefaultPadding),
+        //             child:
+        //                 ButtonDefault(label: 'Create New Room', onTap: () {})),
+        //         Container(
+        //             margin:
+        //                 const EdgeInsets.symmetric(vertical: kDefaultPadding),
+        //             child: ButtonDefault(label: 'Edit Room', onTap: () {})),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,38 +106,12 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 margin:
                     const EdgeInsets.symmetric(vertical: kDefaultPadding * 2),
                 child: Text(
-                  'CREATE NEW ROOM',
+                  'EDIT ' + roomID,
                   style: TextStyles.h4.copyWith(
                       color: ColorPalette.primaryColor,
                       fontWeight: FontWeight.bold),
                 ),
                 alignment: Alignment.center,
-              ),
-              Container(
-                child: Text(
-                  'Room ID',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                child: InputDefault(labelText: 'Type here'),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-              ),
-              Container(
-                child: Text(
-                  'Name of room',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                child: InputDefault(labelText: 'Type here'),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
               ),
               Container(
                 child: Text(
@@ -230,23 +203,23 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 // padding: const EdgeInsets.only(top: 200),
                 margin: const EdgeInsets.symmetric(
                     horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-                // child: UploadButton(
-                //   label: 'Upload here',
-                //   icon: AssetHelper.icoUpload,
-                // ),
+                child: UploadButton(
+                  label: 'Upload here',
+                  icon: AssetHelper.icoUpload,
+                ),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(
                     vertical: kMediumPadding * 1.5,
                     horizontal: kMaxPadding * 3),
                 child: ButtonDefault(
-                  label: 'Create',
+                  label: 'Save',
                   onTap: () {
                     showDialog(
                         context: context,
                         builder: (context) {
                           return DialogOverlay(
-                            task: 'Create',
+                            task: 'Edit',
                             isSuccess: true,
                           );
                         });
