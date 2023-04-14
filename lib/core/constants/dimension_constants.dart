@@ -10,4 +10,4 @@ const double kTopPadding = 8.0; // default top padding
 
 const double kDefaultIconSize = 18;
 
-const BorderRadius kDefaultBorderRadius = BorderRadius.all(Radius.circular(8));
+const BorderRadius kDefaultBorderRadius = BorderRadius.all(Radius.circular(15));
