@@ -33,4 +33,5 @@ class AssetHelper {
   static const String room4 = imgAssets + 'room4.png';
   static const String room5 = imgAssets + 'room5.png';
   static const String room6 = imgAssets + 'room6.png';
+  static const String checked = imgAssets + 'checked.png';
 }

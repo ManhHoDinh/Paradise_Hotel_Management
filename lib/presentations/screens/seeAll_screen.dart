@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -6,21 +7,23 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
+import '../widgets/button_default.dart';
 
 class SeeAllScreen extends StatefulWidget {
-  final List<RoomModel> listRoom;
-  const SeeAllScreen({super.key, required this.listRoom});
+  const SeeAllScreen({super.key});
 
   @override
   State<SeeAllScreen> createState() => _SeeAllScreenState();
 }
 
 class _SeeAllScreenState extends State<SeeAllScreen> {
+  late List<RoomModel> listRoom;
   bool isVisibleFilter = false;
   bool priceDecrease = false;
   String? kindRoom;
@@ -76,7 +79,20 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
 
     switch (kindRoom) {
       case "All":
-        newList = list;
+        switch (status) {
+          case "All":
+            newList = list;
+            break;
+          case "Booked":
+            newList = newList.where((room) => room.State! == 'Booked').toList();
+            break;
+          case "Available":
+            newList =
+                newList.where((room) => room.State! == 'Available').toList();
+            break;
+          default:
+            newList = newList;
+        }
         break;
       case "Family room":
         newList = newList.where((room) => room.type! == 'Family Room').toList();
@@ -101,50 +117,77 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Stream<List<RoomModel>> readRooms() => FirebaseFirestore.instance
+        .collection('Rooms')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => RoomModel.fromJson(doc.data()))
+            .toList());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: ColorPalette.backgroundColor,
-        leading: InkWell(
-          customBorder: CircleBorder(),
-          onTap: () {},
-          child: Container(
-            child: Icon(
-              FontAwesomeIcons.bars,
-              color: ColorPalette.primaryColor,
+        backgroundColor: ColorPalette.primaryColor,
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
+            customBorder: CircleBorder(),
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              child: Icon(FontAwesomeIcons.arrowLeft),
             ),
           ),
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 100),
-          child: Container(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: const [
-                        Text('WELCOME',
-                            style: TextStyle(
-                                fontSize: 10, color: ColorPalette.grayText)),
-                        Text(
-                          'Vinpearl Hotel',
-                          style: TextStyle(
-                              fontSize: 16, color: ColorPalette.primaryColor),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 24),
-                    InkWell(
-                      onTap: () {},
-                      child: ImageHelper.loadFromAsset(AssetHelper.avatar,
-                          height: 40),
-                    )
-                  ],
+        title: Container(
+          child: Text(
+            'ROOMS',
+            style: TextStyles.slo.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
                 )
               ],
             ),
+          ),
+          alignment: Alignment.center,
+        ),
+        toolbarHeight: kToolbarHeight * 1.5,
+      ),
+      endDrawer: Drawer(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
+                child: Text(
+                  'ROOM OPTIONS',
+                  style: TextStyles.h2.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: ColorPalette.primaryColor),
+                ),
+              ),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+                  child: ButtonDefault(
+                      label: 'Book Room',
+                      onTap: () {
+                        Navigator.of(context).pushNamed(RentalForm.routeName);
+                      })),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+                  child: ButtonDefault(label: 'Create New Room', onTap: () {})),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+                  child: ButtonDefault(label: 'Edit Room', onTap: () {})),
+            ],
           ),
         ),
       ),
@@ -208,7 +251,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FilterContainerWidget(
-                          name: 'price',
+                          name: 'Price',
                           icon1: Icon(
                             FontAwesomeIcons.arrowDown,
                             size: 12,
@@ -346,23 +389,6 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
               padding: const EdgeInsets.only(bottom: kMinPadding),
               alignment: Alignment.centerLeft,
               child: Row(children: [
-                Material(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    customBorder: CircleBorder(),
-                    child: Container(
-                      width: 26,
-                      height: 26,
-                      child: Icon(
-                        FontAwesomeIcons.arrowLeft,
-                        size: 18,
-                        color: ColorPalette.primaryColor,
-                      ),
-                    ),
-                  ),
-                ),
                 SizedBox(
                   width: 4,
                 ),
@@ -374,32 +400,69 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
             ),
             Expanded(
                 child: Container(
-              //padding: const EdgeInsets.only(bottom: kMediumPadding),
-              child: GridView.count(
-                  padding: const EdgeInsets.only(bottom: kMediumPadding),
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 24,
-                  crossAxisSpacing: 24,
-                  childAspectRatio: 0.8,
-                  children: loadListRoom(widget.listRoom)
-                      .map(
-                        (e) => RoomItem(
-                            image: e.PrimaryImage ?? AssetHelper.room1,
-                            name: e.name ?? '',
-                            type: e.type ?? '',
-                            cost: e.price ?? 0,
-                            status: e.State ?? '')
-                        //  RoomItem(
-                        //         e.PrimaryImage ?? AssetHelper.room1,
-                        //         e.name ?? '',
-                        //         e.type ?? '',
-                        //         e.State?? '',
+                    //padding: const EdgeInsets.only(bottom: kMediumPadding),
+                    child: StreamBuilder<List<RoomModel>>(
+                        stream: readRooms(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(
+                                  'Something went wrong! ${snapshot.error}'),
+                            );
+                          } else if (snapshot.hasData) {
+                            listRoom = snapshot.data!;
+                            return GridView.builder(
+                              padding:
+                                  const EdgeInsets.only(bottom: kMediumPadding),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 24,
+                                crossAxisSpacing: 24,
+                                // width / height: fixed for *all* items
+                                childAspectRatio: 0.8,
+                              ),
+                              // return a custom ItemCard
+                              itemBuilder: (context, i) => RoomItem(
+                                  image: listRoom[i].PrimaryImage ?? '',
+                                  name: listRoom[i].name ?? '',
+                                  type: listRoom[i].type ?? '',
+                                  cost: listRoom[i].price ?? 0,
+                                  status: listRoom[i].State ?? ''),
 
-                        //         e.price ?? 0)
-                        ,
-                      )
-                      .toList()),
-            )),
+                              itemCount: listRoom.length,
+                            );
+                          } else
+                            return Container();
+                        })
+                    //  GridView.count(
+                    //     padding: const EdgeInsets.only(bottom: kMediumPadding),
+                    //     crossAxisCount: 2,
+                    //     mainAxisSpacing: 24,
+                    //     crossAxisSpacing: 24,
+                    //     childAspectRatio: 0.8,
+                    //     children: loadListRoom(widget.listRoom)
+                    //         .map(
+                    //           (e) => InkWell(
+                    //             onTap: () {},
+                    //             child: RoomItem(
+                    //                 image: e.PrimaryImage ?? AssetHelper.room1,
+                    //                 name: e.name ?? '',
+                    //                 type: e.type ?? '',
+                    //                 cost: e.price ?? 0,
+                    //                 status: e.State ?? ''),
+                    //           )
+                    //           //  RoomItem(
+                    //           //         e.PrimaryImage ?? AssetHelper.room1,
+                    //           //         e.name ?? '',
+                    //           //         e.type ?? '',
+                    //           //         e.State?? '',
+
+                    //           //         e.price ?? 0)
+                    //           ,
+                    //         )
+                    //         .toList()),
+                    )),
           ])),
     );
   }

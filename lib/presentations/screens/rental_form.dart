@@ -1,13 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/firebase_request.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 enum Sex { male, female }
+
+String? gender = 'Male';
 
 class RentalForm extends StatefulWidget {
   static final String routeName = 'rental_form';
@@ -27,6 +32,11 @@ class _RentalFormState extends State<RentalForm> {
   DateTime? _rangeEnd;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   Sex? _GT = Sex.male;
+  late TextEditingController _RoomIDController;
+  late TextEditingController _GuestNameController;
+  late TextEditingController _GuestIDController;
+  late TextEditingController _PhoneNumberController;
+  late TextEditingController _NoteController;
 
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -44,6 +54,16 @@ class _RentalFormState extends State<RentalForm> {
     start: DateTime.now(),
     end: DateTime.now(),
   );
+  @override
+  void initState() {
+    super.initState();
+    _RoomIDController = TextEditingController();
+    _GuestNameController = TextEditingController();
+    _GuestIDController = TextEditingController();
+    _PhoneNumberController = TextEditingController();
+    _NoteController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -635,6 +655,7 @@ class _RentalFormState extends State<RentalForm> {
                           height: 42,
                           width: double.infinity,
                           child: TextField(
+                            controller: _RoomIDController,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                                 contentPadding:
@@ -675,6 +696,7 @@ class _RentalFormState extends State<RentalForm> {
                           height: 42,
                           width: double.infinity,
                           child: TextField(
+                            controller: _GuestNameController,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                                 contentPadding:
@@ -715,15 +737,18 @@ class _RentalFormState extends State<RentalForm> {
                           Container(
                             width: size.width / 2 - 60,
                             child: ListTile(
-                              title: const Text('Male'),
-                              leading: Radio(
+                              title: const Text(
+                                'Male',
+                                style: TextStyles.defaultStyle,
+                              ),
+                              leading: Radio<String>(
                                 fillColor: MaterialStateColor.resolveWith(
                                     (states) => getColor(states)),
-                                value: Sex.male,
-                                groupValue: _GT,
-                                onChanged: (value) {
+                                value: "Male",
+                                groupValue: gender,
+                                onChanged: (String? value) {
                                   setState(() {
-                                    _GT = value;
+                                    gender = value;
                                   });
                                 },
                               ),
@@ -732,15 +757,18 @@ class _RentalFormState extends State<RentalForm> {
                           Container(
                             width: size.width / 2 - 36,
                             child: ListTile(
-                              title: const Text('Female'),
-                              leading: Radio(
+                              title: const Text(
+                                'Female',
+                                style: TextStyles.defaultStyle,
+                              ),
+                              leading: Radio<String>(
                                 fillColor: MaterialStateColor.resolveWith(
                                     (states) => getColor(states)),
-                                value: Sex.female,
-                                groupValue: _GT,
-                                onChanged: (value) {
+                                value: "Female",
+                                groupValue: gender,
+                                onChanged: (String? value) {
                                   setState(() {
-                                    _GT = value;
+                                    gender = value;
                                   });
                                 },
                               ),
@@ -767,6 +795,7 @@ class _RentalFormState extends State<RentalForm> {
                           height: 42,
                           width: double.infinity,
                           child: TextField(
+                            controller: _GuestIDController,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                                 contentPadding:
@@ -807,6 +836,7 @@ class _RentalFormState extends State<RentalForm> {
                           height: 42,
                           width: double.infinity,
                           child: TextField(
+                            controller: _PhoneNumberController,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                                 contentPadding:
@@ -847,6 +877,7 @@ class _RentalFormState extends State<RentalForm> {
                           height: 42,
                           width: double.infinity,
                           child: TextField(
+                            controller: _NoteController,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                                 contentPadding:
@@ -1010,21 +1041,78 @@ class _RentalFormState extends State<RentalForm> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: size.width / 3,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: ColorPalette.primaryColor,
-                          borderRadius: BorderRadius.circular(20)),
-                      alignment: Alignment.center,
+                    Material(
+                      color: ColorPalette.primaryColor,
+                      borderRadius: BorderRadius.circular(20),
                       child: InkWell(
-                        onTap: () {},
-                        child: Text(
-                          'Create',
-                          style: TextStyles.h8.copyWith(
-                              color: ColorPalette.backgroundColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
+                        borderRadius: BorderRadius.circular(20),
+                        splashColor: Colors.black38,
+                        onTap: () {
+                          Map<String, String> inForUser = {
+                            'RoomID': '${_RoomIDController.text}',
+                            'GuestName': '${_GuestNameController.text}',
+                            'GuestID': '${_GuestIDController.text}',
+                            'PhoneNumber': '${_PhoneNumberController.text}',
+                            'Note': '${_NoteController.text}',
+                            'Sex': '${gender}',
+                            'DateRegister':
+                                '${_soNgay > 1 ? "${_rangeStart} - ${_rangeEnd}" : "${_rangeStart}"}'
+                          };
+
+                          // FirebaseFirestore.instance
+                          //     .collection('Users')
+                          //     .add(inForUser);
+                          // showDialog(
+                          //     //barrierColor: Colors.transparent,
+                          //     context: context,
+                          //     builder: (context) {
+                          //       Future.delayed(Duration(seconds: 2), () {
+                          //         Navigator.of(context).pop(true);
+                          //       });
+                          //       return AlertDialog(
+                          //           backgroundColor: Colors.transparent,
+                          //           elevation: 0,
+                          //           title: Column(
+                          //             children: [
+                          //               Image.asset(AssetHelper.checked),
+                          //               Text(
+                          //                 'Create successful!',
+                          //                 style: TextStyles.defaultStyle
+                          //                     .copyWith(
+                          //                         fontSize: 20,
+                          //                         fontWeight: FontWeight.bold,
+                          //                         color: Colors.white),
+                          //               )
+                          //             ],
+                          //           ));
+                          //     });
+                          CollectionReference roomCollection =
+                              FirebaseFirestore.instance.collection('Rooms');
+
+                          FirebaseFirestore.instance
+                              .collection('Rooms')
+                              .where("RoomID",
+                                  isEqualTo: "${_RoomIDController.text}")
+                              .get()
+                              .then((value) {
+                            DocumentReference document =
+                                roomCollection.doc(value.docs[0].id);
+                            //  document.update({"State": "Booked"});
+
+                            print(value.docs[0]["name"]);
+                          });
+                        },
+                        child: Container(
+                          width: size.width / 3,
+                          height: 40,
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Create',
+                            style: TextStyles.h8.copyWith(
+                                color: ColorPalette.backgroundColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                     ),
