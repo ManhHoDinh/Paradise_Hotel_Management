@@ -394,12 +394,8 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                     children: loadListRoom(widget.listRoom)
                         .map(
                           (e) => RoomItem(
-                              image: e.PrimaryImage ?? AssetHelper.room1,
-                              roomID: e.roomID ?? '',
-                              type: RoomKindModel.getRoomKindName(
-                                  e.RoomKindID ?? ''),
-                              cost: e.price ?? 0,
-                              status: e.State ?? '')
+                            room: e,
+                          )
                           //  RoomItem(
                           //         e.PrimaryImage ?? AssetHelper.room1,
                           //         e.name ?? '',

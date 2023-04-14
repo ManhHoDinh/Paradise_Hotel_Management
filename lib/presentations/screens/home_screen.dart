@@ -383,12 +383,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // return a custom ItemCard
                           itemBuilder: (context, i) => RoomItem(
-                              image: listRoom[i].PrimaryImage ?? '',
-                              roomID: listRoom[i].roomID ?? '',
-                              type: RoomKindModel.getRoomKindName(
-                                  listRoom[i].RoomKindID ?? ''),
-                              cost: listRoom[i].price ?? 0,
-                              status: listRoom[i].State ?? ''),
+                            room: listRoom[i],
+                          ),
                           // RoomItem(
 
                           //     listRoom[i].PrimaryImage ?? AssetHelper.room1,
