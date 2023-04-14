@@ -8,6 +8,7 @@ import 'package:paradise/presentations/screens/login_screen.dart';
 import 'package:paradise/presentations/screens/main_screen.dart';
 import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
+import 'package:paradise/presentations/screens/staff_detail.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: EditForm(),
+      home: StaffDetail(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

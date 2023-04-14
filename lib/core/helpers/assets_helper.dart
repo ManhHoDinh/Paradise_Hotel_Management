@@ -12,11 +12,15 @@ class AssetHelper {
   static const String iconInRoom = iconAssets + 'ico_inroom.png';
   static const String iconLine = iconAssets + 'ico_line.png';
   static const String iconLine6 = iconAssets + 'ico_line6.png';
+  static const String iconEdit = iconAssets + 'ico_edit.png';
 
   //Assets in images
   static const String imgAssets = 'assets/images/';
   //splash
   static const String logo1 = imgAssets + 'logo.png';
+
+  //staff
+  static const String staff1 = imgAssets + 'staff_avt.png';
 
   //home
   static const String avatar = 'assets/images/avatar.png';
