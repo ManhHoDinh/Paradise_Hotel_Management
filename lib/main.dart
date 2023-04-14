@@ -12,8 +12,8 @@ Future main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
   WidgetsFlutterBinding.ensureInitialized();
-  FireBaseDataBase.initializeDB();
-  runApp(const MyApp()); 
+  await FireBaseDataBase.initializeDB();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

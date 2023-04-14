@@ -8,14 +8,14 @@ import '../../core/helpers/image_helper.dart';
 
 class RoomItem extends StatefulWidget {
   final String image;
-  final String name;
+  final String roomID;
   final String type;
   final int cost;
   final String status;
   const RoomItem(
       {super.key,
       required this.image,
-      required this.name,
+      required this.roomID,
       required this.type,
       required this.cost,
       required this.status});
@@ -77,7 +77,7 @@ class _RoomItemState extends State<RoomItem> {
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    widget.name,
+                    widget.roomID,
                     style: TextStyles.defaultStyle.DarkPrimaryTextColor.medium,
                   ),
                 ),

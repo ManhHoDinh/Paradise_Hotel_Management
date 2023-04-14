@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,6 +10,8 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/firebase_request.dart';
+import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
@@ -26,21 +29,18 @@ class CreateRoomScreen extends StatefulWidget {
 }
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
-  int currentId = 0, _price = 150000, _value = 1;
+  int currentId = 0, _price = 0;
   bool isPressed = false;
+  String roomKindID = '';
   TextEditingController roomIdController = new TextEditingController();
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController typeController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
   String PrimaryImageUrl = '';
   List<String> SubImageUrls = [];
   bool isLoading = false;
-  @override
-  void setState(VoidCallback fn) {
-    // TODO: implement setState
-    super.setState(fn);
-  }
-
+  String kindRoom = 'Kind';
+  List<String> kindItems = [];
+  String? dropdownKindValue;
+  List<RoomKindModel> kindlist = [];
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -158,23 +158,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                     ),
                     Container(
                       child: Text(
-                        'Name of room',
-                        style: TextStyles.h6
-                            .copyWith(color: ColorPalette.darkBlueText),
-                      ),
-                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-                    ),
-                    Container(
-                      child: InputDefault(
-                        labelText: 'Type here',
-                        controller: nameController,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: kMaxPadding * 1.5,
-                          vertical: kItemPadding),
-                    ),
-                    Container(
-                      child: Text(
                         'Type of room',
                         style: TextStyles.h6
                             .copyWith(color: ColorPalette.darkBlueText),
@@ -182,11 +165,65 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                       margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
                     ),
                     Container(
-                      child: InputDefault(
-                          labelText: 'Type here', controller: typeController),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all()),
+                      child: DropdownButtonHideUnderline(
+                        child: Container(
+                          child: DropdownButton2(
+                            alignment: Alignment.centerLeft,
+                            iconStyleData: IconStyleData(
+                                iconEnabledColor: ColorPalette.primaryColor),
+                            dropdownStyleData: DropdownStyleData(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(kMinPadding))),
+                            hint: Text(
+                              'Kind',
+                              style: TextStyles.defaultStyle.grayText,
+                            ),
+                            items: RoomKindModel.kindItems
+                                .map((e) => DropdownMenuItem<String>(
+                                    value: e,
+                                    onTap: () {
+                                      setState(() {
+                                        kindRoom = e;
+                                        RoomKindModel kindSelected =
+                                            RoomKindModel.AllRoomKinds.where(
+                                                (roomKind) =>
+                                                    roomKind.Name! == e).first;
+                                        _price = kindSelected.Price ?? 0;
+                                        roomKindID =
+                                            kindSelected.RoomKindID ?? '';
+                                      });
+                                    },
+                                    child: Text(
+                                      e,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyles.defaultStyle.grayText,
+                                    )))
+                                .toList(),
+                            buttonStyleData: const ButtonStyleData(
+                              padding: const EdgeInsets.only(left: 12),
+                              height: 28,
+                            ),
+                            menuItemStyleData: const MenuItemStyleData(
+                              height: 28,
+                            ),
+                            value: dropdownKindValue,
+                            onChanged: (value) {
+                              setState(() {
+                                dropdownKindValue = value;
+                                print(dropdownKindValue);
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                       margin: const EdgeInsets.symmetric(
                           horizontal: kMaxPadding * 1.5,
-                          vertical: kItemPadding),
+                          vertical: kItemPadding * 2),
                     ),
                     Container(
                       child: Text(
@@ -199,48 +236,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                     StatefulBuilder(
                       builder: (context, setState) {
                         return Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: kMaxPadding * 1.5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CheckBoxWidget(
-                                label: '150.000',
-                                value: 1,
-                                groupValue: _value,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _price = 150000;
-                                    _value = 1;
-                                  });
-                                },
-                              ),
-                              CheckBoxWidget(
-                                label: '170.000',
-                                value: 2,
-                                groupValue: _value,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _price = 170000;
-                                    _value = 2;
-                                  });
-                                },
-                              ),
-                              CheckBoxWidget(
-                                label: '200.000',
-                                value: 3,
-                                groupValue: _value,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _price = 200000;
-                                    _value = 3;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        );
+                            width: double.infinity,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: kMaxPadding * 1.5, vertical: 10),
+                            child: Center(child: Text(_price.toString())));
                       },
                     ),
                     Container(
@@ -287,8 +286,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                         onTap: () {
                           createRoom(
                               PrimaryImagePath: UploadButton.PrimaryImagePath,
-                              name: nameController.text,
-                              type: typeController.text,
+                              roomKindID: roomKindID,
                               State: 'Available',
                               price: _price,
                               RoomID: roomIdController.text);
@@ -307,9 +305,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
 
   void createRoom(
       {required String PrimaryImagePath,
-      required String type,
+      required String roomKindID,
       required int price,
-      required String name,
       required String State,
       required String RoomID}) async {
     setState(() {
@@ -336,9 +333,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
       RoomModel _room = await RoomModel(
           roomID: roomIdController.text,
           PrimaryImage: PrimaryImageUrl,
-          type: type,
+          RoomKindID: roomKindID,
           price: price,
-          name: name,
           State: State,
           SubImages: SubImageUrls,
           Description: descriptionController.text);
@@ -356,11 +352,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
       });
       setState(() {
         roomIdController.text = '';
-        nameController.text = '';
         descriptionController.text = '';
-        typeController.text = '';
-        _value = 1;
-        price = 150000;
+        price = 0;
+        roomKindID = '';
         UploadButton.ResetUploadButton();
       });
     }
