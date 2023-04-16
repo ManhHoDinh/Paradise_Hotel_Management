@@ -6,6 +6,7 @@ import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'dart:collection';
 
 class StaffDetail extends StatefulWidget {
   static final String routeName = 'staff_detail';
@@ -16,13 +17,9 @@ class StaffDetail extends StatefulWidget {
 
 class _StaffDetailState extends State<StaffDetail> {
   bool isPressed = false;
-  int _gia = 150000;
-  int _soNgay = 0;
   int currentId = 0;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   String _s_id = '001';
   String _name = 'Nguyen Phuoc Thien';
@@ -36,11 +33,28 @@ class _StaffDetailState extends State<StaffDetail> {
   int _off = 10;
   int _loan = 104;
   int _total = 150;
+  int _ngayNghi = 0;
+  int _ngayTre = 0;
 
-  DateTimeRange soNgayDuocChon = DateTimeRange(
-    start: DateTime.now(),
-    end: DateTime.now(),
+  // Using a `LinkedHashSet` is recommended due to equality comparison override
+  final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
+    equals: isSameDay,
   );
+
+  @override
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    setState(() {
+      _focusedDay = focusedDay;
+      // Update values in a Set
+      if (_selectedDays.contains(selectedDay)) {
+        _selectedDays.remove(selectedDay);
+        _ngayNghi--;
+      } else {
+        _selectedDays.add(selectedDay);
+        _ngayNghi++;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +116,7 @@ class _StaffDetailState extends State<StaffDetail> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Staff details',
-                  style: TextStyles.h8.copyWith(
-                    color: ColorPalette.primaryColor,
-                    fontSize: 16,
-                  ),
+                  style: TextStyles.labelStaffDetail,
                 ),
               ),
               Container(
@@ -142,8 +153,9 @@ class _StaffDetailState extends State<StaffDetail> {
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
                               _rank,
-                              style: TextStyles.h7.copyWith(
-                                  color: ColorPalette.rankText, fontSize: 14),
+                              style: TextStyles.staffInforDetail.copyWith(
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           )
                         ],
@@ -164,11 +176,10 @@ class _StaffDetailState extends State<StaffDetail> {
               Container(
                 margin: EdgeInsets.only(top: 36, bottom: 10),
                 alignment: Alignment.centerLeft,
-                child: Text('Contact Details',
-                    style: TextStyles.h8.copyWith(
-                      color: ColorPalette.primaryColor,
-                      fontSize: 16,
-                    )),
+                child: Text(
+                  'Contact Details',
+                  style: TextStyles.labelStaffDetail,
+                ),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -191,11 +202,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
                               'S.ID',
-                              style: TextStyles.h7.copyWith(
-                                color: ColorPalette.infoDetail,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: TextStyles.titleInfoDetail,
                             ),
                           ),
                           Container(
@@ -203,11 +210,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
                               'ID',
-                              style: TextStyles.h7.copyWith(
-                                color: ColorPalette.infoDetail,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: TextStyles.titleInfoDetail,
                             ),
                           ),
                           Container(
@@ -244,11 +247,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
                               _s_id,
-                              style: TextStyles.h7.copyWith(
-                                color: ColorPalette.rankText,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: TextStyles.staffInforDetail,
                             ),
                           ),
                           Container(
@@ -256,11 +255,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
                               _id,
-                              style: TextStyles.h7.copyWith(
-                                color: ColorPalette.rankText,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: TextStyles.staffInforDetail,
                             ),
                           ),
                           Container(
@@ -268,11 +263,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
                               _phone,
-                              style: TextStyles.h7.copyWith(
-                                color: ColorPalette.rankText,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: TextStyles.staffInforDetail,
                             ),
                           ),
                           Container(
@@ -280,11 +271,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
                               _gmail,
-                              style: TextStyles.h7.copyWith(
-                                color: ColorPalette.rankText,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: TextStyles.staffInforDetail,
                             ),
                           ),
                         ],
@@ -316,10 +303,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             children: [
                               Text(
                                 'Earning',
-                                style: TextStyles.h8.copyWith(
-                                  color: ColorPalette.primaryColor,
-                                  fontSize: 16,
-                                ),
+                                style: TextStyles.labelStaffDetail,
                               ),
                               Expanded(
                                   child: Container(
@@ -354,11 +338,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                       padding: EdgeInsets.only(bottom: 6),
                                       child: Text(
                                         'Basic',
-                                        style: TextStyles.h7.copyWith(
-                                          color: ColorPalette.infoDetail,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                        ),
+                                        style: TextStyles.titleInfoDetail,
                                       ),
                                     ),
                                     Container(
@@ -366,11 +346,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                       padding: EdgeInsets.only(bottom: 6),
                                       child: Text(
                                         'Tax',
-                                        style: TextStyles.h7.copyWith(
-                                          color: ColorPalette.infoDetail,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                        ),
+                                        style: TextStyles.titleInfoDetail,
                                       ),
                                     ),
                                     Container(
@@ -378,11 +354,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                       padding: EdgeInsets.only(bottom: 6),
                                       child: Text(
                                         'Bonus',
-                                        style: TextStyles.h7.copyWith(
-                                          color: ColorPalette.infoDetail,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                        ),
+                                        style: TextStyles.titleInfoDetail,
                                       ),
                                     ),
                                   ],
@@ -400,12 +372,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                         padding: EdgeInsets.only(bottom: 6),
                                         child: Text(
                                           '$_basic\$',
-                                          style: TextStyles.h7.copyWith(
-                                            color: ColorPalette.rankText,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            letterSpacing: 1,
-                                          ),
+                                          style: TextStyles.staffInforDetail,
                                         ),
                                       ),
                                       Container(
@@ -413,12 +380,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                         padding: EdgeInsets.only(bottom: 6),
                                         child: Text(
                                           '$_tax\$',
-                                          style: TextStyles.h7.copyWith(
-                                            color: ColorPalette.rankText,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            letterSpacing: 1,
-                                          ),
+                                          style: TextStyles.staffInforDetail,
                                         ),
                                       ),
                                       Container(
@@ -426,12 +388,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                         padding: EdgeInsets.only(bottom: 6),
                                         child: Text(
                                           '$_bonus\$',
-                                          style: TextStyles.h7.copyWith(
-                                            color: ColorPalette.rankText,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            letterSpacing: 1,
-                                          ),
+                                          style: TextStyles.staffInforDetail,
                                         ),
                                       ),
                                     ],
@@ -455,10 +412,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             children: [
                               Text(
                                 'Deduction',
-                                style: TextStyles.h8.copyWith(
-                                  color: ColorPalette.primaryColor,
-                                  fontSize: 16,
-                                ),
+                                style: TextStyles.labelStaffDetail,
                               ),
                               Expanded(
                                   child: Container(
@@ -493,11 +447,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                       padding: EdgeInsets.only(bottom: 6),
                                       child: Text(
                                         'Off',
-                                        style: TextStyles.h7.copyWith(
-                                          color: ColorPalette.infoDetail,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                        ),
+                                        style: TextStyles.titleInfoDetail,
                                       ),
                                     ),
                                     Container(
@@ -505,11 +455,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                       padding: EdgeInsets.only(bottom: 6),
                                       child: Text(
                                         'Loan',
-                                        style: TextStyles.h7.copyWith(
-                                          color: ColorPalette.infoDetail,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                        ),
+                                        style: TextStyles.titleInfoDetail,
                                       ),
                                     ),
                                     SizedBox(height: 21),
@@ -528,12 +474,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                         padding: EdgeInsets.only(bottom: 6),
                                         child: Text(
                                           '$_off\$',
-                                          style: TextStyles.h7.copyWith(
-                                            color: ColorPalette.rankText,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            letterSpacing: 1,
-                                          ),
+                                          style: TextStyles.staffInforDetail,
                                         ),
                                       ),
                                       Container(
@@ -541,12 +482,7 @@ class _StaffDetailState extends State<StaffDetail> {
                                         padding: EdgeInsets.only(bottom: 6),
                                         child: Text(
                                           '$_loan\$',
-                                          style: TextStyles.h7.copyWith(
-                                            color: ColorPalette.rankText,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            letterSpacing: 1,
-                                          ),
+                                          style: TextStyles.staffInforDetail,
                                         ),
                                       ),
                                       SizedBox(height: 21),
@@ -578,8 +514,7 @@ class _StaffDetailState extends State<StaffDetail> {
                       margin: EdgeInsets.only(left: 27),
                       child: Text(
                         'Total',
-                        style: TextStyles.h8.copyWith(
-                          color: ColorPalette.primaryColor,
+                        style: TextStyles.labelStaffDetail.copyWith(
                           fontSize: 14,
                         ),
                       ),
@@ -588,10 +523,8 @@ class _StaffDetailState extends State<StaffDetail> {
                       margin: EdgeInsets.only(right: 27),
                       child: Text(
                         '$_total\$',
-                        style: TextStyles.h8.copyWith(
-                          color: ColorPalette.primaryColor,
+                        style: TextStyles.labelStaffDetail.copyWith(
                           fontSize: 14,
-                          letterSpacing: 1,
                         ),
                       ),
                     )
@@ -607,71 +540,106 @@ class _StaffDetailState extends State<StaffDetail> {
                       fontSize: 16,
                     )),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: ColorPalette.calendarGround.withOpacity(0.04),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: TableCalendar(
-                    focusedDay: _focusedDay,
-                    firstDay: DateTime(2010),
-                    lastDay: DateTime(2030),
-                    startingDayOfWeek: StartingDayOfWeek.monday,
-                    headerStyle: HeaderStyle(
-                      titleCentered: true,
-                      formatButtonVisible: false,
-                    ),
-                    calendarStyle: CalendarStyle(
-                      selectedDecoration: BoxDecoration(
-                          color: ColorPalette.primaryColor,
-                          shape: BoxShape.circle),
-                      selectedTextStyle: TextStyle(color: Colors.white),
-                      withinRangeDecoration: BoxDecoration(
-                        color: ColorPalette.primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      rangeStartDecoration: BoxDecoration(
-                          color: ColorPalette.primaryColor,
-                          shape: BoxShape.circle),
-                      rangeEndDecoration: BoxDecoration(
-                          color: ColorPalette.primaryColor,
-                          shape: BoxShape.circle),
-                      rangeHighlightColor: ColorPalette.primaryColor,
-                      withinRangeTextStyle: TextStyle(color: Colors.white),
-                    ),
-                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                    rangeStartDay: _rangeStart,
-                    rangeEndDay: _rangeEnd,
-                    rangeSelectionMode: _rangeSelectionMode,
-                    onDaySelected: (selectedDay, focusedDay) {
-                      if (!isSameDay(_selectedDay, selectedDay)) {
-                        setState(() {
-                          _selectedDay = selectedDay;
-                          _focusedDay = focusedDay;
-                          _rangeStart = null; // Important to clean those
-                          _rangeEnd = null;
-                          _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                        });
-                      }
-                    },
-                    onRangeSelected: (start, end, focusedDay) {
-                      setState(() {
-                        _selectedDay = null;
-                        _focusedDay = focusedDay;
-                        _rangeStart = start;
-                        _rangeEnd = end ?? start;
-                        _rangeSelectionMode = RangeSelectionMode.toggledOn;
-                      });
-                      soNgayDuocChon = DateTimeRange(
-                          start: _rangeStart ?? DateTime.now(),
-                          end: _rangeEnd ?? DateTime.now());
-                      _soNgay = soNgayDuocChon.duration.inDays + 1;
-                    },
+              Container(
+                padding: EdgeInsets.only(left: 8, right: 8, bottom: 20),
+                decoration: BoxDecoration(
+                    color: ColorPalette.calendarGround.withOpacity(0.04),
+                    borderRadius: BorderRadius.circular(8)),
+                child: TableCalendar(
+                  focusedDay: _focusedDay,
+                  firstDay: DateTime(2010),
+                  lastDay: DateTime(2030),
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  headerStyle: HeaderStyle(
+                    titleCentered: true,
+                    formatButtonVisible: false,
                   ),
+                  calendarStyle: CalendarStyle(
+                    outsideTextStyle: TextStyles.outsideMonth,
+                    defaultTextStyle: TextStyles.defaultMonth,
+                    weekendTextStyle: TextStyles.defaultMonth,
+                    cellMargin: EdgeInsets.all(0),
+                    defaultDecoration: BoxDecoration(
+                      color: ColorPalette.primaryColor.withOpacity(0.25),
+                    ),
+                    weekendDecoration: BoxDecoration(
+                      color: ColorPalette.primaryColor.withOpacity(0.25),
+                    ),
+                    selectedDecoration: BoxDecoration(
+                        color: ColorPalette.lateDay, shape: BoxShape.rectangle),
+                    selectedTextStyle: TextStyles.defaultMonth,
+                    rangeStartTextStyle: TextStyles.defaultMonth,
+                    rangeEndTextStyle: TextStyles.defaultMonth,
+                    todayTextStyle: TextStyles.defaultMonth,
+                    todayDecoration: BoxDecoration(
+                      color: ColorPalette.primaryColor.withOpacity(0.25),
+                    ),
+                  ),
+                  selectedDayPredicate: (day) {
+                    return _selectedDays.contains(day);
+                  },
+                  onDaySelected: _onDaySelected,
                 ),
               ),
-              SizedBox(height: 50)
+              Container(
+                margin: EdgeInsets.only(top: 17),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.solidCircle,
+                          color: ColorPalette.primaryColor.withOpacity(0.25),
+                          size: 12,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Present',
+                          style: TextStyles.calendarNote,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.solidCircle,
+                          color: ColorPalette.absentDay.withOpacity(0.3),
+                          size: 12,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Absent',
+                          style: TextStyles.calendarNote,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.solidCircle,
+                          color: ColorPalette.lateDay,
+                          size: 12,
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Late',
+                          style: TextStyles.calendarNote,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),
