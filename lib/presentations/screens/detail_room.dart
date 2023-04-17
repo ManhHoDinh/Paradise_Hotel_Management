@@ -9,6 +9,7 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/presentations/screens/rental_form.dart';
 
 import '../widgets/button_widget.dart';
 
@@ -34,7 +35,10 @@ class _DetailRoomState extends State<DetailRoom> {
             child: ButtonWidget(
               label: 'Book Room',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => RentalForm(room: widget.room,)));
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),

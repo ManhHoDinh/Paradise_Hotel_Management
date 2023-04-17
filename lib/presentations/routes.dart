@@ -15,7 +15,6 @@ final Map<String, WidgetBuilder> routes = {
   LoginScreen.routeName: (context) => LoginScreen(),
   AddUserScreen.routeName: (context) => AddUserScreen(),
   CreateRoomScreen.routeName: (context) => CreateRoomScreen(),
-  RentalForm.routeName: (context) => RentalForm(),
   RoomKindView.routeName: (context) => RoomKindView(),
-  SeeAllScreen.routeName:(context) => SeeAllScreen(),
+  SeeAllScreen.routeName: (context) => SeeAllScreen(),
 };

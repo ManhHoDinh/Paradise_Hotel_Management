@@ -11,6 +11,7 @@ import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
+import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -38,7 +39,6 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
   String? dropdownStatusValue;
   List<String> kindItems = ['All'];
   final statusItems = ['All', 'Booked', 'Available'];
-  late List<RoomModel> listRoom;
   DropdownMenuItem<String> buildMenuKindItem(String item) => DropdownMenuItem(
       value: item,
       onTap: () {
@@ -115,52 +115,69 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
           },
         ),
         appBar: AppBar(
-          elevation: 0,
-          backgroundColor: ColorPalette.backgroundColor,
-          leading: InkWell(
+        elevation: 0,
+        backgroundColor: ColorPalette.primaryColor,
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
             customBorder: CircleBorder(),
-            onTap: () {},
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
             child: Container(
-              child: Icon(
-                FontAwesomeIcons.bars,
-                color: ColorPalette.primaryColor,
-              ),
-            ),
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(left: 100),
-            child: Container(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [
-                          Text('WELCOME',
-                              style: TextStyle(
-                                  fontSize: 10, color: ColorPalette.grayText)),
-                          Text(
-                            'Vinpearl Hotel',
-                            style: TextStyle(
-                                fontSize: 16, color: ColorPalette.primaryColor),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 24),
-                      InkWell(
-                        onTap: () {},
-                        child: ImageHelper.loadFromAsset(AssetHelper.avatar,
-                            height: 40),
-                      )
-                    ],
-                  )
-                ],
-              ),
+              child: Icon(FontAwesomeIcons.arrowLeft),
             ),
           ),
         ),
-        body: Container(
+        title: Container(
+          child: Text(
+            'ROOMS',
+            style: TextStyles.slo.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
+                )
+              ],)))),
+        
+      // endDrawer: Drawer(
+      //   child: Container(
+      //     margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         Container(
+      //           margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
+      //           child: Text(
+      //             'ROOM OPTIONS',
+      //             style: TextStyles.h2.copyWith(
+      //                 fontWeight: FontWeight.bold,
+      //                 color: ColorPalette.primaryColor),
+      //           ),
+      //         ),
+      //         Container(
+      //             margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      //             child: ButtonDefault(
+      //                 label: 'Book Room',
+      //                 onTap: () {
+      //                   Navigator.of(context).pushNamed(RentalForm.routeName);
+      //                 })),
+      //         Container(
+      //             margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      //             child: ButtonDefault(label: 'Create New Room', onTap: () {})),
+      //         Container(
+      //             margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      //             child: ButtonDefault(label: 'Edit Room', onTap: () {})),
+      //       ],
+      //     ),
+      //   ),
+      //   ),
+      
+      body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
             color: ColorPalette.backgroundColor,
             // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),

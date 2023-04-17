@@ -7,6 +7,7 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
+import 'package:paradise/core/models/room_model.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -16,7 +17,8 @@ String? gender = 'Male';
 
 class RentalForm extends StatefulWidget {
   static final String routeName = 'rental_form';
-  const RentalForm({super.key});
+  RoomModel room;
+  RentalForm({super.key, required this.room});
   @override
   State<RentalForm> createState() => _RentalFormState();
 }
