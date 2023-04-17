@@ -34,6 +34,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   String roomKindID = '';
   TextEditingController roomIdController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
+  TextEditingController maxCapacityController = new TextEditingController();
   String PrimaryImageUrl = '';
   List<String> SubImageUrls = [];
   bool isLoading = false;
@@ -207,6 +208,23 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                     ),
                     Container(
                       child: Text(
+                        'Max Capacity',
+                        style: TextStyles.h6
+                            .copyWith(color: ColorPalette.darkBlueText),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    Container(
+                      child: InputDefault(
+                        labelText: 'Type here',
+                        controller: maxCapacityController,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: kMaxPadding * 1.5,
+                          vertical: kItemPadding),
+                    ),
+                    Container(
+                      child: Text(
                         'Note',
                         style: TextStyles.h6
                             .copyWith(color: ColorPalette.darkBlueText),
@@ -300,7 +318,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           price: price,
           State: State,
           SubImages: SubImageUrls,
-          Description: descriptionController.text);
+          Description: descriptionController.text,
+          maxCapacity: int.tryParse(maxCapacityController.text));
       final json = _room.toJson();
       await docUser.set(json);
       showDialog(

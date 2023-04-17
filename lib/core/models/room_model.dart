@@ -7,8 +7,8 @@ class RoomModel {
   int? price;
   String? State;
   String? Description;
-  //String? hotelID;
   List<String> SubImages = [];
+  int? maxCapacity;
   RoomModel(
       {required this.roomID,
       required this.PrimaryImage,
@@ -16,7 +16,8 @@ class RoomModel {
       required this.price,
       required this.State,
       required this.SubImages,
-      required this.Description});
+      required this.Description,
+      required this.maxCapacity});
   Map<String, dynamic> toJson() => {
         'roomID': roomID,
         'roomKindID': RoomKindID,
@@ -24,7 +25,8 @@ class RoomModel {
         'PrimaryImage': PrimaryImage,
         'State': State,
         'SubImages': SubImages,
-        'Description': Description
+        'Description': Description,
+        'maxCapacity': maxCapacity.toString()
       };
 
   static RoomModel fromJson(Map<String, dynamic> json) {
@@ -36,6 +38,7 @@ class RoomModel {
         PrimaryImage: json['PrimaryImage'],
         State: json['State'],
         SubImages: SubImages,
-        Description: json['Description']);
+        Description: json['Description'],
+        maxCapacity: int.parse(json['maxCapacity']));
   }
 }
