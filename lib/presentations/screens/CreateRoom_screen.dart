@@ -304,6 +304,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
+              task: '',
             );
           });
     } else {
@@ -327,6 +328,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: true,
+              task: '',
             );
           });
       setState(() {

@@ -4,8 +4,12 @@ import 'package:paradise/core/helpers/text_styles.dart';
 
 class DialogOverlay extends StatelessWidget {
   final bool isSuccess;
+  final String task;
 
-  const DialogOverlay({super.key, required this.isSuccess});
+  const DialogOverlay({super.key, 
+    required this.isSuccess,
+    required this.task,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +23,8 @@ class DialogOverlay extends StatelessWidget {
       backgroundColor: Colors.white.withOpacity(0),
       shadowColor: Colors.white.withOpacity(0),
       content: Text(isSuccess
-          ? 'Create Successfully!'
-          : 'Error!\nRoom ID is Exist',
+          ? task + ' Successed!'
+          : task + ' Failed!\nRoom ID is Exist',
         textAlign: TextAlign.center,
         style: TextStyles.h5.copyWith(
           color: Colors.white,
