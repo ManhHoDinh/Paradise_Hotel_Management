@@ -80,43 +80,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           ),
           toolbarHeight: kToolbarHeight * 1.5,
         ),
-        endDrawer: Drawer(
-          child: Container(
-            margin:
-                const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
-                  child: Text(
-                    'ROOM OPTIONS',
-                    style: TextStyles.h2.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: ColorPalette.primaryColor),
-                  ),
-                ),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child: ButtonDefault(
-                        label: 'Book Room',
-                        onTap: () {
-                          Navigator.of(context).pushNamed(RentalForm.routeName);
-                        })),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child:
-                        ButtonDefault(label: 'Create New Room', onTap: () {})),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child: ButtonDefault(label: 'Edit Room', onTap: () {})),
-              ],
-            ),
-          ),
-        ),
         body: isLoading
             ? Center(
                 child: LoadingAnimationWidget.discreteCircle(

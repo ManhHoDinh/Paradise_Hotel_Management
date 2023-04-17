@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+
+import '../widgets/button_widget.dart';
 
 class DetailRoom extends StatefulWidget {
   DetailRoom({super.key, required this.room});
@@ -17,7 +23,46 @@ class DetailRoom extends StatefulWidget {
 class _DetailRoomState extends State<DetailRoom> {
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+
     return Scaffold(
+      key: _globalKey,
+      endDrawer: Drawer(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Book Room',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Edit Room',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Delete',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                if (widget.room.State == 'Available') {
+                  DeleteRoom(widget.room.roomID ?? '');
+                }
+              },
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+        ]),
+      ),
+      appBar: AppBar(),
       body: SafeArea(
           child: Column(
         children: [
@@ -52,5 +97,19 @@ class _DetailRoomState extends State<DetailRoom> {
         ],
       )),
     );
+  }
+
+  void DeleteRoom(String roomID) async {
+    try {
+      await FirebaseStorage.instance.ref(roomID).listAll().then((value) {
+        value.items.forEach((element) {
+          FirebaseStorage.instance.ref(element.fullPath).delete();
+        });
+      });
+      await FirebaseFirestore.instance.collection('Rooms').doc(roomID).delete();
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

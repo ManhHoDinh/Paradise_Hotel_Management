@@ -10,6 +10,7 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -17,8 +18,9 @@ import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
 
 class SeeAllScreen extends StatefulWidget {
-  final List<RoomModel> listRoom;
-  const SeeAllScreen({super.key, required this.listRoom});
+  static final String routeName = 'see_all_screen';
+
+  SeeAllScreen({super.key});
 
   @override
   State<SeeAllScreen> createState() => _SeeAllScreenState();
@@ -34,6 +36,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
   String? dropdownStatusValue;
   List<String> kindItems = ['All'];
   final statusItems = ['All', 'Booked', 'Available'];
+  late List<RoomModel> listRoom;
   DropdownMenuItem<String> buildMenuKindItem(String item) => DropdownMenuItem(
       value: item,
       onTap: () {
@@ -66,7 +69,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
     }
     switch (status) {
       case "All":
-        newList = list;
+        newList = newList;
         break;
       case "Booked":
         newList = newList.where((room) => room.State! == 'Booked').toList();
@@ -77,30 +80,18 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
       default:
         newList = newList;
     }
-
-    switch (kindRoom) {
-      case "All":
-        newList = list;
-        break;
-      case "Family room":
-        newList =
-            newList.where((room) => room.RoomKindID! == 'Family Room').toList();
-        break;
-      case "Couple room":
-        newList =
-            newList.where((room) => room.RoomKindID! == 'Couple Room').toList();
-        break;
-      case "Master room":
-        newList =
-            newList.where((room) => room.RoomKindID! == 'Master Room').toList();
-        break;
-      default:
-        newList = newList;
+    if (kindRoom == 'All') {
+      newList = newList;
+    } else if (kindRoom != null) {
+      newList = newList
+          .where((room) =>
+              RoomKindModel.getRoomKindName(room.RoomKindID ?? '') == kindRoom)
+          .toList();
     }
     if (valueSearch != null) {
       newList = newList
           .where((e) =>
-              e.RoomKindID!.toLowerCase().contains(valueSearch!.toLowerCase()))
+              e.roomID!.toLowerCase().contains(valueSearch!.toLowerCase()))
           .toList();
     }
     return newList;
@@ -108,7 +99,19 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
 
   @override
   Widget build(BuildContext context) {
+    kindItems = ['All'];
+    kindItems.addAll(RoomKindModel.kindItems);
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ColorPalette.primaryColor,
+          child: Text(
+            '+',
+            style: TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
+          },
+        ),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: ColorPalette.backgroundColor,
@@ -318,7 +321,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                     'Kind',
                                     style: TextStyles.defaultStyle.grayText,
                                   ),
-                                  items: RoomKindModel.kindItems
+                                  items: kindItems
                                       .map((e) => DropdownMenuItem<String>(
                                           value: e,
                                           onTap: () {
@@ -385,27 +388,31 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
               Expanded(
                   child: Container(
                 //padding: const EdgeInsets.only(bottom: kMediumPadding),
-                child: GridView.count(
-                    padding: const EdgeInsets.only(bottom: kMediumPadding),
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 24,
-                    crossAxisSpacing: 24,
-                    childAspectRatio: 0.8,
-                    children: loadListRoom(widget.listRoom)
-                        .map(
-                          (e) => RoomItem(
-                            room: e,
-                          )
-                          //  RoomItem(
-                          //         e.PrimaryImage ?? AssetHelper.room1,
-                          //         e.name ?? '',
-                          //         e.type ?? '',
-                          //         e.State?? '',
-
-                          //         e.price ?? 0)
-                          ,
-                        )
-                        .toList()),
+                child: StreamBuilder<List<RoomModel>>(
+                    stream: FireBaseDataBase.readRooms(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child:
+                              Text('Something went wrong! ${snapshot.error}'),
+                        );
+                      } else if (snapshot.hasData) {
+                        listRoom = snapshot.data!;
+                        return GridView.count(
+                            padding:
+                                const EdgeInsets.only(bottom: kMediumPadding),
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 24,
+                            crossAxisSpacing: 24,
+                            childAspectRatio: 0.8,
+                            children: loadListRoom(listRoom)
+                                .map((e) => RoomItem(
+                                      room: e,
+                                    ))
+                                .toList());
+                      } else
+                        return Container();
+                    }),
               )),
             ])));
   }

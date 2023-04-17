@@ -349,11 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SeeAllScreen(listRoom: listRoom)));
+                        Navigator.of(context).pushNamed(SeeAllScreen.routeName);
                       },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],
