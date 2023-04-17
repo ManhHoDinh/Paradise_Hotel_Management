@@ -18,6 +18,7 @@ class AssetHelper {
   static const String iconInRoom = iconAssets + 'ico_inroom.png';
   static const String iconLine = iconAssets + 'ico_line.png';
   static const String iconLine6 = iconAssets + 'ico_line6.png';
+  static const String iconEdit = iconAssets + 'ico_edit.png';
 
   //Assets in images
   static const String imgAssets = 'assets/images/';
@@ -33,5 +34,8 @@ class AssetHelper {
   static const String room4 = imgAssets + 'room4.png';
   static const String room5 = imgAssets + 'room5.png';
   static const String room6 = imgAssets + 'room6.png';
+
+  //staff
+  static const String staff1 = imgAssets + 'staff_avt.png';
   static const String checked = imgAssets + 'checked.png';
 }

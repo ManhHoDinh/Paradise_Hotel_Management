@@ -99,7 +99,8 @@ class _RentalFormState extends State<RentalForm> {
                     flex: 5,
                     child: Container(
                       alignment: Alignment.center,
-                      child: Text('BOOKING', style: TextStyles.h8),
+                      child: Text('BOOKING',
+                          style: TextStyles.h8.copyWith(letterSpacing: 3.05)),
                     )),
                 Expanded(
                     child: InkWell(

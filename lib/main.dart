@@ -3,7 +3,9 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
+import 'package:paradise/presentations/screens/home_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
+import 'package:paradise/presentations/screens/staff_detail_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 
@@ -11,7 +13,7 @@ Future main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
   WidgetsFlutterBinding.ensureInitialized();
-  FireBaseDataBase.initializeDB();
+  await FireBaseDataBase.initializeDB();
   runApp(const MyApp());
 }
 

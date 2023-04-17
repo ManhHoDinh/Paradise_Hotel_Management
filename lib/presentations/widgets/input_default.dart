@@ -3,21 +3,25 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
-class InputDefault extends StatelessWidget {
-  final String labelText;
-  const InputDefault({
+class InputDefault extends StatefulWidget {
+  String labelText;
+  TextEditingController? controller = new TextEditingController();
+  InputDefault({
     super.key,
     required this.labelText,
+    this.controller,
   });
+  @override
+  State<InputDefault> createState() => _InputDefaultState();
+}
 
+class _InputDefaultState extends State<InputDefault> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
-
     return Container(
       height: kDefaultIconSize * 2,
       child: TextField(
-        controller: controller,
+        controller: widget.controller,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 14, bottom: 14),
           border: OutlineInputBorder(
@@ -27,7 +31,7 @@ class InputDefault extends StatelessWidget {
           label: Container(
             alignment: Alignment.center,
             child: Text(
-              labelText,
+              widget.labelText,
               style: TextStyles.h6.copyWith(
                 color: ColorPalette.grayText,
                 fontStyle: FontStyle.italic,

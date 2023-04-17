@@ -8,6 +8,14 @@ import 'package:paradise/core/helpers/text_styles.dart';
 class UploadButton extends StatefulWidget {
   final String label;
   final String icon;
+  static late String PrimaryImagePath = '';
+  static List<String> SubImagePath = [];
+  static List<XFile>? _images = [];
+  static void ResetUploadButton() {
+    PrimaryImagePath = '';
+    SubImagePath.clear();
+    _images!.clear();
+  }
 
   const UploadButton({
     super.key,
@@ -20,16 +28,26 @@ class UploadButton extends StatefulWidget {
 }
 
 class _UploadButtonState extends State<UploadButton> {
-  List<XFile>? _images = [];
-
   Future getImages() async {
     final images = await ImagePicker().pickMultiImage();
     if (images.isEmpty) return;
 
     setState(() {
-      for (var image in images) {
-        this._images?.add(image);
+      UploadButton._images?.add(images[0]);
+      UploadButton.PrimaryImagePath = images[0].path;
+
+      for (int i = 1; i < images.length; i++) {
+        UploadButton._images?.add(images[i]);
+        UploadButton.SubImagePath.add(images[i].path);
       }
+    });
+  }
+
+  void ResetUploadButton() {
+    setState(() {
+      UploadButton.PrimaryImagePath = '';
+      UploadButton.SubImagePath = [];
+      UploadButton._images = [];
     });
   }
 
@@ -39,7 +57,7 @@ class _UploadButtonState extends State<UploadButton> {
     double height = MediaQuery.of(context).size.height;
 
     Widget _previewImages() {
-      if (!_images!.isEmpty) {
+      if (!UploadButton._images!.isEmpty) {
         return Container(
           width: width,
           height: height * 0.25,
@@ -47,13 +65,14 @@ class _UploadButtonState extends State<UploadButton> {
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                child: Image.file(File(_images![index].path),
+                child: Image.file(
+                  File(UploadButton._images![index].path),
                   fit: BoxFit.scaleDown,
                   scale: 0.75,
                 ),
               );
             },
-            itemCount: _images!.length,
+            itemCount: UploadButton._images!.length,
             scrollDirection: Axis.horizontal,
           ),
         );
@@ -61,7 +80,7 @@ class _UploadButtonState extends State<UploadButton> {
         return Container();
       }
     }
-    
+
     Widget _handlePreview() {
       return _previewImages();
     }
