@@ -26,6 +26,9 @@ class AssetHelper {
   //splash
   static const String logo1 = imgAssets + 'logo.png';
 
+  //staff
+  static const String staff1 = imgAssets + 'staff_avt.png';
+
   //home
   static const String avatar = 'assets/images/avatar.png';
   static const String room1 = imgAssets + 'room1.png';
@@ -36,5 +39,4 @@ class AssetHelper {
   static const String room6 = imgAssets + 'room6.png';
 
   //staff
-  static const String staff1 = imgAssets + 'staff_avt.png';
 }
