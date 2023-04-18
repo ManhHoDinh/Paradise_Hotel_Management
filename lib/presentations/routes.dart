@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:paradise/presentations/screens/AddRoomKindScreen.dart';
 import 'package:paradise/presentations/screens/AddUser_screen.dart';
+import 'package:paradise/presentations/screens/EditRoomKindScreen.dart';
 import 'package:paradise/presentations/screens/RoomKindView.dart';
 import 'package:paradise/presentations/screens/detail_room.dart';
 import 'package:paradise/presentations/screens/home_screen.dart';
@@ -17,5 +19,6 @@ final Map<String, WidgetBuilder> routes = {
   CreateRoomScreen.routeName: (context) => CreateRoomScreen(),
   RentalForm.routeName: (context) => RentalForm(),
   RoomKindView.routeName: (context) => RoomKindView(),
-  SeeAllScreen.routeName:(context) => SeeAllScreen(),
+  SeeAllScreen.routeName: (context) => SeeAllScreen(),
+  AddRoomKindScreen.routeName: (context) => AddRoomKindScreen(),
 };

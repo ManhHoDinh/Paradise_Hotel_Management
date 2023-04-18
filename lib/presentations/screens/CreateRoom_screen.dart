@@ -17,7 +17,9 @@ import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/check_box.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
+import 'package:paradise/presentations/widgets/inputTitleWidget.dart';
 import 'package:paradise/presentations/widgets/input_default.dart';
+import 'package:paradise/presentations/widgets/input_widget.dart';
 import 'package:paradise/presentations/widgets/upload_button.dart';
 
 class CreateRoomScreen extends StatefulWidget {
@@ -46,41 +48,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: ColorPalette.primaryColor,
-          leadingWidth: kDefaultIconSize * 3,
-          leading: Container(
-            width: double.infinity,
-            child: InkWell(
-              customBorder: CircleBorder(),
-              onHighlightChanged: (param) {},
-              splashColor: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                child: Icon(FontAwesomeIcons.arrowLeft),
-              ),
-            ),
-          ),
-          title: Container(
-            child: Text(
-              'ROOMS',
-              style: TextStyles.slo.bold.copyWith(
-                shadows: [
-                  Shadow(
-                    color: Colors.black12,
-                    offset: Offset(3, 6),
-                    blurRadius: 6,
-                  )
-                ],
-              ),
-            ),
-            alignment: Alignment.center,
-          ),
-          toolbarHeight: kToolbarHeight * 1.5,
-        ),
         body: isLoading
             ? Center(
                 child: LoadingAnimationWidget.discreteCircle(
@@ -103,22 +70,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                       ),
                       alignment: Alignment.center,
                     ),
-                    Container(
-                      child: Text(
-                        'Room ID',
-                        style: TextStyles.h6
-                            .copyWith(color: ColorPalette.darkBlueText),
-                      ),
-                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-                    ),
-                    Container(
-                      child: InputDefault(
-                        labelText: 'Type here',
-                        controller: roomIdController,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: kMaxPadding * 1.5,
-                          vertical: kItemPadding),
+                    InputTitleWidget(
+                      Title: 'Room ID',
+                      controller: roomIdController,
+                      hintInput: 'Type here',
                     ),
                     Container(
                       child: Text(
@@ -130,6 +85,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                     ),
                     Container(
                       width: double.infinity,
+                      height: 35,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all()),
@@ -223,22 +179,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                           horizontal: kMaxPadding * 1.5,
                           vertical: kItemPadding),
                     ),
-                    Container(
-                      child: Text(
-                        'Note',
-                        style: TextStyles.h6
-                            .copyWith(color: ColorPalette.darkBlueText),
-                      ),
-                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-                    ),
-                    Container(
-                      child: InputDefault(
-                        labelText: 'Type here',
-                        controller: descriptionController,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: kMaxPadding * 1.5,
-                          vertical: kItemPadding),
+                    InputTitleWidget(
+                      Title: 'Note',
+                      controller: descriptionController,
+                      hintInput: 'Type here',
                     ),
                     Container(
                       child: Text(
@@ -277,6 +221,41 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                   ],
                 ),
               ),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: ColorPalette.primaryColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
+              ),
+            ),
+          ),
+          title: Container(
+            child: Text(
+              'ROOMS',
+              style: TextStyles.slo.bold.copyWith(
+                shadows: [
+                  Shadow(
+                    color: Colors.black12,
+                    offset: Offset(3, 6),
+                    blurRadius: 6,
+                  )
+                ],
+              ),
+            ),
+            alignment: Alignment.center,
+          ),
+          toolbarHeight: kToolbarHeight * 1.5,
+        ),
       ),
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -304,6 +283,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
+              task: 'Create Room',
+              error: 'Room ID Exist',
             );
           });
     } else {
@@ -315,7 +296,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           roomID: roomIdController.text,
           PrimaryImage: PrimaryImageUrl,
           RoomKindID: roomKindID,
-          price: price,
           State: State,
           SubImages: SubImageUrls,
           Description: descriptionController.text,
@@ -326,6 +306,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           context: context,
           builder: (context) {
             return DialogOverlay(
+              task: 'Create Room',
               isSuccess: true,
             );
           });

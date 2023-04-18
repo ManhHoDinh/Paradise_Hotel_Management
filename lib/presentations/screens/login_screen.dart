@@ -40,7 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: kItemPadding),
                   child: Image.asset(

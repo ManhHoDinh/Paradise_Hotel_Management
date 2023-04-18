@@ -102,7 +102,8 @@ class _RoomItemState extends State<RoomItem> {
                 Container(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     alignment: Alignment.centerLeft,
-                    child: Text('\$ ${widget.room.price} VNĐ',
+                    child: Text(
+                        '\$ ${RoomKindModel.getRoomKindPrice(widget.room.RoomKindID ?? '')} VNĐ',
                         style: TextStyles
                             .defaultStyle.DarkPrimaryTextColor.medium))
               ],

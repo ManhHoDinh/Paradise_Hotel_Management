@@ -368,6 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       } else if (snapshot.hasData) {
                         listRoom = snapshot.data!;
+                        RoomModel.AllRooms = snapshot.data!;
                         return GridView.builder(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(

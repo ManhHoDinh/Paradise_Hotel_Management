@@ -13,6 +13,9 @@ class ColorPalette {
   static const Color detailBorder = Color(0xff9B9B9B);
   static const Color rankText = Color(0xff808080);
   static const Color infoDetail = Color(0xffA8D7D8);
+  static const Color redColor = Color(
+    0xb3E45826,
+  );
 }
 
 // Color(0xff+x) | Mã hex bỏ # ví dụ #123410 => Color(0xFF123410)

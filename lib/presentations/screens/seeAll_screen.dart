@@ -63,9 +63,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
     List<RoomModel> newList = List.from(list);
 
     if (priceDecrease) {
-      list.sort((a, b) => b.price!.compareTo(a.price!));
+      list.sort((a, b) => b.getPrice().compareTo(a.getPrice()));
     } else {
-      list.sort((a, b) => a.price!.compareTo(b.price!));
+      list.sort((a, b) => a.getPrice().compareTo(b.getPrice()));
     }
     switch (status) {
       case "All":
@@ -273,7 +273,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                   buttonStyleData: const ButtonStyleData(
                                     padding: const EdgeInsets.only(left: 12),
                                     height: 28,
-                                    width: 120,
+                                    width: 100,
                                   ),
                                   menuItemStyleData: const MenuItemStyleData(
                                     height: 28,
@@ -301,7 +301,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                               )),
                           Container(
                               height: 28,
-                              width: 120,
+                              width: 140,
                               decoration: BoxDecoration(
                                   border:
                                       Border.all(color: ColorPalette.grayText),
@@ -340,7 +340,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                   buttonStyleData: const ButtonStyleData(
                                     padding: const EdgeInsets.only(left: 12),
                                     height: 28,
-                                    width: 150,
+                                    width: 10,
                                   ),
                                   menuItemStyleData: const MenuItemStyleData(
                                     height: 28,
@@ -398,6 +398,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                         );
                       } else if (snapshot.hasData) {
                         listRoom = snapshot.data!;
+                        RoomModel.AllRooms = snapshot.data!;
                         return GridView.count(
                             padding:
                                 const EdgeInsets.only(bottom: kMediumPadding),
