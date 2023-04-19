@@ -20,8 +20,8 @@ String? gender = 'Male';
 
 class RentalForm extends StatefulWidget {
   static final String routeName = 'rental_form';
-  RoomModel room;
-  RentalForm({super.key, required this.room});
+  RoomModel? room;
+  RentalForm({super.key, this.room});
   @override
   State<RentalForm> createState() => _RentalFormState();
 }
@@ -628,12 +628,15 @@ class _RentalFormState extends State<RentalForm> {
                         splashColor: Colors.black38,
                         onTap: () {
                           for (int i = 1; i < _countGuest; i++) {
-                            TextField nameGuest =
-                                (listRow[i].children![2]) as TextField;
-                            TextField cartIdGuest =
-                                (listRow[i].children![3]) as TextField;
-                            DropDown typeGuest =
-                                (listRow[i].children![1]) as DropDown;
+                            Padding padding1 =
+                                (listRow[i].children![2]) as Padding;
+                            Padding padding2 =
+                                (listRow[i].children![3]) as Padding;
+                            Padding padding3 =
+                                (listRow[i].children![1]) as Padding;
+                            TextField nameGuest = padding1.child as TextField;
+                            TextField cartIdGuest = padding2.child as TextField;
+                            DropDown typeGuest = padding3.child as DropDown;
 
                             Map<String, String> inForUser = {
                               'Type': '${typeGuest.selectedValue()}',

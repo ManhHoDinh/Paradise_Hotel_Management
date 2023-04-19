@@ -115,69 +115,72 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
           },
         ),
         appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ColorPalette.primaryColor,
-        leadingWidth: kDefaultIconSize * 3,
-        leading: Container(
-          width: double.infinity,
-          child: InkWell(
-            customBorder: CircleBorder(),
-            onHighlightChanged: (param) {},
-            splashColor: ColorPalette.primaryColor,
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              child: Icon(FontAwesomeIcons.arrowLeft),
+            elevation: 0,
+            backgroundColor: ColorPalette.primaryColor,
+            leadingWidth: kDefaultIconSize * 3,
+            leading: Container(
+              width: double.infinity,
+              child: InkWell(
+                customBorder: CircleBorder(),
+                onHighlightChanged: (param) {},
+                splashColor: ColorPalette.primaryColor,
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  child: Icon(FontAwesomeIcons.arrowLeft),
+                ),
+              ),
+            ),
+            title: Container(
+                child: Text('ROOMS',
+                    style: TextStyles.slo.bold.copyWith(
+                      shadows: [
+                        Shadow(
+                          color: Colors.black12,
+                          offset: Offset(3, 6),
+                          blurRadius: 6,
+                        )
+                      ],
+                    )))),
+        endDrawer: Drawer(
+          child: Container(
+            margin:
+                const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
+                  child: Text(
+                    'ROOM OPTIONS',
+                    style: TextStyles.h2.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: ColorPalette.primaryColor),
+                  ),
+                ),
+                Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
+                    child: ButtonDefault(
+                        label: 'Book Room',
+                        onTap: () {
+                          Navigator.of(context).pushNamed(RentalForm.routeName);
+                        })),
+                Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
+                    child:
+                        ButtonDefault(label: 'Create New Room', onTap: () {})),
+                Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
+                    child: ButtonDefault(label: 'Edit Room', onTap: () {})),
+              ],
             ),
           ),
         ),
-        title: Container(
-          child: Text(
-            'ROOMS',
-            style: TextStyles.slo.bold.copyWith(
-              shadows: [
-                Shadow(
-                  color: Colors.black12,
-                  offset: Offset(3, 6),
-                  blurRadius: 6,
-                )
-              ],)))),
-        
-      // endDrawer: Drawer(
-      //   child: Container(
-      //     margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         Container(
-      //           margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
-      //           child: Text(
-      //             'ROOM OPTIONS',
-      //             style: TextStyles.h2.copyWith(
-      //                 fontWeight: FontWeight.bold,
-      //                 color: ColorPalette.primaryColor),
-      //           ),
-      //         ),
-      //         Container(
-      //             margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-      //             child: ButtonDefault(
-      //                 label: 'Book Room',
-      //                 onTap: () {
-      //                   Navigator.of(context).pushNamed(RentalForm.routeName);
-      //                 })),
-      //         Container(
-      //             margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-      //             child: ButtonDefault(label: 'Create New Room', onTap: () {})),
-      //         Container(
-      //             margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-      //             child: ButtonDefault(label: 'Edit Room', onTap: () {})),
-      //       ],
-      //     ),
-      //   ),
-      //   ),
-      
-      body: Container(
+        body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
             color: ColorPalette.backgroundColor,
             // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
