@@ -105,6 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  counter:
+    dependency: "direct main"
+    description:
+      name: counter
+      sha256: "501cd9478339f92aed9d339112cc81cb994a078a903112ebcd0a47db7c557380"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   cross_file:
     dependency: transitive
     description:
