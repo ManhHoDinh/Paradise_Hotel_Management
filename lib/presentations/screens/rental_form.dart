@@ -1,14 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
+import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
+import 'package:paradise/presentations/screens/AddUser_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 enum Sex { male, female }
 
@@ -19,6 +24,85 @@ class RentalForm extends StatefulWidget {
   const RentalForm({super.key});
   @override
   State<RentalForm> createState() => _RentalFormState();
+}
+
+class DropDown extends StatefulWidget {
+  static final DropDown _singleton = DropDown._internal();
+  String? dropdownKindValue;
+  factory DropDown() {
+    return _singleton;
+  }
+  String selectedValue() {
+    return dropdownKindValue!;
+  }
+
+  void resetValue() {
+    dropdownKindValue = null;
+  }
+
+  DropDown._internal();
+  // const DropDown({super.key});
+
+  @override
+  State<DropDown> createState() => _DropDownState();
+}
+
+class _DropDownState extends State<DropDown> {
+  final typeGuest = ['Domestic', 'Foreign'];
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButtonFormField(
+        isExpanded: true,
+        decoration: InputDecoration(border: InputBorder.none),
+
+        alignment: Alignment.centerLeft,
+        icon: Transform.translate(
+            offset: Offset(-10, -4),
+            child: Icon(
+              FontAwesomeIcons.sortDown,
+              size: 16,
+            )),
+        // iconStyleData:
+        //     IconStyleData(iconEnabledColor: ColorPalette.primaryColor),
+        // dropdownStyleData: DropdownStyleData(
+        //     decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(kMinPadding))),
+
+        hint: Text(
+          'Choose here',
+          textAlign: TextAlign.center,
+          style: TextStyles.defaultStyle.grayText.copyWith(fontSize: 12).italic,
+        ),
+
+        items: typeGuest
+            .map((e) => DropdownMenuItem<String>(
+                value: e,
+                // onTap: () {
+                //   setState(() {
+                //     kindRoom = e;
+                //   });
+                // },
+                child: Text(
+                  e,
+                  style: TextStyles.defaultStyle,
+                )))
+            .toList(),
+        // buttonStyleData: const ButtonStyleData(
+        //   padding: const EdgeInsets.only(left: 12),
+        // ),
+        // menuItemStyleData: const MenuItemStyleData(),
+        value: widget.dropdownKindValue,
+
+        onChanged: (value) {
+          setState(() {
+            widget.dropdownKindValue = value;
+          });
+        },
+      ),
+    );
+  }
 }
 
 class _RentalFormState extends State<RentalForm> {
@@ -37,7 +121,7 @@ class _RentalFormState extends State<RentalForm> {
   late TextEditingController _GuestIDController;
   late TextEditingController _PhoneNumberController;
   late TextEditingController _NoteController;
-
+  List<String> listKind = [];
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -50,6 +134,7 @@ class _RentalFormState extends State<RentalForm> {
     return Color(0xffD9D9D9);
   }
 
+  final typeGuest = ['Domestic', 'Foreign'];
   DateTimeRange soNgayDuocChon = DateTimeRange(
     start: DateTime.now(),
     end: DateTime.now(),
@@ -64,15 +149,104 @@ class _RentalFormState extends State<RentalForm> {
     _NoteController = TextEditingController();
   }
 
+  String? kindRoom;
+
+  int _countGuest = 1;
+  String? dropdownKindValue;
+  void addGuest() {
+    DropDown._singleton.resetValue();
+    // setState(() {
+    TextEditingController _nameGuestController = TextEditingController();
+    TextEditingController _cardIdGuestController = TextEditingController();
+
+    listRow.add(TableRow(children: [
+      Container(alignment: Alignment.center, child: Text('$_countGuest')),
+      Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: DropDown(),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: TextField(
+          controller: _nameGuestController,
+          decoration: InputDecoration(
+              hintText: 'Type here',
+              hintStyle: TextStyles.defaultStyle.grayText.italic),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: TextField(
+          controller: _cardIdGuestController,
+          decoration: InputDecoration(
+              hintText: 'Type here',
+              hintStyle: TextStyles.defaultStyle.grayText.italic),
+        ),
+      ),
+    ]));
+    // }
+    // );
+
+    _countGuest++;
+    setState(() {});
+  }
+
+  List<TableRow> listRow = [
+    TableRow(children: [
+      Container(
+        height: 40,
+        alignment: Alignment.center,
+        child: Text(
+          'No',
+          textAlign: TextAlign.center,
+          style: TextStyles.defaultStyle.copyWith(
+              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
+        ),
+      ),
+      Container(
+        height: 40,
+        alignment: Alignment.center,
+        child: Text(
+          'Type',
+          textAlign: TextAlign.center,
+          style: TextStyles.defaultStyle.copyWith(
+              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
+        ),
+      ),
+      Container(
+        height: 40,
+        alignment: Alignment.center,
+        child: Text(
+          'Name',
+          textAlign: TextAlign.center,
+          style: TextStyles.defaultStyle.copyWith(
+              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
+        ),
+      ),
+      Container(
+        height: 40,
+        alignment: Alignment.center,
+        child: Text(
+          'Id card',
+          textAlign: TextAlign.center,
+          style: TextStyles.defaultStyle.copyWith(
+              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
+        ),
+      ),
+    ]),
+  ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final double itemWidth = (size.width - 72) / 2;
+
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: kMaxPadding * 2.5,
           elevation: 5,
-          backgroundColor: ColorPalette.primaryColor,
+          backgroundColor: ColorPalette.primaryColor.withOpacity(0.75),
           leading: InkWell(
             customBorder: CircleBorder(),
             onHighlightChanged: (param) {
@@ -93,13 +267,24 @@ class _RentalFormState extends State<RentalForm> {
             ),
           ),
           title: Container(
+            padding: const EdgeInsets.symmetric(vertical: 40),
             child: Row(
               children: [
                 Expanded(
                     flex: 5,
                     child: Container(
                       alignment: Alignment.center,
-                      child: Text('BOOKING', style: TextStyles.h8),
+                      child: Text('RENTAL FORM',
+                          style: TextStyles.h8.copyWith(
+                              fontSize: 24,
+                              letterSpacing: 4,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(4.0, 4.0),
+                                  blurRadius: 3.0,
+                                  color: Colors.black12,
+                                ),
+                              ])),
                     )),
                 Expanded(
                     child: InkWell(
@@ -111,527 +296,9 @@ class _RentalFormState extends State<RentalForm> {
           ),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          //       padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-              const SizedBox(height: 36),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text('Booked room',
-                    style: TextStyles.h9.copyWith(
-                      color: ColorPalette.primaryColor,
-                      fontSize: 16,
-                    )),
-              ),
-              SizedBox(height: 20),
-              Container(
-                child: Container(
-                  child: SizedBox(
-                    height: 42,
-                    width: double.infinity,
-                    child: TextField(
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(top: 4),
-                          prefixIcon: InkWell(
-                            customBorder: CircleBorder(),
-                            onTap: () {},
-                            child: Icon(
-                              FontAwesomeIcons.magnifyingGlass,
-                              size: 16,
-                              color: ColorPalette.greenText,
-                            ),
-                          ),
-                          suffixIcon: InkWell(
-                              customBorder: CircleBorder(),
-                              onTap: () {},
-                              child: Image.asset(AssetHelper.iconFilter)),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                            fontSize: 14,
-                            color: ColorPalette.grayText,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ColorPalette.primaryColor, width: 2),
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5, color: ColorPalette.yellowColor),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                    ),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.room1)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                'P001',
-                                style: TextStyles.h8.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: ColorPalette.darkBlueText),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2, right: 8),
-                              child: Row(
-                                children: [
-                                  Image.asset(AssetHelper.iconInRoom),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7),
-                                    child: Text(
-                                      'Nguyen Phuoc Thien',
-                                      style: TextStyles.h8.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 10,
-                                          color: ColorPalette.yellowColor),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                width: itemWidth - 45,
-                                child: Image.asset(AssetHelper.iconLine),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                '2 - 3 March',
-                                style: TextStyles.h8.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorPalette.darkBlueText,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 15)
-                          ]),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5, color: ColorPalette.yellowColor),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                    ),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.room1)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                'P002',
-                                style: TextStyles.h8.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: ColorPalette.darkBlueText),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2, right: 8),
-                              child: Row(
-                                children: [
-                                  Image.asset(AssetHelper.iconInRoom),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7),
-                                    child: Text(
-                                      'Buu Dang',
-                                      style: TextStyles.h8.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 10,
-                                          color: ColorPalette.yellowColor),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                width: itemWidth - 45,
-                                child: Image.asset(AssetHelper.iconLine),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                '1 - 3 April',
-                                style: TextStyles.h8.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorPalette.darkBlueText,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 15)
-                          ]),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5, color: ColorPalette.yellowColor),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                    ),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.room1)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                'P003',
-                                style: TextStyles.h8.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: ColorPalette.darkBlueText),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2, right: 8),
-                              child: Row(
-                                children: [
-                                  Image.asset(AssetHelper.iconInRoom),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7),
-                                    child: Text(
-                                      'Ho Dinh Manh',
-                                      style: TextStyles.h8.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 10,
-                                          color: ColorPalette.yellowColor),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                width: itemWidth - 45,
-                                child: Image.asset(AssetHelper.iconLine),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                '3 May',
-                                style: TextStyles.h8.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorPalette.darkBlueText,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 15)
-                          ]),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5, color: ColorPalette.yellowColor),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                    ),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.room1)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                'P004',
-                                style: TextStyles.h8.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: ColorPalette.darkBlueText),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2, right: 8),
-                              child: Row(
-                                children: [
-                                  Image.asset(AssetHelper.iconInRoom),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7),
-                                    child: Text(
-                                      'Pham Thanh Tuong',
-                                      style: TextStyles.h8.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 10,
-                                          color: ColorPalette.yellowColor),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                width: itemWidth - 45,
-                                child: Image.asset(AssetHelper.iconLine),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                '2 - 4 May',
-                                style: TextStyles.h8.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorPalette.darkBlueText,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 15)
-                          ]),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5, color: ColorPalette.yellowColor),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                    ),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.room1)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                'P005',
-                                style: TextStyles.h8.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: ColorPalette.darkBlueText),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2, right: 8),
-                              child: Row(
-                                children: [
-                                  Image.asset(AssetHelper.iconInRoom),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7),
-                                    child: Text(
-                                      'Vo Cong Binh',
-                                      style: TextStyles.h8.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 10,
-                                          color: ColorPalette.yellowColor),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                width: itemWidth - 45,
-                                child: Image.asset(AssetHelper.iconLine),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                '6 - 10 June',
-                                style: TextStyles.h8.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorPalette.darkBlueText,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 15)
-                          ]),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5, color: ColorPalette.yellowColor),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                    ),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.room1)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                'P006',
-                                style: TextStyles.h8.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: ColorPalette.darkBlueText),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2, right: 8),
-                              child: Row(
-                                children: [
-                                  Image.asset(AssetHelper.iconInRoom),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7),
-                                    child: Text(
-                                      'Nguyen Phuoc Thien',
-                                      style: TextStyles.h8.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 10,
-                                          color: ColorPalette.yellowColor),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Container(
-                                alignment: Alignment.bottomRight,
-                                width: itemWidth - 45,
-                                child: Image.asset(AssetHelper.iconLine),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 2, bottom: 2),
-                              child: Text(
-                                '10 - 12 June',
-                                style: TextStyles.h8.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorPalette.darkBlueText,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 15)
-                          ]),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 40),
-              Container(
-                child: Text(
-                  'Create New Rental Form',
-                  style: TextStyles.h9
-                      .copyWith(fontSize: 14, color: ColorPalette.primaryColor),
-                ),
-              ),
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.only(left: 24, right: 24),
@@ -660,7 +327,7 @@ class _RentalFormState extends State<RentalForm> {
                             decoration: InputDecoration(
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 25),
-                                hintText: 'Type here',
+                                hintText: 'Choose here',
                                 hintStyle: TextStyle(
                                   fontSize: 14,
                                   color: ColorPalette.grayText,
@@ -678,228 +345,150 @@ class _RentalFormState extends State<RentalForm> {
                         ),
                       ),
                     ),
+
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Guest Name',
+                        'All guest',
                         style: TextStyles.h8.copyWith(
                             fontSize: 12,
                             color: ColorPalette.darkBlueText,
                             fontWeight: FontWeight.w500),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    Table(
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        border: TableBorder.all(
+                            color: ColorPalette.grayText,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(4),
+                                topRight: Radius.circular(4))),
+                        columnWidths: {
+                          0: FlexColumnWidth(1),
+                          1: FlexColumnWidth(4),
+                          2: FlexColumnWidth(4),
+                          3: FlexColumnWidth(3),
+                        },
+                        children: listRow),
+                    InkWell(
+                      onTap: () {
+                        addGuest();
+                        // RawAutocomplete a =
+                        //     (listRow[1].children![1]) as RawAutocomplete;
+
+                        // print(a.textEditingController!.text);
+                        // var a = listRow[1].children![1];
+                        // DropdownButtonHideUnderline b =
+                        //     a as DropdownButtonHideUnderline;
+                        // DropdownButtonFormField c =
+                        //     b.child as DropdownButtonFormField;
+                        // print);
+                      },
                       child: Container(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 42,
-                          width: double.infinity,
-                          child: TextField(
-                            controller: _GuestNameController,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 25),
-                                hintText: 'Type here',
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorPalette.grayText,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: ColorPalette.primaryColor,
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(25),
-                                )),
-                          ),
+                        height: kMediumPadding * 1.5,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            border: Border(
+                                left: BorderSide(
+                                    color: ColorPalette.grayText, width: 1),
+                                right: BorderSide(
+                                    color: ColorPalette.grayText, width: 1),
+                                top: BorderSide(
+                                    color: ColorPalette.grayText, width: 1),
+                                bottom: BorderSide(
+                                    color: ColorPalette.grayText, width: 1)),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(4),
+                                bottomRight: Radius.circular(4))),
+                        child: Icon(
+                          FontAwesomeIcons.plus,
+                          color: ColorPalette.primaryColor,
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Sex',
-                        style: TextStyles.h8.copyWith(
-                            fontSize: 12,
-                            color: ColorPalette.darkBlueText,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
+
+                    // Padding(
+                    //   padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    //   child: Container(
+                    //     alignment: Alignment.center,
+                    //     child: SizedBox(
+                    //       height: 42,
+                    //       width: double.infinity,
+                    //       child: TextField(
+                    //         controller: _GuestNameController,
+                    //         textAlign: TextAlign.center,
+                    //         decoration: InputDecoration(
+                    //             contentPadding:
+                    //                 EdgeInsets.symmetric(horizontal: 25),
+                    //             hintText: 'Type here',
+                    //             hintStyle: TextStyle(
+                    //               fontSize: 14,
+                    //               color: ColorPalette.grayText,
+                    //             ),
+                    //             border: OutlineInputBorder(
+                    //               borderRadius: BorderRadius.circular(25),
+                    //             ),
+                    //             focusedBorder: OutlineInputBorder(
+                    //               borderSide: BorderSide(
+                    //                   color: ColorPalette.primaryColor,
+                    //                   width: 2),
+                    //               borderRadius: BorderRadius.circular(25),
+                    //             )),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+
                     Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: size.width / 2 - 60,
-                            child: ListTile(
-                              title: const Text(
-                                'Male',
-                                style: TextStyles.defaultStyle,
-                              ),
-                              leading: Radio<String>(
-                                fillColor: MaterialStateColor.resolveWith(
-                                    (states) => getColor(states)),
-                                value: "Male",
-                                groupValue: gender,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    gender = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: size.width / 2 - 36,
-                            child: ListTile(
-                              title: const Text(
-                                'Female',
-                                style: TextStyles.defaultStyle,
-                              ),
-                              leading: Radio<String>(
-                                fillColor: MaterialStateColor.resolveWith(
-                                    (states) => getColor(states)),
-                                value: "Female",
-                                groupValue: gender,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    gender = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   width: size.width / 2 - 60,
+                          //   child: ListTile(
+                          //     title: const Text(
+                          //       'Male',
+                          //       style: TextStyles.defaultStyle,
+                          //     ),
+                          //     leading: Radio<String>(
+                          //       fillColor: MaterialStateColor.resolveWith(
+                          //           (states) => getColor(states)),
+                          //       value: "Male",
+                          //       groupValue: gender,
+                          //       onChanged: (String? value) {
+                          //         setState(() {
+                          //           gender = value;
+                          //         });
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
+                          // Container(
+                          //   width: size.width / 2 - 36,
+                          //   child: ListTile(
+                          //     title: const Text(
+                          //       'Female',
+                          //       style: TextStyles.defaultStyle,
+                          //     ),
+                          //     leading: Radio<String>(
+                          //       fillColor: MaterialStateColor.resolveWith(
+                          //           (states) => getColor(states)),
+                          //       value: "Female",
+                          //       groupValue: gender,
+                          //       onChanged: (String? value) {
+                          //         setState(() {
+                          //           gender = value;
+                          //         });
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Guest ID',
-                        style: TextStyles.h8.copyWith(
-                            fontSize: 12,
-                            color: ColorPalette.darkBlueText,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 42,
-                          width: double.infinity,
-                          child: TextField(
-                            controller: _GuestIDController,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 25),
-                                hintText: 'Type here',
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorPalette.grayText,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: ColorPalette.primaryColor,
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(25),
-                                )),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Phone number',
-                        style: TextStyles.h8.copyWith(
-                            fontSize: 12,
-                            color: ColorPalette.darkBlueText,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 42,
-                          width: double.infinity,
-                          child: TextField(
-                            controller: _PhoneNumberController,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 25),
-                                hintText: 'Type here',
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorPalette.grayText,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: ColorPalette.primaryColor,
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(25),
-                                )),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Note',
-                        style: TextStyles.h8.copyWith(
-                            fontSize: 12,
-                            color: ColorPalette.darkBlueText,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 42,
-                          width: double.infinity,
-                          child: TextField(
-                            controller: _NoteController,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 25),
-                                hintText: 'Type here',
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorPalette.grayText,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: ColorPalette.primaryColor,
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(25),
-                                )),
-                          ),
-                        ),
-                      ),
-                    ),
+
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -1048,20 +637,36 @@ class _RentalFormState extends State<RentalForm> {
                         borderRadius: BorderRadius.circular(20),
                         splashColor: Colors.black38,
                         onTap: () {
-                          Map<String, String> inForUser = {
-                            'RoomID': '${_RoomIDController.text}',
-                            'GuestName': '${_GuestNameController.text}',
-                            'GuestID': '${_GuestIDController.text}',
-                            'PhoneNumber': '${_PhoneNumberController.text}',
-                            'Note': '${_NoteController.text}',
-                            'Sex': '${gender}',
-                            'DateRegister':
-                                '${_soNgay > 1 ? "${_rangeStart} - ${_rangeEnd}" : "${_rangeStart}"}'
-                          };
+                          for (int i = 1; i < _countGuest; i++) {
+                            TextField nameGuest =
+                                (listRow[i].children![2]) as TextField;
+                            TextField cartIdGuest =
+                                (listRow[i].children![3]) as TextField;
+                            DropDown typeGuest =
+                                (listRow[i].children![1]) as DropDown;
 
-                          // FirebaseFirestore.instance
-                          //     .collection('Users')
-                          //     .add(inForUser);
+                            Map<String, String> inForUser = {
+                              'Type': '${typeGuest.selectedValue()}',
+                              'RoomID': '${_RoomIDController.text}',
+                              'GuestName': '${nameGuest.controller!.text}',
+                              'GuestID': '${cartIdGuest.controller!.text}',
+                              'DateRegister': '${_rangeStart}'
+                            };
+                            FirebaseFirestore.instance
+                                .collection('Guests')
+                                .add(inForUser);
+                          }
+                          // Map<String, String> inForUser = {
+                          //   'RoomID': '${_RoomIDController.text}',
+                          //   'GuestName': '${_GuestNameController.text}',
+                          //   'GuestID': '${_GuestIDController.text}',
+                          //   'PhoneNumber': '${_PhoneNumberController.text}',
+                          //   'Note': '${_NoteController.text}',
+                          //   'Sex': '${gender}',
+                          //   'DateRegister':
+                          //       '${_soNgay > 1 ? "${_rangeStart} - ${_rangeEnd}" : "${_rangeStart}"}'
+                          // };
+
                           // showDialog(
                           //     //barrierColor: Colors.transparent,
                           //     context: context,
@@ -1086,21 +691,20 @@ class _RentalFormState extends State<RentalForm> {
                           //             ],
                           //           ));
                           //     });
-                          CollectionReference roomCollection =
-                              FirebaseFirestore.instance.collection('Rooms');
+                          // CollectionReference roomCollection =
+                          //     FirebaseFirestore.instance.collection('RoomKind');
 
-                          FirebaseFirestore.instance
-                              .collection('Rooms')
-                              .where("RoomID",
-                                  isEqualTo: "${_RoomIDController.text}")
-                              .get()
-                              .then((value) {
-                            DocumentReference document =
-                                roomCollection.doc(value.docs[0].id);
-                            //  document.update({"State": "Booked"});
+                          // FirebaseFirestore.instance
+                          //     .collection('RoomKind')
+                          //     .where("RoomKindID", isEqualTo: "1")
+                          //     .get()
+                          //     .then((value) {
+                          //   DocumentReference document =
+                          //       roomCollection.doc(value.docs[0].id);
+                          //   //  document.update({"State": "Booked"});
 
-                            print(value.docs[0]["name"]);
-                          });
+                          //   print(value.docs[0]['Name']);
+                          // });
                         },
                         child: Container(
                           width: size.width / 3,
