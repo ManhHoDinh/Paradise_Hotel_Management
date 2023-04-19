@@ -10,10 +10,9 @@ import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
-import 'package:paradise/presentations/screens/AddUser_screen.dart';
+import 'package:paradise/core/models/room_model.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 enum Sex { male, female }
 
@@ -21,7 +20,8 @@ String? gender = 'Male';
 
 class RentalForm extends StatefulWidget {
   static final String routeName = 'rental_form';
-  const RentalForm({super.key});
+  RoomModel room;
+  RentalForm({super.key, required this.room});
   @override
   State<RentalForm> createState() => _RentalFormState();
 }
@@ -274,17 +274,7 @@ class _RentalFormState extends State<RentalForm> {
                     flex: 5,
                     child: Container(
                       alignment: Alignment.center,
-                      child: Text('RENTAL FORM',
-                          style: TextStyles.h8.copyWith(
-                              fontSize: 24,
-                              letterSpacing: 4,
-                              shadows: <Shadow>[
-                                Shadow(
-                                  offset: Offset(4.0, 4.0),
-                                  blurRadius: 3.0,
-                                  color: Colors.black12,
-                                ),
-                              ])),
+                      child: Text('BOOKING', style: TextStyles.h8),
                     )),
                 Expanded(
                     child: InkWell(

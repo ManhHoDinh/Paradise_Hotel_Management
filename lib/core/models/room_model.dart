@@ -3,33 +3,42 @@ import 'package:flutter/material.dart';
 class RoomModel {
   String? roomID;
   String? PrimaryImage;
-  String? type;
+  String? RoomKindID;
   int? price;
-  String? name;
   String? State;
-  //String? hotelID;
-  //List<String> images = [];
+  String? Description;
+  List<String> SubImages = [];
+  int? maxCapacity;
   RoomModel(
-      {this.roomID,
-      this.PrimaryImage,
-      this.name,
-      this.type,
-      this.price,
-      this.State});
+      {required this.roomID,
+      required this.PrimaryImage,
+      required this.RoomKindID,
+      required this.price,
+      required this.State,
+      required this.SubImages,
+      required this.Description,
+      required this.maxCapacity});
   Map<String, dynamic> toJson() => {
         'roomID': roomID,
-        'name': name,
-        'type': type,
-        'price': price,
+        'roomKindID': RoomKindID,
+        'price': price.toString(),
         'PrimaryImage': PrimaryImage,
         'State': State,
+        'SubImages': SubImages,
+        'Description': Description,
+        'maxCapacity': maxCapacity.toString()
       };
 
-  static RoomModel fromJson(Map<String, dynamic> json) => RoomModel(
-      roomID: json['roomID'],
-      name: json['name'],
-      type: json['type'],
-      price: int.parse(json['price']),
-      PrimaryImage: json['PrimaryImage'],
-      State: json['State']);
+  static RoomModel fromJson(Map<String, dynamic> json) {
+    List<String> SubImages = [];
+    return RoomModel(
+        roomID: json['roomID'],
+        RoomKindID: json['roomKindID'],
+        price: int.parse(json['price']),
+        PrimaryImage: json['PrimaryImage'],
+        State: json['State'],
+        SubImages: SubImages,
+        Description: json['Description'],
+        maxCapacity: int.parse(json['maxCapacity']));
+  }
 }

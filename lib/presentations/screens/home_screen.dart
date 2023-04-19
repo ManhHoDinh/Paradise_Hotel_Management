@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
+import 'package:paradise/presentations/screens/RoomKindView.dart';
 import 'package:paradise/presentations/screens/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
@@ -35,12 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final double itemWidth = (size.width - 72) / 2;
 
     final double itemHeight = 180;
-    Stream<List<RoomModel>> readRooms() => FirebaseFirestore.instance
-        .collection('Rooms')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => RoomModel.fromJson(doc.data()))
-            .toList());
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
@@ -72,18 +69,22 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Room',
+              label: 'Book Room',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Guest',
+              label: 'Kind Room',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(RoomKindView.routeName);
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),
@@ -179,6 +180,19 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
+            StreamBuilder(
+                stream: FireBaseDataBase.readRoomKinds(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    RoomKindModel.kindItems.clear();
+                    RoomKindModel.AllRoomKinds = snapshot.data!;
+                    for (RoomKindModel k in RoomKindModel.AllRoomKinds) {
+                      RoomKindModel.kindItems.add(k.Name ?? '');
+                    }
+                    print("Room Kind updated");
+                  }
+                  return Container();
+                }),
             const SizedBox(height: 36),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),
@@ -189,10 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SeeAllScreen()));
+                        Navigator.of(context).pushNamed(SeeAllScreen.routeName);
                       },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],
@@ -202,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
               child: Expanded(
                 child: StreamBuilder<List<RoomModel>>(
-                    stream: readRooms(),
+                    stream: FireBaseDataBase.readRooms(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Center(
@@ -222,11 +233,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // return a custom ItemCard
                           itemBuilder: (context, i) => RoomItem(
-                              image: listRoom[i].PrimaryImage ?? '',
-                              name: listRoom[i].name ?? '',
-                              type: listRoom[i].type ?? '',
-                              cost: listRoom[i].price ?? 0,
-                              status: listRoom[i].State ?? ''),
+                            room: listRoom[i],
+                          ),
                           // RoomItem(
 
                           //     listRoom[i].PrimaryImage ?? AssetHelper.room1,
@@ -254,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Container();
                     }),
               ),
-            )
+            ),
           ],
         ),
       ),
