@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
+import 'package:paradise/presentations/screens/DetailRoom_screen.dart';
+import 'package:paradise/presentations/screens/detail_room.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: RoomDetailScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

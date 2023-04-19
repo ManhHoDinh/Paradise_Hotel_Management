@@ -178,6 +178,21 @@ class TextStyles {
       color: ColorPalette.detailBorder,
       fontWeight: FontWeight.w500,
       fontFamily: AppFonts.inter);
+  static const TextStyle inforRoomDetail = TextStyle(
+      fontSize: 14,
+      color: Color(0xff1B1446),
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.poppins);
+  static const TextStyle descriptionRoom = TextStyle(
+      fontSize: 14,
+      color: ColorPalette.rankText,
+      fontWeight: FontWeight.w400,
+      fontFamily: AppFonts.inter);
+  static const TextStyle iconInDetailRoom = TextStyle(
+      fontSize: 14,
+      color: Color(0xff000000),
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.inter);
 }
 
 // How to use?
