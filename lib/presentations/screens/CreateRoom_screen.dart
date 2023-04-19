@@ -263,6 +263,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                           vertical: kMediumPadding * 1.5,
                           horizontal: kMaxPadding * 3),
                       child: ButtonDefault(
+                        color: ColorPalette.primaryColor,
                         label: 'Create',
                         onTap: () {
                           createRoom(

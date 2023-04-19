@@ -4,11 +4,13 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
 class ButtonDefault extends StatelessWidget {
+  final Color color;
   final String label;
   final VoidCallback onTap;
 
   const ButtonDefault({
     super.key,
+    required this.color,
     required this.label,
     required this.onTap,
   });
@@ -26,7 +28,7 @@ class ButtonDefault extends StatelessWidget {
           decoration:
               BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(100)),
-                color: ColorPalette.primaryColor,
+                color: color,
               ),
           padding: const EdgeInsets.symmetric(vertical: kMinPadding * 2),
           child: Text(
