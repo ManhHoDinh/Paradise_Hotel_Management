@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
@@ -5,7 +10,9 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/check_box.dart';
@@ -28,20 +35,26 @@ class EditRoomScreen extends StatefulWidget {
 
 class _EditRoomScreenState extends State<EditRoomScreen> {
   late String roomID;
-  late String roomType;
-  late String price;
+  late String kindRoom;
+  late String roomKindID;
+  late int _price;
   late String description;
-  late String image;
-
-  List<String> kindItems = ['Family', 'Couple', 'Master'];
+  late String primaryImage;
+  bool isLoading = false;
+  String PrimaryImageUrl = '';
+  List<String> SubImageUrls = [];
+  TextEditingController descriptionController = new TextEditingController();
+  TextEditingController maxCapacityController = new TextEditingController();
+  String? dropdownKindValue;
 
   @override
   Widget build(BuildContext context) {
     roomID = widget.roomModel.roomID ?? '';
-    roomType = widget.roomModel.RoomKindID ?? '';
-    price = widget.roomModel.price.toString();
+    roomKindID = widget.roomModel.RoomKindID ?? '';
+    kindRoom = RoomKindModel.getRoomKindName(widget.roomModel.RoomKindID!);
+    _price = widget.roomModel.price ?? 0;
     description = widget.roomModel.Description ?? '';
-    image = widget.roomModel.PrimaryImage ?? '';
+    primaryImage = widget.roomModel.PrimaryImage ?? '';
 
     return GestureDetector(
       child: Scaffold(
@@ -140,32 +153,97 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                 margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
               Container(
-                child: DropdownWidget(kindItem: roomType,kindItems: kindItems),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    Container(
-                      child: Text(
-                        'Price',
-                        style:
-                            TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
+                height: kDefaultIconSize * 2,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: Colors.grey
+                    )),
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    child: DropdownButton2(
+                      alignment: Alignment.centerLeft,
+                      iconStyleData: IconStyleData(
+                          iconEnabledColor: ColorPalette.primaryColor),
+                      dropdownStyleData: DropdownStyleData(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(kMinPadding))),
+                      hint: Text(
+                        kindRoom,
+                        style: TextStyles.defaultStyle.grayText,
                       ),
+                      items: RoomKindModel.kindItems
+                          .map((e) => DropdownMenuItem<String>(
+                              value: e,
+                              onTap: () {
+                                setState(() {
+                                  kindRoom = e;
+                                  RoomKindModel kindSelected =
+                                      RoomKindModel.AllRoomKinds.where(
+                                          (roomKind) =>
+                                              roomKind.Name! == e).first;
+                                  widget.roomModel.price = kindSelected.Price ?? 0;
+                                  _price = widget.roomModel.price ?? 0;
+                                  widget.roomModel.RoomKindID = kindSelected.RoomKindID ?? '';
+                                  roomKindID =
+                                      kindSelected.RoomKindID ?? '';
+                                });
+                              },
+                              child: Text(
+                                e,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyles.defaultStyle.grayText,
+                              )))
+                          .toList(),
+                      buttonStyleData: const ButtonStyleData(
+                        padding: const EdgeInsets.only(left: 12),
+                        height: 28,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 28,
+                      ),
+                      value: dropdownKindValue,
+                      onChanged: (value) {
+                        setState(() {
+                          dropdownKindValue = value;
+                          print(dropdownKindValue);
+                        });
+                      },
                     ),
-                    Spacer(),
-                    Container(
-                      child: Text(price + ' VND per night',
-                        style: TextStyles.h6.copyWith(
-                          fontStyle: FontStyle.italic,
-                          color: ColorPalette.primaryColor
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-                margin: const EdgeInsets.symmetric(horizontal: kMaxPadding * 1.5, vertical: kItemPadding * 2),
+                margin: const EdgeInsets.symmetric(
+                    horizontal: kMaxPadding * 1.5,
+                    vertical: kItemPadding),
+              ),
+              StatefulBuilder(
+                builder: (context, setState) {
+                  return Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          child: Text(
+                            'Price',
+                            style:
+                                TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          child: Text(_price.toString() + ' VND per night',
+                            style: TextStyles.defaultStyle.copyWith(
+                              fontStyle: FontStyle.italic,
+                              color: ColorPalette.primaryColor
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: kMaxPadding * 1.5, vertical: kItemPadding * 2),
+                  );
+                },
               ),
               Container(
                 child: Text(
@@ -176,7 +254,10 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                 margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
               Container(
-                child: InputDefault(labelText: description),
+                child: InputDefault(
+                  labelText: description,
+                  controller: descriptionController,
+                  ),
                 margin: const EdgeInsets.symmetric(
                     horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
               ),
@@ -188,11 +269,11 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                 ),
                 margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
               ),
-              image != ''
+              primaryImage != ''
                 ? Container(
                     alignment: Alignment.center,
                     margin: const EdgeInsets.symmetric(vertical: kMinPadding * 2),
-                    child: ImageHelper.loadFromNetwork(image,
+                    child: ImageHelper.loadFromNetwork(primaryImage,
                       height: 105,
                       fit: BoxFit.fitWidth, 
                     ),
@@ -216,14 +297,13 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                   color: ColorPalette.primaryColor,
                   label: 'Save',
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return DialogOverlay(
-                            task: 'Edit',
-                            isSuccess: false,
-                          );
-                        });
+                    updateRoom(
+                      PrimaryImagePath: UploadButton.PrimaryImagePath, 
+                      roomKindID: roomKindID, 
+                      price: _price, 
+                      State: 'Available', 
+                      RoomID: roomID,
+                    );
                   },
                 ),
               ),
@@ -292,5 +372,97 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
     );
+  }
+
+  void updateRoom({
+    required String PrimaryImagePath,
+    required String roomKindID,
+    required int price,
+    required String State,
+    required String RoomID
+  }) async {
+    setState(() {
+      isLoading = true;
+    });
+    PrimaryImageUrl = '';
+    SubImageUrls.clear();
+
+    final docUser = FirebaseFirestore.instance.collection('Rooms').doc(RoomID);
+    bool existId = await checkIfDocExists(RoomID);
+
+    if (existId) {
+      await UploadImages(
+        PrimaryImagePath: UploadButton.PrimaryImagePath, 
+        SubImagePaths: UploadButton.SubImagePath);
+
+        print("----------------------" + SubImageUrls.length.toString());
+        RoomModel _room = await RoomModel(
+            roomID: roomID,
+            PrimaryImage: PrimaryImageUrl,
+            RoomKindID: roomKindID,
+            price: _price,
+            State: State,
+            SubImages: SubImageUrls,
+            Description: descriptionController.text,
+            maxCapacity: int.tryParse(maxCapacityController.text),
+        );
+        final json = _room.toJson();
+        await docUser.set(json);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: true,
+              task: 'Edit',
+            );
+        });
+        setState(() {
+          isLoading = false;
+        });
+        setState(() {
+          // descriptionController.text = '';
+          // price = 0;
+          // roomKindID = '';
+          UploadButton.ResetUploadButton();
+        });
+    } else {
+      showDialog(context: context, builder: (context) {
+        return DialogOverlay(
+          isSuccess: false,
+          task: 'Edit'
+        );
+      });
+    }
+  }
+
+  UploadImages(
+      {required String PrimaryImagePath,
+      required List<String> SubImagePaths}) async {
+    await UploadImage(
+        imagePath: PrimaryImagePath,
+        name: 'PrimaryImage.png',
+        isPrimaryImage: true);
+    for (int i = 0; i < SubImagePaths.length; i++)
+      await UploadImage(
+          imagePath: SubImagePaths[i],
+          name: 'SubImage' + '${i}' + '.png',
+          isPrimaryImage: false);
+  }
+
+  UploadImage(
+      {required String imagePath,
+      required String name,
+      required isPrimaryImage}) async {
+    var imageFile = File(imagePath);
+    Reference ref =
+        FirebaseStorage.instance.ref(roomID).child(name);
+    await ref.putFile(imageFile);
+    await ref.getDownloadURL().then((value) {
+      print(value);
+      if (isPrimaryImage)
+        PrimaryImageUrl = value.toString();
+      else
+        SubImageUrls.add(value.toString());
+    });
   }
 }

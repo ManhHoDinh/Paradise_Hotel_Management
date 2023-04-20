@@ -32,4 +32,9 @@ class RoomKindModel {
         (roomKind) => roomKind.RoomKindID! == id).first;
     return kindSelected.Name ?? '';
   }
+  static int getRoomKindPrice(String id) {
+    RoomKindModel kindSelected = RoomKindModel.AllRoomKinds.where(
+        (roomKind) => roomKind.RoomKindID! == id).first;
+    return kindSelected.Price ?? 0;
+  }
 }

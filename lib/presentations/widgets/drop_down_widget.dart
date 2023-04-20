@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/room_kind_model.dart';
 
 class DropdownWidget extends StatefulWidget {
   final List<String> kindItems;
@@ -39,7 +40,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
 
   @override
   Widget build(BuildContext context) {  
-    kindRoom = widget.kindItem;
+    kindRoom = RoomKindModel.getRoomKindName(widget.kindItem);
       
     return Container(
       height: kDefaultIconSize * 2,
