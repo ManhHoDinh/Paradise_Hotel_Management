@@ -5,6 +5,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
@@ -16,6 +18,7 @@ import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/check_box.dart';
+import 'package:paradise/presentations/widgets/counter.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
 import 'package:paradise/presentations/widgets/drop_down_widget.dart';
 import 'package:paradise/presentations/widgets/input_default.dart';
@@ -23,10 +26,10 @@ import 'package:paradise/presentations/widgets/upload_button.dart';
 
 class EditRoomScreen extends StatefulWidget {
   static String routeName = 'edit_room';
-  final RoomModel roomModel;
+  final RoomModel room;
   const EditRoomScreen({
     super.key,
-    required this.roomModel,
+    required this.room,
   });
 
   @override
@@ -39,8 +42,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   late String roomKindID;
   late int _price;
   late String description;
-  late String primaryImage;
-  bool isLoading = false;
+  late List<String> _images = [];
+  late int maxCapacity;
+  bool isLoading = false, isUploaded = false;
   String PrimaryImageUrl = '';
   List<String> SubImageUrls = [];
   TextEditingController descriptionController = new TextEditingController();
@@ -48,13 +52,27 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   String? dropdownKindValue;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    UploadButton.ResetUploadButton();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    roomID = widget.roomModel.roomID ?? '';
-    roomKindID = widget.roomModel.RoomKindID ?? '';
-    kindRoom = RoomKindModel.getRoomKindName(widget.roomModel.RoomKindID!);
-    _price = widget.roomModel.price ?? 0;
-    description = widget.roomModel.Description ?? '';
-    primaryImage = widget.roomModel.PrimaryImage ?? '';
+    roomID = widget.room.roomID ?? '';
+    roomKindID = widget.room.RoomKindID ?? '';
+    kindRoom = RoomKindModel.getRoomKindName(widget.room.RoomKindID!);
+    _price = widget.room.price ?? 0;
+    maxCapacity = widget.room.maxCapacity ?? 0;
+    PrimaryImageUrl = widget.room.PrimaryImage ?? '';
+    SubImageUrls = widget.room.SubImages;
+    descriptionController.text = widget.room.Description ?? '';
+    print(widget.room.SubImages.length);
+    _images.add(PrimaryImageUrl);
+    for (int i = 0; i < SubImageUrls.length; i++) {
+      _images.add(SubImageUrls[i]);
+    }
 
     return GestureDetector(
       child: Scaffold(
@@ -129,206 +147,221 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
         //     ),
         //   ),
         // ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: kDefaultPadding * 2),
-                child: Text(
-                  'EDIT ROOM ' + roomID,
-                  style: TextStyles.h4.copyWith(
-                      color: ColorPalette.primaryColor,
-                      fontWeight: FontWeight.bold),
+        body: isLoading
+          ? Center(
+                child: LoadingAnimationWidget.discreteCircle(
+                  color: ColorPalette.primaryColor,
+                  size: 100,
                 ),
-                alignment: Alignment.center,
-              ),
-              Container(
-                child: Text(
-                  'Room Type',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                height: kDefaultIconSize * 2,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(
-                      color: Colors.grey
-                    )),
-                child: DropdownButtonHideUnderline(
-                  child: Container(
-                    child: DropdownButton2(
-                      alignment: Alignment.centerLeft,
-                      iconStyleData: IconStyleData(
-                          iconEnabledColor: ColorPalette.primaryColor),
-                      dropdownStyleData: DropdownStyleData(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(kMinPadding))),
-                      hint: Text(
-                        kindRoom,
-                        style: TextStyles.defaultStyle.grayText,
+              )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: kDefaultPadding * 2),
+                    child: Text(
+                      'EDIT ROOM ' + roomID,
+                      style: TextStyles.h4.copyWith(
+                          color: ColorPalette.primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    alignment: Alignment.center,
+                  ),
+                  Container(
+                    child: Text(
+                      'Room Type',
+                      style:
+                          TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
+                    ),
+                    margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                  ),
+                  Container(
+                    height: kDefaultIconSize * 2,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(
+                          color: Colors.grey
+                        )),
+                    child: DropdownButtonHideUnderline(
+                      child: Container(
+                        child: DropdownButton2(
+                          alignment: Alignment.centerLeft,
+                          iconStyleData: IconStyleData(
+                              iconEnabledColor: ColorPalette.primaryColor),
+                          dropdownStyleData: DropdownStyleData(
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(kMinPadding))),
+                          hint: Text(
+                            kindRoom,
+                            style: TextStyles.defaultStyle.grayText,
+                          ),
+                          items: RoomKindModel.kindItems
+                              .map((e) => DropdownMenuItem<String>(
+                                  value: e,
+                                  onTap: () {
+                                    setState(() {
+                                      kindRoom = e;
+                                      RoomKindModel kindSelected =
+                                          RoomKindModel.AllRoomKinds.where(
+                                              (roomKind) =>
+                                                  roomKind.Name! == e).first;
+                                      widget.room.price = kindSelected.Price ?? 0;
+                                      _price = widget.room.price ?? 0;
+                                      widget.room.RoomKindID = kindSelected.RoomKindID ?? '';
+                                      roomKindID =
+                                          kindSelected.RoomKindID ?? '';
+                                    });
+                                  },
+                                  child: Text(
+                                    e,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyles.defaultStyle.grayText,
+                                  )))
+                              .toList(),
+                          buttonStyleData: const ButtonStyleData(
+                            padding: const EdgeInsets.only(left: 12),
+                            height: 28,
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 28,
+                          ),
+                          value: dropdownKindValue,
+                          onChanged: (value) {
+                            setState(() {
+                              dropdownKindValue = value;
+                              print(dropdownKindValue);
+                            });
+                          },
+                        ),
                       ),
-                      items: RoomKindModel.kindItems
-                          .map((e) => DropdownMenuItem<String>(
-                              value: e,
-                              onTap: () {
-                                setState(() {
-                                  kindRoom = e;
-                                  RoomKindModel kindSelected =
-                                      RoomKindModel.AllRoomKinds.where(
-                                          (roomKind) =>
-                                              roomKind.Name! == e).first;
-                                  widget.roomModel.price = kindSelected.Price ?? 0;
-                                  _price = widget.roomModel.price ?? 0;
-                                  widget.roomModel.RoomKindID = kindSelected.RoomKindID ?? '';
-                                  roomKindID =
-                                      kindSelected.RoomKindID ?? '';
-                                });
-                              },
+                    ),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: kMaxPadding * 1.5,
+                        vertical: kItemPadding),
+                  ),
+                  StatefulBuilder(
+                    builder: (context, setState) {
+                      return Container(
+                        child: Row(
+                          children: [
+                            Container(
                               child: Text(
-                                e,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyles.defaultStyle.grayText,
-                              )))
-                          .toList(),
-                      buttonStyleData: const ButtonStyleData(
-                        padding: const EdgeInsets.only(left: 12),
-                        height: 28,
+                                'Price',
+                                style:
+                                    TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
+                              ),
+                            ),
+                            Spacer(),
+                            Container(
+                              child: Text(_price.toString() + ' VND per night',
+                                style: TextStyles.defaultStyle.copyWith(
+                                  fontStyle: FontStyle.italic,
+                                  color: ColorPalette.primaryColor
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        margin: const EdgeInsets.symmetric(horizontal: kMaxPadding * 1.5, vertical: kItemPadding * 2),
+                      );
+                    },
+                  ),
+                  Container(
+                    child: Text(
+                      'Max Capacity',
+                      style: TextStyles.h6.copyWith(
+                          color: ColorPalette.darkBlueText,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    margin: const EdgeInsets.only(
+                        left: kMaxPadding * 1.5, top: kItemPadding),
+                  ),
+                  Container(
+                    child: CounterView(
+                      initNumber: maxCapacity,
+                      minNumber: 1,
+                    ),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: kMaxPadding * 1.5,
+                        vertical: kItemPadding * 2),
+                  ),
+                  Container(
+                    child: Text(
+                      'Description',
+                      style:
+                          TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
+                    ),
+                    margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                  ),
+                  Container(
+                    child: InputDefault(
+                      labelText: descriptionController.text,
+                      controller: descriptionController,
                       ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 28,
-                      ),
-                      value: dropdownKindValue,
-                      onChanged: (value) {
-                        setState(() {
-                          dropdownKindValue = value;
-                          print(dropdownKindValue);
-                        });
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
+                  ),
+                  Container(
+                    child: Text(
+                      'Images',
+                      style:
+                        TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
+                    ),
+                    margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                  ),
+                  showImages(),
+                  Container(
+                    // padding: const EdgeInsets.only(top: 200),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
+                    child: UploadButton(
+                      label: 'Upload here',
+                      icon: AssetHelper.icoUpload,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: kMediumPadding * 1.5,
+                      left: kMaxPadding * 3,
+                      right: kMaxPadding * 3),
+                    child: ButtonDefault(
+                      color: ColorPalette.primaryColor,
+                      label: 'Save',
+                      onTap: () {
+                        updateRoom(
+                          description: descriptionController.text,
+                          PrimaryImagePath: UploadButton.PrimaryImagePath, 
+                          SubImagePaths: UploadButton.SubImagePath,
+                          roomKindID: roomKindID,
+                          maxCapacity: CounterView.maxCap,
+                          price: _price, 
+                          State: 'Available',
+                          RoomID: roomID,
+                        );
                       },
                     ),
                   ),
-                ),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5,
-                    vertical: kItemPadding),
-              ),
-              StatefulBuilder(
-                builder: (context, setState) {
-                  return Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Text(
-                            'Price',
-                            style:
-                                TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                          ),
-                        ),
-                        Spacer(),
-                        Container(
-                          child: Text(_price.toString() + ' VND per night',
-                            style: TextStyles.defaultStyle.copyWith(
-                              fontStyle: FontStyle.italic,
-                              color: ColorPalette.primaryColor
-                            ),
-                          ),
-                        )
-                      ],
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: kMediumPadding * 1.5,
+                        horizontal: kMaxPadding * 3),
+                    child: ButtonDefault(
+                      color: Colors.deepOrange,
+                      label: 'Delete',
+                      onTap: () {
+                        if (widget.room.State == 'Available') {
+                          DeleteRoom(widget.room.roomID ?? '');
+                        }
+                      },
                     ),
-                    margin: const EdgeInsets.symmetric(horizontal: kMaxPadding * 1.5, vertical: kItemPadding * 2),
-                  );
-                },
-              ),
-              Container(
-                child: Text(
-                  'Description',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              Container(
-                child: InputDefault(
-                  labelText: description,
-                  controller: descriptionController,
                   ),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
+                ],
               ),
-              Container(
-                child: Text(
-                  'Images',
-                  style:
-                      TextStyles.h6.copyWith(color: ColorPalette.darkBlueText),
-                ),
-                margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
-              ),
-              primaryImage != ''
-                ? Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.symmetric(vertical: kMinPadding * 2),
-                    child: ImageHelper.loadFromNetwork(primaryImage,
-                      height: 105,
-                      fit: BoxFit.fitWidth, 
-                    ),
-                    // child: Text(image),
-                  )
-                : Container(),
-              Container(
-                // padding: const EdgeInsets.only(top: 200),
-                margin: const EdgeInsets.symmetric(
-                    horizontal: kMaxPadding * 1.5, vertical: kItemPadding),
-                child: UploadButton(
-                  label: 'Upload here',
-                  icon: AssetHelper.icoUpload,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: kMediumPadding * 1.5,
-                    horizontal: kMaxPadding * 3),
-                child: ButtonDefault(
-                  color: ColorPalette.primaryColor,
-                  label: 'Save',
-                  onTap: () {
-                    updateRoom(
-                      PrimaryImagePath: UploadButton.PrimaryImagePath, 
-                      roomKindID: roomKindID, 
-                      price: _price, 
-                      State: 'Available', 
-                      RoomID: roomID,
-                    );
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(
-                    // vertical: kMediumPadding * 1.5,
-                    horizontal: kMaxPadding * 3),
-                child: ButtonDefault(
-                  color: Colors.deepOrange,
-                  label: 'Delete',
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return DialogOverlay(
-                            task: 'Delete',
-                            isSuccess: false,
-                          );
-                        });
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
         // bottomNavigationBar: SalomonBottomBar(
         //   currentIndex: currentId,
         //   onTap: (id) {
@@ -374,12 +407,37 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
     );
   }
 
+  Widget showImages() {
+    return UploadButton.PrimaryImagePath == ''
+      ? Container(
+          height: 120,
+          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(vertical: kMinPadding * 2),
+          child: PageView.builder(
+            itemBuilder: (context, index) {
+              return Container(
+                child: ImageHelper.loadFromNetwork(
+                  _images[index],
+                  height: 120,
+                  fit: BoxFit.fitHeight,
+                ),
+              );
+            },
+            itemCount: _images.length,
+          ),
+        )
+      : Container();
+  }
+
   void updateRoom({
     required String PrimaryImagePath,
+    required List<String> SubImagePaths,
     required String roomKindID,
+    required int maxCapacity,
     required int price,
     required String State,
-    required String RoomID
+    required String RoomID,
+    required String description,
   }) async {
     setState(() {
       isLoading = true;
@@ -391,20 +449,25 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
     bool existId = await checkIfDocExists(RoomID);
 
     if (existId) {
-      await UploadImages(
-        PrimaryImagePath: UploadButton.PrimaryImagePath, 
-        SubImagePaths: UploadButton.SubImagePath);
+        if (PrimaryImagePath == '') {
+          PrimaryImageUrl = PrimaryImageUrl;
+          SubImageUrls = SubImageUrls;
+        } else {
+          await UploadImages(
+            PrimaryImagePath: UploadButton.PrimaryImagePath, 
+            SubImagePaths: UploadButton.SubImagePath);
+        }
 
         print("----------------------" + SubImageUrls.length.toString());
         RoomModel _room = await RoomModel(
             roomID: roomID,
             PrimaryImage: PrimaryImageUrl,
+            SubImages: SubImageUrls,
             RoomKindID: roomKindID,
             price: _price,
             State: State,
-            SubImages: SubImageUrls,
-            Description: descriptionController.text,
-            maxCapacity: int.tryParse(maxCapacityController.text),
+            Description: description,
+            maxCapacity: maxCapacity,
         );
         final json = _room.toJson();
         await docUser.set(json);
@@ -420,9 +483,11 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
           isLoading = false;
         });
         setState(() {
-          // descriptionController.text = '';
-          // price = 0;
-          // roomKindID = '';
+          widget.room.Description = _room.Description ?? '';
+          widget.room.PrimaryImage = _room.PrimaryImage;
+          widget.room.SubImages = _room.SubImages;
+          widget.room.maxCapacity = _room.maxCapacity;
+          _images.clear();
           UploadButton.ResetUploadButton();
         });
     } else {
@@ -453,6 +518,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       {required String imagePath,
       required String name,
       required isPrimaryImage}) async {
+
     var imageFile = File(imagePath);
     Reference ref =
         FirebaseStorage.instance.ref(roomID).child(name);
@@ -464,5 +530,19 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       else
         SubImageUrls.add(value.toString());
     });
+  }
+
+  void DeleteRoom(String roomID) async {
+    try {
+      await FirebaseStorage.instance.ref(roomID).listAll().then((value) {
+        value.items.forEach((element) {
+          FirebaseStorage.instance.ref(element.fullPath).delete();
+        });
+      });
+      await FirebaseFirestore.instance.collection('Rooms').doc(roomID).delete();
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

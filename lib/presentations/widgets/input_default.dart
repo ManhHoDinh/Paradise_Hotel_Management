@@ -28,16 +28,16 @@ class _InputDefaultState extends State<InputDefault> {
             borderRadius: BorderRadius.all(Radius.circular(100)),
           ),
           floatingLabelBehavior: FloatingLabelBehavior.never,
-          label: Container(
-            alignment: Alignment.center,
-            child: Text(
-              widget.labelText,
-              style: TextStyles.h6.copyWith(
-                color: ColorPalette.grayText,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-          ),
+          // label: Container(
+          //   alignment: Alignment.center,
+          //   child: Text(
+          //     widget.labelText,
+          //     style: TextStyles.h6.copyWith(
+          //       color: ColorPalette.grayText,
+          //       fontStyle: FontStyle.italic,
+          //     ),
+          //   ),
+          // ),
         ),
         onSubmitted: (value) async {},
         onTapOutside: (event) {},

@@ -29,6 +29,7 @@ class UploadButton extends StatefulWidget {
 
 class _UploadButtonState extends State<UploadButton> {
   Future getImages() async {
+    ResetUploadButton();
     final images = await ImagePicker().pickMultiImage();
     if (images.isEmpty) return;
 

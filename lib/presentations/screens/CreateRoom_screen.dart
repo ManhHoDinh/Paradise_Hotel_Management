@@ -77,7 +77,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 ],
               ),
             ),
-            alignment: Alignment.center,
+            // alignment: Alignment.center,
           ),
           toolbarHeight: kToolbarHeight * 1.5,
         ),

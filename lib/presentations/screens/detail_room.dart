@@ -47,7 +47,7 @@ class _DetailRoomState extends State<DetailRoom> {
               color: ColorPalette.primaryColor,
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EditRoomScreen(roomModel: widget.room,)));
+                    MaterialPageRoute(builder: (context) => EditRoomScreen(room: widget.room,)));
               },
               textColor: ColorPalette.backgroundColor,
             ),
