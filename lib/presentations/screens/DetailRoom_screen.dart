@@ -59,6 +59,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                         }
                         return Container(
                           height: 219,
+                          alignment: Alignment.bottomCenter,
                           child: abc,
                         );
                       },
