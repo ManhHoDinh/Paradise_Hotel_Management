@@ -71,8 +71,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
                   label: 'Save',
                   onTap: () {
                     UpdateRoomKind(
-                        name: nameController.text,
-                        price: int.parse(priceController.text));
+                        name: nameController.text, price: priceController.text);
                   })),
           Container(
               margin: EdgeInsets.only(top: 30),
@@ -89,27 +88,49 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
     );
   }
 
-  void UpdateRoomKind({required String name, required int price}) async {
+  void UpdateRoomKind({required String name, required String price}) async {
     try {
-      final docRoomKind = await FirebaseFirestore.instance
-          .collection('RoomKind')
-          .doc(widget.roomKindModel?.RoomKindID ?? '');
-      RoomKindModel roomKindModel = new RoomKindModel(
-          Name: name,
-          Price: price,
-          RoomKindID: widget.roomKindModel?.RoomKindID ?? '');
-      final json = roomKindModel.toJson();
-      await docRoomKind.update(json);
-      final CollectionReference roomReference =
-          FirebaseFirestore.instance.collection('Rooms');
-      showDialog(
-          context: context,
-          builder: (context) {
-            return DialogOverlay(
-              isSuccess: true,
-              task: 'Update Room Kind',
-            );
-          });
+      if (name == '') {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return DialogOverlay(
+                isSuccess: false,
+                task: 'Edit Room Kind',
+                error: "Input Type Name, please!!!",
+              );
+            });
+      } else if (price == '' || int.tryParse(price) == null) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return DialogOverlay(
+                isSuccess: false,
+                task: 'Edit Room Kind',
+                error: "Check input price, please!!!",
+              );
+            });
+      } else {
+        final docRoomKind = await FirebaseFirestore.instance
+            .collection('RoomKind')
+            .doc(widget.roomKindModel?.RoomKindID ?? '');
+        RoomKindModel roomKindModel = new RoomKindModel(
+            Name: name,
+            Price: int.parse(price),
+            RoomKindID: widget.roomKindModel?.RoomKindID ?? '');
+        final json = roomKindModel.toJson();
+        await docRoomKind.update(json);
+        final CollectionReference roomReference =
+            FirebaseFirestore.instance.collection('Rooms');
+        showDialog(
+            context: context,
+            builder: (context) {
+              return DialogOverlay(
+                isSuccess: true,
+                task: 'Update Room Kind',
+              );
+            });
+      }
     } catch (e) {
       showDialog(
           context: context,
@@ -157,7 +178,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
                           isSuccess: true,
                           task: 'Delete Room Kind',
                         );
-                      }); //.whenComplete(() => Navigator.of(context).pop());
+                      }).whenComplete(() => Navigator.of(context).pop());
                 }
               },
               noOnTap: () {
