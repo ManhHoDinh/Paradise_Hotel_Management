@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
@@ -34,7 +35,8 @@ class _DetailRoomState extends State<DetailRoom> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     RoomModel roomModel = widget.room;
-    Image abc = Image.asset(AssetHelper.roomDetail1);
+    Widget abc = ImageHelper.loadFromAsset(
+        roomModel.PrimaryImage ?? AssetHelper.roomDetail1);
     return KeyboardDismisser(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -55,17 +57,26 @@ class _DetailRoomState extends State<DetailRoom> {
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          abc = Image.asset(AssetHelper.roomDetail1);
+                          abc = ImageHelper.loadFromAsset(
+                              roomModel.PrimaryImage ??
+                                  AssetHelper.roomDetail1);
                         }
                         if (index == 1) {
-                          abc = Image.asset(AssetHelper.roomDetail2);
+                          abc = ImageHelper.loadFromAsset(
+                              roomModel.SubImages[0] ??
+                                  AssetHelper.roomDetail1);
                         }
                         if (index == 2) {
-                          abc = Image.asset(AssetHelper.roomDetail3);
+                          abc = ImageHelper.loadFromAsset(
+                              roomModel.SubImages[1] ??
+                                  AssetHelper.roomDetail1);
                         }
                         if (index == 3) {
-                          abc = Image.asset(AssetHelper.roomDetail4);
+                          abc = ImageHelper.loadFromAsset(
+                              roomModel.SubImages[2] ??
+                                  AssetHelper.roomDetail1);
                         }
+
                         return Container(
                           height: 219,
                           alignment: Alignment.bottomCenter,
@@ -294,8 +305,9 @@ class _DetailRoomState extends State<DetailRoom> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.roomDetail2)),
+                              child: ImageHelper.loadFromAsset(
+                                  roomModel.SubImages[0] ??
+                                      AssetHelper.roomDetail1),
                             ),
                           ),
                           Container(
@@ -303,8 +315,9 @@ class _DetailRoomState extends State<DetailRoom> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.roomDetail3)),
+                              child: ImageHelper.loadFromAsset(
+                                  roomModel.SubImages[1] ??
+                                      AssetHelper.roomDetail1),
                             ),
                           ),
                           Container(
@@ -315,8 +328,9 @@ class _DetailRoomState extends State<DetailRoom> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
-                              child: const Image(
-                                  image: AssetImage(AssetHelper.roomDetail4)),
+                              child: ImageHelper.loadFromAsset(
+                                  roomModel.SubImages[2] ??
+                                      AssetHelper.roomDetail1),
                             ),
                           ),
                         ],
@@ -335,6 +349,7 @@ class _DetailRoomState extends State<DetailRoom> {
                         borderRadius: BorderRadius.all(Radius.circular(16)),
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Description',
