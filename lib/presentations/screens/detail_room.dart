@@ -35,7 +35,7 @@ class _DetailRoomState extends State<DetailRoom> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     RoomModel roomModel = widget.room;
-    Widget abc = ImageHelper.loadFromAsset(
+    Widget abc = ImageHelper.loadFromNetwork(
         roomModel.PrimaryImage ?? AssetHelper.roomDetail1);
     return KeyboardDismisser(
       child: Scaffold(
@@ -57,24 +57,33 @@ class _DetailRoomState extends State<DetailRoom> {
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          abc = ImageHelper.loadFromAsset(
+                          abc = ImageHelper.loadFromNetwork(
                               roomModel.PrimaryImage ??
                                   AssetHelper.roomDetail1);
                         }
                         if (index == 1) {
-                          abc = ImageHelper.loadFromAsset(
-                              roomModel.SubImages[0] ??
-                                  AssetHelper.roomDetail1);
+                          if (roomModel.SubImages.length >= 1) {
+                            abc = ImageHelper.loadFromNetwork(
+                                roomModel.SubImages[0]);
+                          } else {
+                            abc = Image.asset(AssetHelper.nullImageful);
+                          }
                         }
                         if (index == 2) {
-                          abc = ImageHelper.loadFromAsset(
-                              roomModel.SubImages[1] ??
-                                  AssetHelper.roomDetail1);
+                          if (roomModel.SubImages.length >= 2) {
+                            abc = ImageHelper.loadFromNetwork(
+                                roomModel.SubImages[1]);
+                          } else {
+                            abc = Image.asset(AssetHelper.nullImageful);
+                          }
                         }
                         if (index == 3) {
-                          abc = ImageHelper.loadFromAsset(
-                              roomModel.SubImages[2] ??
-                                  AssetHelper.roomDetail1);
+                          if (roomModel.SubImages.length >= 3) {
+                            abc = ImageHelper.loadFromNetwork(
+                                roomModel.SubImages[2]);
+                          } else {
+                            abc = Image.asset(AssetHelper.nullImageful);
+                          }
                         }
 
                         return Container(
@@ -88,7 +97,7 @@ class _DetailRoomState extends State<DetailRoom> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          height: 150,
+                          height: 125,
                           padding: EdgeInsets.only(left: 42, right: 42),
                           alignment: Alignment.center,
                           child: Row(
@@ -156,6 +165,7 @@ class _DetailRoomState extends State<DetailRoom> {
                                   ),
                                   child: Text(
                                     'Booked',
+                                    textAlign: TextAlign.center,
                                     style: TextStyles.calendarNote.copyWith(
                                       fontSize: 10,
                                       color: ColorPalette.backgroundColor,
@@ -303,21 +313,22 @@ class _DetailRoomState extends State<DetailRoom> {
                           Container(
                             width: (size.width - 125) / 3,
                             child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                              child: ImageHelper.loadFromAsset(
-                                  roomModel.SubImages[0] ??
-                                      AssetHelper.roomDetail1),
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                child: (roomModel.SubImages.length >= 1)
+                                    ? ImageHelper.loadFromNetwork(
+                                        roomModel.SubImages[0])
+                                    : Image.asset(AssetHelper.nullImage)),
                           ),
                           Container(
                             width: (size.width - 125) / 3,
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
-                              child: ImageHelper.loadFromAsset(
-                                  roomModel.SubImages[1] ??
-                                      AssetHelper.roomDetail1),
+                              child: (roomModel.SubImages.length >= 2)
+                                  ? ImageHelper.loadFromNetwork(
+                                      roomModel.SubImages[1])
+                                  : Image.asset(AssetHelper.nullImage),
                             ),
                           ),
                           Container(
@@ -328,9 +339,10 @@ class _DetailRoomState extends State<DetailRoom> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
-                              child: ImageHelper.loadFromAsset(
-                                  roomModel.SubImages[2] ??
-                                      AssetHelper.roomDetail1),
+                              child: (roomModel.SubImages.length >= 3)
+                                  ? ImageHelper.loadFromNetwork(
+                                      roomModel.SubImages[2])
+                                  : Image.asset(AssetHelper.nullImage),
                             ),
                           ),
                         ],

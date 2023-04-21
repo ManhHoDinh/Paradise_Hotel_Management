@@ -19,17 +19,7 @@ Future main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  static final List<String> sub = [];
-  static final RoomModel abc = RoomModel(
-      roomID: 'P001',
-      PrimaryImage: null,
-      RoomKindID: 'TYPE1',
-      price: 150000,
-      State: '3 PEOPLE',
-      SubImages: sub,
-      Description:
-          'Ramayana Prambanan is a show that combines dance and drama without dialogue, based on the Ramayana story, it\'s performed near Prambanan Temple on Java Island, Indonesia. Ramayana Prambanan performs since 1961.',
-      maxCapacity: 3);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -39,9 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: DetailRoom(
-        room: abc,
-      ),
+      home: SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

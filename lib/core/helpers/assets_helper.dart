@@ -43,5 +43,7 @@ class AssetHelper {
   static const String roomDetail2 = imgAssets + 'room_detail12.png';
   static const String roomDetail3 = imgAssets + 'room_detail13.png';
   static const String roomDetail4 = imgAssets + 'room_detail14.png';
+  static const String nullImage = imgAssets + 'null_image.png';
+  static const String nullImageful = imgAssets + 'null_image_color.png';
   //staff
 }
