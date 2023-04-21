@@ -16,6 +16,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../core/helpers/assets_helper.dart';
 import '../widgets/button_widget.dart';
+import 'home_screen.dart';
 
 class DetailRoom extends StatefulWidget {
   DetailRoom({super.key, required this.room});
@@ -104,7 +105,10 @@ class _DetailRoomState extends State<DetailRoom> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(HomeScreen.routeName);
+                                },
                                 child: Icon(
                                   FontAwesomeIcons.arrowLeft,
                                   color: isPressed
