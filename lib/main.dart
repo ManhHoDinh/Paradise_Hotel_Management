@@ -19,14 +19,10 @@ Future main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  static final List<String> sub = [
-    'assets/images/room_detail12.png',
-    'assets/images/room_detail13.png',
-    'assets/images/room_detail14.png'
-  ];
+  static final List<String> sub = [];
   static final RoomModel abc = RoomModel(
       roomID: 'P001',
-      PrimaryImage: 'assets/images/room_detail11.png',
+      PrimaryImage: null,
       RoomKindID: 'TYPE1',
       price: 150000,
       State: '3 PEOPLE',
