@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -37,7 +38,11 @@ class _DetailRoomState extends State<DetailRoom> {
     Size size = MediaQuery.of(context).size;
     RoomModel roomModel = widget.room;
     Widget abc = ImageHelper.loadFromNetwork(
-        roomModel.PrimaryImage ?? AssetHelper.roomDetail1);
+      roomModel.PrimaryImage ?? AssetHelper.roomDetail1,
+      fit: BoxFit.fill,
+      height: 219,
+      width: size.width,
+    );
     return KeyboardDismisser(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -55,42 +60,25 @@ class _DetailRoomState extends State<DetailRoom> {
                           _currenImage = value;
                         });
                       },
-                      itemCount: 4,
+                      itemCount: roomModel.SubImages.length + 1,
                       itemBuilder: (context, index) {
-                        if (index == 0) {
-                          abc = ImageHelper.loadFromNetwork(
-                              roomModel.PrimaryImage ??
-                                  AssetHelper.roomDetail1);
-                        }
-                        if (index == 1) {
-                          if (roomModel.SubImages.length >= 1) {
-                            abc = ImageHelper.loadFromNetwork(
-                                roomModel.SubImages[0]);
-                          } else {
-                            abc = Image.asset(AssetHelper.nullImageful);
-                          }
-                        }
-                        if (index == 2) {
-                          if (roomModel.SubImages.length >= 2) {
-                            abc = ImageHelper.loadFromNetwork(
-                                roomModel.SubImages[1]);
-                          } else {
-                            abc = Image.asset(AssetHelper.nullImageful);
-                          }
-                        }
-                        if (index == 3) {
-                          if (roomModel.SubImages.length >= 3) {
-                            abc = ImageHelper.loadFromNetwork(
-                                roomModel.SubImages[2]);
-                          } else {
-                            abc = Image.asset(AssetHelper.nullImageful);
-                          }
-                        }
-
                         return Container(
                           height: 219,
                           alignment: Alignment.bottomCenter,
-                          child: abc,
+                          child: (index == 0)
+                              ? ImageHelper.loadFromNetwork(
+                                  roomModel.PrimaryImage ??
+                                      AssetHelper.roomDetail1,
+                                  fit: BoxFit.fill,
+                                  height: 219,
+                                  width: size.width,
+                                )
+                              : ImageHelper.loadFromNetwork(
+                                  roomModel.SubImages[index - 1],
+                                  fit: BoxFit.fill,
+                                  height: 219,
+                                  width: size.width,
+                                ),
                         );
                       },
                     ),
@@ -136,50 +124,47 @@ class _DetailRoomState extends State<DetailRoom> {
                           ),
                         ),
                         Container(
-                          height: 60,
-                          alignment: Alignment.center,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: size.width / 3 + 20,
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: size.width / 3 - 40,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: 4,
-                                  itemBuilder: (context, index) {
-                                    return imageIndicator(
-                                        index == _currenImage);
-                                  },
-                                ),
-                              ),
-                              Container(
-                                width: size.width / 3 + 20,
-                                alignment: Alignment.bottomRight,
-                                child: Container(
-                                  width: 55,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10)),
-                                    color: Color(0xffF0A500).withOpacity(0.8),
+                            height: 60,
+                            alignment: Alignment.center,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  alignment: Alignment.topRight,
+                                  width: 21 * (roomModel.SubImages.length + 1),
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: roomModel.SubImages.length + 1,
+                                    itemBuilder: (context, index) {
+                                      return imageIndicator(
+                                          index == _currenImage);
+                                    },
                                   ),
-                                  child: Text(
-                                    'Booked',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyles.calendarNote.copyWith(
-                                      fontSize: 10,
-                                      color: ColorPalette.backgroundColor,
+                                ),
+                                Container(
+                                  width: size.width,
+                                  alignment: Alignment.bottomRight,
+                                  child: Container(
+                                    width: 55,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10)),
+                                      color: Color(0xffF0A500).withOpacity(0.8),
+                                    ),
+                                    child: Text(
+                                      'Booked',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyles.calendarNote.copyWith(
+                                        fontSize: 10,
+                                        color: ColorPalette.backgroundColor,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
+                                )
+                              ],
+                            ))
                       ],
                     )
                   ],
@@ -319,9 +304,9 @@ class _DetailRoomState extends State<DetailRoom> {
                             child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8)),
-                                child: (roomModel.SubImages.length >= 1)
+                                child: (roomModel.SubImages.length > 0)
                                     ? ImageHelper.loadFromNetwork(
-                                        roomModel.SubImages[0])
+                                        roomModel.SubImages.first)
                                     : Image.asset(AssetHelper.nullImage)),
                           ),
                           Container(
@@ -329,9 +314,9 @@ class _DetailRoomState extends State<DetailRoom> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
-                              child: (roomModel.SubImages.length >= 2)
+                              child: (roomModel.SubImages.length > 1)
                                   ? ImageHelper.loadFromNetwork(
-                                      roomModel.SubImages[1])
+                                      roomModel.SubImages.last)
                                   : Image.asset(AssetHelper.nullImage),
                             ),
                           ),
@@ -343,9 +328,11 @@ class _DetailRoomState extends State<DetailRoom> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8)),
-                              child: (roomModel.SubImages.length >= 3)
+                              child: (roomModel.SubImages.length > 2)
                                   ? ImageHelper.loadFromNetwork(
-                                      roomModel.SubImages[2])
+                                      roomModel.SubImages.elementAt(
+                                          (roomModel.SubImages.length / 2)
+                                              .toInt()))
                                   : Image.asset(AssetHelper.nullImage),
                             ),
                           ),
@@ -568,6 +555,7 @@ class _DetailRoomState extends State<DetailRoom> {
   Widget imageIndicator(bool isActive) {
     return Container(
       margin: EdgeInsets.only(left: 12),
+      alignment: Alignment.center,
       child: Icon(
         FontAwesomeIcons.solidCircle,
         size: 9,
