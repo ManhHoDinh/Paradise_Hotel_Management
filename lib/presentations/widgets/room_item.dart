@@ -53,8 +53,8 @@ class _RoomItemState extends State<RoomItem> {
                   child: Container(
                     decoration: BoxDecoration(
                         color: widget.room.State == 'Booked'
-                            ? Colors.red.withOpacity(0.8)
-                            : Colors.orange.withOpacity(0.8),
+                            ? Colors.orangeAccent.withOpacity(0.8)
+                            : Colors.greenAccent.withOpacity(0.8),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(kMinPadding * 1.5))),
                     height: 20,
