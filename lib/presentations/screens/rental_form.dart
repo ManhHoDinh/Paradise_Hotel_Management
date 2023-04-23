@@ -12,9 +12,10 @@ import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/core/models/user_model.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 import '../../core/models/guest_kind_model.dart';
 
 enum Sex { male, female }
@@ -55,6 +56,7 @@ class _DropDownState extends State<DropDown> {
   Widget build(BuildContext context) {
     kindGuestItems = [];
     kindGuestItems.addAll(GuestKindModel.kindItems);
+
     return DropdownButtonHideUnderline(
       child: DropdownButtonFormField(
         validator: (value) => value == null ? 'field required' : null,
@@ -115,6 +117,8 @@ class _RentalFormState extends State<RentalForm> {
   DateTime? _rangeEnd;
   List<String> list = [];
 
+  DatabaseReference ref = FirebaseDatabase.instance.ref('Users');
+
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   Sex? _GT = Sex.male;
   late TextEditingController _RoomIDController;
@@ -124,6 +128,7 @@ class _RentalFormState extends State<RentalForm> {
   late TextEditingController _NoteController;
   bool isErrorGuest = false;
   bool isErrorDate = false;
+
   final formKey = GlobalKey<FormState>();
   List<String> listKind = [];
   Color getColor(Set<MaterialState> states) {
@@ -294,6 +299,7 @@ class _RentalFormState extends State<RentalForm> {
     Size size = MediaQuery.of(context).size;
     final double itemWidth = (size.width - 72) / 2;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return KeyboardDismisser(
       child: Scaffold(
         key: _scaffoldKey,
@@ -441,7 +447,49 @@ class _RentalFormState extends State<RentalForm> {
                       ),
                       InkWell(
                         onTap: () {
-                          addGuest();
+                          FirebaseFirestore.instance
+                              .collection('Rooms')
+                              .where("roomID",
+                                  isEqualTo: '${_RoomIDController.text}')
+                              .snapshots()
+                              .listen((event) {
+                            int maxCapacity =
+                                int.parse(event.docs[0]['maxCapacity']);
+
+                            if (_countGuest <= maxCapacity) {
+                              addGuest();
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(Duration(seconds: 2), () {
+                                      Navigator.of(context).pop(true);
+                                    });
+                                    return AlertDialog(
+                                        title: Column(
+                                      children: [
+                                        Image.asset(AssetHelper.icoCanceled),
+                                        Text(
+                                          'Exceed the maximum capacity!',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyles.defaultStyle
+                                              .copyWith(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ColorPalette
+                                                      .primaryColor),
+                                        )
+                                      ],
+                                    ));
+                                  });
+                            }
+                          });
+                          //     .get()
+                          //     .then((value) {
+                          //   maxCapacity =
+                          //       int.parse(value.docs[0]['maxCapacity']);
+
+                          // });
                         },
                         child: Container(
                           height: kMediumPadding * 1.5,
@@ -731,6 +779,31 @@ class _RentalFormState extends State<RentalForm> {
                                 _countGuest = 1;
                               });
                             } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(Duration(seconds: 2), () {
+                                      Navigator.of(context).pop(true);
+                                    });
+                                    return AlertDialog(
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 0,
+                                        title: Column(
+                                          children: [
+                                            Image.asset(
+                                                AssetHelper.icoCanceled),
+                                            Text(
+                                              'Create Failure!',
+                                              style: TextStyles.defaultStyle
+                                                  .copyWith(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                            )
+                                          ],
+                                        ));
+                                  });
                               if (_rangeStart == null) {
                                 setState(() {
                                   isErrorDate = true;
