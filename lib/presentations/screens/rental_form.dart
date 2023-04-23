@@ -197,7 +197,7 @@ class _RentalFormState extends State<RentalForm> {
         child: TextFormField(
           keyboardType: TextInputType.number,
           validator: (value) {
-            if (value!.isEmpty || !RegExp(r'^[0 9]+$').hasMatch(value)) {
+            if (value!.isEmpty || !RegExp(r'^[0-9]').hasMatch(value)) {
               return "Id is invalid!";
             } else
               return null;
@@ -306,6 +306,7 @@ class _RentalFormState extends State<RentalForm> {
         appBar: AppBar(
           toolbarHeight: kMaxPadding * 2.5,
           elevation: 5,
+          //
           backgroundColor: ColorPalette.primaryColor.withOpacity(0.75),
           leading: InkWell(
             customBorder: CircleBorder(),
@@ -372,53 +373,6 @@ class _RentalFormState extends State<RentalForm> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Room ID',
-                          style: TextStyles.h8.copyWith(
-                              fontSize: 12,
-                              color: ColorPalette.darkBlueText,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty ||
-                                    !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                                  return "Enter correct name of room";
-                                } else
-                                  return null;
-                              },
-                              controller: _RoomIDController,
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 12),
-                                  hintText: 'Choose here',
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorPalette.grayText,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: ColorPalette.primaryColor,
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(25),
-                                  )),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
                           'All guest',
                           style: TextStyles.h8.copyWith(
                               fontSize: 12,
@@ -447,43 +401,34 @@ class _RentalFormState extends State<RentalForm> {
                       ),
                       InkWell(
                         onTap: () {
-                          FirebaseFirestore.instance
-                              .collection('Rooms')
-                              .where("roomID",
-                                  isEqualTo: '${_RoomIDController.text}')
-                              .snapshots()
-                              .listen((event) {
-                            int maxCapacity =
-                                int.parse(event.docs[0]['maxCapacity']);
-
-                            if (_countGuest <= maxCapacity) {
-                              addGuest();
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    Future.delayed(Duration(seconds: 2), () {
-                                      Navigator.of(context).pop(true);
-                                    });
-                                    return AlertDialog(
-                                        title: Column(
-                                      children: [
-                                        Image.asset(AssetHelper.icoCanceled),
-                                        Text(
-                                          'Exceed the maximum capacity!',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyles.defaultStyle
-                                              .copyWith(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: ColorPalette
-                                                      .primaryColor),
-                                        )
-                                      ],
-                                    ));
+                          int? maxCapacity;
+                          maxCapacity = widget.room!.maxCapacity;
+                          if (_countGuest <= maxCapacity!) {
+                            addGuest();
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  Future.delayed(Duration(seconds: 2), () {
+                                    Navigator.of(context).pop(true);
                                   });
-                            }
-                          });
+                                  return AlertDialog(
+                                      title: Column(
+                                    children: [
+                                      Image.asset(AssetHelper.icoCanceled),
+                                      Text(
+                                        'Exceed the maximum capacity!',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyles.defaultStyle.copyWith(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: ColorPalette.primaryColor),
+                                      )
+                                    ],
+                                  ));
+                                });
+                          }
+
                           //     .get()
                           //     .then((value) {
                           //   maxCapacity =
@@ -555,48 +500,48 @@ class _RentalFormState extends State<RentalForm> {
                                 color: ColorPalette.primaryColor,
                                 shape: BoxShape.circle,
                               ),
-                              rangeStartDecoration: BoxDecoration(
-                                  color: ColorPalette.primaryColor,
-                                  shape: BoxShape.circle),
-                              rangeEndDecoration: BoxDecoration(
-                                  color: ColorPalette.primaryColor,
-                                  shape: BoxShape.circle),
+                              // rangeStartDecoration: BoxDecoration(
+                              //     color: ColorPalette.primaryColor,
+                              //     shape: BoxShape.circle),
+                              // rangeEndDecoration: BoxDecoration(
+                              //     color: ColorPalette.primaryColor,
+                              //     shape: BoxShape.circle),
                               rangeHighlightColor: ColorPalette.primaryColor,
                               withinRangeTextStyle:
                                   TextStyle(color: Colors.white),
                             ),
                             selectedDayPredicate: (day) =>
                                 isSameDay(_selectedDay, day),
-                            rangeStartDay: _rangeStart,
-                            rangeEndDay: _rangeEnd,
-                            rangeSelectionMode: _rangeSelectionMode,
+                            // rangeStartDay: _rangeStart,
+                            // rangeEndDay: _rangeEnd,
+                            // rangeSelectionMode: _rangeSelectionMode,
                             onDaySelected: (selectedDay, focusedDay) {
                               if (!isSameDay(_selectedDay, selectedDay)) {
                                 setState(() {
                                   _selectedDay = selectedDay;
-                                  _focusedDay = focusedDay;
-                                  _rangeStart =
-                                      null; // Important to clean those
-                                  _rangeEnd = null;
-                                  _rangeSelectionMode =
-                                      RangeSelectionMode.toggledOff;
+                                  // _focusedDay = focusedDay;
+                                  // _rangeStart =
+                                  //     null; // Important to clean those
+                                  // _rangeEnd = null;
+                                  // _rangeSelectionMode =
+                                  //     RangeSelectionMode.toggledOff;
                                 });
                               }
                             },
-                            onRangeSelected: (start, end, focusedDay) {
-                              setState(() {
-                                _selectedDay = null;
-                                _focusedDay = focusedDay;
-                                _rangeStart = start;
-                                _rangeEnd = end ?? start;
-                                _rangeSelectionMode =
-                                    RangeSelectionMode.toggledOn;
-                              });
-                              soNgayDuocChon = DateTimeRange(
-                                  start: _rangeStart ?? DateTime.now(),
-                                  end: _rangeEnd ?? DateTime.now());
-                              _soNgay = soNgayDuocChon.duration.inDays + 1;
-                            },
+                            // onRangeSelected: (start, end, focusedDay) {
+                            //   setState(() {
+                            //     _selectedDay = null;
+                            //     _focusedDay = focusedDay;
+                            //     _rangeStart = start;
+                            //     _rangeEnd = end ?? start;
+                            //     _rangeSelectionMode =
+                            //         RangeSelectionMode.toggledOn;
+                            //   });
+                            //   soNgayDuocChon = DateTimeRange(
+                            //       start: _rangeStart ?? DateTime.now(),
+                            //       end: _rangeEnd ?? DateTime.now());
+                            //   _soNgay = soNgayDuocChon.duration.inDays + 1;
+                            // },
                           ),
                         ),
                       ),
@@ -686,7 +631,7 @@ class _RentalFormState extends State<RentalForm> {
                                 .collection("RoomKind")
                                 .add(formRental);
                             if (formKey.currentState!.validate() &&
-                                _rangeStart != null) {
+                                _selectedDay != null) {
                               showDialog(
                                   context: context,
                                   builder: (context) {
@@ -711,6 +656,7 @@ class _RentalFormState extends State<RentalForm> {
                                           ],
                                         ));
                                   });
+
                               addNewGuest();
                               addRentalForm();
                               changeStateRoom();
@@ -804,7 +750,7 @@ class _RentalFormState extends State<RentalForm> {
                                           ],
                                         ));
                                   });
-                              if (_rangeStart == null) {
+                              if (_selectedDay == null) {
                                 setState(() {
                                   isErrorDate = true;
                                 });
@@ -875,7 +821,7 @@ class _RentalFormState extends State<RentalForm> {
         FirebaseFirestore.instance.collection('Rooms');
     FirebaseFirestore.instance
         .collection('Rooms')
-        .where("roomID", isEqualTo: '${_RoomIDController.text}')
+        .where("roomID", isEqualTo: '${widget.room!.roomID}')
         .get()
         .then((value) {
       DocumentReference document = roomCollection.doc(value.docs[0].id);
@@ -886,7 +832,7 @@ class _RentalFormState extends State<RentalForm> {
   void addRentalForm() {
     Map<String, dynamic> formRental = {
       'RoomID': '${_RoomIDController.text}',
-      'BeginDate': '${_rangeStart}',
+      'BeginDate': '${_selectedDay}',
       'GuestIDs': list,
     };
     FirebaseFirestore.instance.collection('RentalForm').add(formRental);
@@ -905,7 +851,7 @@ class _RentalFormState extends State<RentalForm> {
 
       Map<String, String> inForUser = {
         'GuestKindID': '${typeGuest.selectedValue()}',
-        'RoomID': '${_RoomIDController.text}',
+        'RoomID': '${widget.room!.roomID}',
         'Name': '${nameGuest.controller!.text}',
         'CMND': '${cartIdGuest.controller!.text}',
         'Address': '${addressGuest.controller!.text}'
