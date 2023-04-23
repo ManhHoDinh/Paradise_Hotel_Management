@@ -73,8 +73,7 @@ class AddUserScreen extends StatelessWidget {
   void createUser(
       {required String name, required age, required birthday}) async {
     final docUser = FirebaseFirestore.instance.collection('Users').doc();
-    User _user =
-        User(name: name, age: age, birthday:birthday);
+    User _user = User(name: name, age: age, birthday: birthday);
     _user.id = docUser.id;
     final json = _user.toJson();
     await docUser.set(json);

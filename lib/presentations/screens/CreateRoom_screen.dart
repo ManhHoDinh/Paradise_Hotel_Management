@@ -179,7 +179,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                             onChanged: (value) {
                               setState(() {
                                 dropdownKindValue = value;
-                                print(dropdownKindValue);
                               });
                             },
                           ),

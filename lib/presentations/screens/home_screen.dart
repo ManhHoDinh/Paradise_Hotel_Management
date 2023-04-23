@@ -189,7 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     for (RoomKindModel k in RoomKindModel.AllRoomKinds) {
                       RoomKindModel.kindItems.add(k.Name ?? '');
                     }
-                    print("Room Kind updated");
                   }
                   return Container();
                 }),
