@@ -10,12 +10,13 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/EditRoom_screen.dart';
-import 'package:paradise/presentations/screens/edit_rental_form.dart';
+import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
+import 'package:paradise/presentations/screens/Rooms/EditRoom_screen.dart';
 
-import '../../core/helpers/assets_helper.dart';
-import '../widgets/button_widget.dart';
-import 'home_screen.dart';
+import '../../../core/helpers/assets_helper.dart';
+import '../../widgets/button_widget.dart';
+import '../../widgets/dialog.dart';
+import '../../widgets/question_yes_no_dialog.dart';
 
 class DetailRoom extends StatefulWidget {
   DetailRoom({super.key, required this.room});
@@ -56,7 +57,28 @@ class _DetailRoomState extends State<DetailRoom> {
                           child: ButtonWidget(
                             label: 'Book Room',
                             color: ColorPalette.primaryColor,
-                            onTap: () {},
+                            onTap: () {
+                              if (widget.room.State == 'Available') {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            RentalForm(room: roomModel)));
+                              } else {
+                                _globalKey.currentState!.closeEndDrawer();
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return DialogOverlay(
+                                        isSuccess: false,
+                                        task:
+                                            'Book room ${roomModel.RoomKindID}',
+                                        error:
+                                            'Room ${roomModel.RoomKindID} is booked!!!',
+                                      );
+                                    });
+                              }
+                            },
                             textColor: ColorPalette.backgroundColor,
                           ),
                         ),
@@ -83,9 +105,25 @@ class _DetailRoomState extends State<DetailRoom> {
                             label: 'Delete',
                             color: ColorPalette.primaryColor,
                             onTap: () {
-                              if (widget.room.State == 'Available') {
-                                DeleteRoom(widget.room.roomID ?? '');
-                              }
+                              _globalKey.currentState!.closeEndDrawer();
+                              DeleteRoom(widget.room.roomID ?? '');
+
+                              // if (widget.room.State == 'Available') {
+                              //   DeleteRoom(widget.room.roomID ?? '');
+                              // } else {
+                              //   _globalKey.currentState!.closeEndDrawer();
+                              //   showDialog(
+                              //       context: context,
+                              //       builder: (context) {
+                              //         return DialogOverlay(
+                              //           isSuccess: false,
+                              //           task:
+                              //               'Delete room ${roomModel.RoomKindID}',
+                              //           error:
+                              //               'Room ${roomModel.RoomKindID} is booked!!!',
+                              //         );
+                              //       });
+                              // }
                             },
                             textColor: ColorPalette.backgroundColor,
                           ),
@@ -587,15 +625,64 @@ class _DetailRoomState extends State<DetailRoom> {
 
   void DeleteRoom(String roomID) async {
     try {
-      await FirebaseStorage.instance.ref(roomID).listAll().then((value) {
-        value.items.forEach((element) {
-          FirebaseStorage.instance.ref(element.fullPath).delete();
-        });
-      });
-      await FirebaseFirestore.instance.collection('Rooms').doc(roomID).delete();
-      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_context) {
+            return QuestionYesNoDialog(
+              task: 'Delete Room Kind',
+              icon: FontAwesomeIcons.solidTrashCan,
+              yesOnTap: () async {
+                if (widget.room.State != 'Available') {
+                  Navigator.pop(_context);
+                  showDialog(
+                      context: _context,
+                      builder: (context) {
+                        return DialogOverlay(
+                          isSuccess: false,
+                          task: 'Delete Room ${widget.room.RoomKindID}',
+                          error: 'Room ${widget.room.RoomKindID} is booked!!!',
+                        );
+                      });
+                } else {
+                  await FirebaseStorage.instance
+                      .ref(roomID)
+                      .listAll()
+                      .then((value) {
+                    value.items.forEach((element) {
+                      FirebaseStorage.instance.ref(element.fullPath).delete();
+                    });
+                  });
+                  await FirebaseFirestore.instance
+                      .collection('Rooms')
+                      .doc(roomID)
+                      .delete();
+
+                  Navigator.pop(_context);
+                  showDialog(
+                      context: _context,
+                      builder: (context) {
+                        return DialogOverlay(
+                          isSuccess: true,
+                          task: 'Delete Room ${widget.room.RoomKindID}',
+                        );
+                      }).whenComplete(() => Navigator.of(context).pop());
+                }
+              },
+              noOnTap: () {
+                Navigator.pop(context);
+              },
+            );
+          });
     } catch (e) {
-      print(e.toString());
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Delete Room',
+              error: e.toString(),
+            );
+          });
     }
   }
 }

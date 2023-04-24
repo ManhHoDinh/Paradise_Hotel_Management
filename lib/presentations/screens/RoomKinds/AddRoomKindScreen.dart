@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
-import '../../core/constants/color_palatte.dart';
-import '../../core/helpers/text_styles.dart';
-import '../../core/models/room_kind_model.dart';
-import '../widgets/button_default.dart';
-import '../widgets/dialog.dart';
-import '../widgets/inputTitleWidget.dart';
+import '../../../core/constants/color_palatte.dart';
+import '../../../core/helpers/text_styles.dart';
+import '../../../core/models/room_kind_model.dart';
+import '../../widgets/button_default.dart';
+import '../../widgets/dialog.dart';
+import '../../widgets/inputTitleWidget.dart';
 
 class AddRoomKindScreen extends StatefulWidget {
   AddRoomKindScreen({super.key});

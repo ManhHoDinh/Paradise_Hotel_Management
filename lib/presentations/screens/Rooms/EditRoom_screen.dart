@@ -14,8 +14,7 @@ import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
-import 'package:paradise/presentations/screens/rental_form.dart';
+import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/check_box.dart';
 import 'package:paradise/presentations/widgets/counter.dart';
@@ -64,7 +63,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
     roomID = widget.room.roomID ?? '';
     roomKindID = widget.room.RoomKindID ?? '';
     kindRoom = RoomKindModel.getRoomKindName(widget.room.RoomKindID!);
-    _price = RoomKindModel.getRoomKindPrice(widget.room.RoomKindID??'');
+    _price = RoomKindModel.getRoomKindPrice(widget.room.RoomKindID ?? '');
     maxCapacity = widget.room.maxCapacity ?? 0;
     PrimaryImageUrl = widget.room.PrimaryImage ?? '';
     SubImageUrls = widget.room.SubImages;
@@ -97,7 +96,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
           ),
           title: Container(
             child: Text(
-              'ROOMS',
+              'Edit Room',
               style: TextStyles.slo.bold.copyWith(
                 shadows: [
                   Shadow(
@@ -109,6 +108,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
               ),
             ),
           ),
+          centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,
         ),
         // endDrawer: Drawer(
@@ -341,7 +341,8 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                       margin: const EdgeInsets.only(
                           top: kMediumPadding * 1.5,
                           left: kMaxPadding * 3,
-                          right: kMaxPadding * 3),
+                          right: kMaxPadding * 3,
+                          bottom: kMaxPadding),
                       child: ButtonDefault(
                         backgroundColor: ColorPalette.primaryColor,
                         label: 'Save',
@@ -359,20 +360,20 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                         },
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: kMediumPadding * 1.5,
-                          horizontal: kMaxPadding * 3),
-                      child: ButtonDefault(
-                        backgroundColor: Colors.deepOrange,
-                        label: 'Delete',
-                        onTap: () {
-                          if (widget.room.State == 'Available') {
-                            DeleteRoom(widget.room.roomID ?? '');
-                          }
-                        },
-                      ),
-                    ),
+                    // Container(
+                    //   margin: const EdgeInsets.symmetric(
+                    //       vertical: kMediumPadding * 1.5,
+                    //       horizontal: kMaxPadding * 3),
+                    //   child: ButtonDefault(
+                    //     backgroundColor: Colors.deepOrange,
+                    //     label: 'Delete',
+                    //     onTap: () {
+                    //       if (widget.room.State == 'Available') {
+                    //         DeleteRoom(widget.room.roomID ?? '');
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

@@ -5,10 +5,10 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
-import 'package:paradise/presentations/screens/AddRoomKindScreen.dart';
+import 'package:paradise/presentations/screens/RoomKinds/AddRoomKindScreen.dart';
 import 'package:paradise/presentations/widgets/appBar_widget.dart';
 
-import '../widgets/room_kind_widget.dart';
+import '../../widgets/room_kind_widget.dart';
 
 class RoomKindView extends StatefulWidget {
   const RoomKindView({super.key});

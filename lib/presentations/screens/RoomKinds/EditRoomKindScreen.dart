@@ -6,12 +6,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/widgets/question_yes_no_dialog.dart';
 
-import '../../core/constants/color_palatte.dart';
-import '../../core/helpers/text_styles.dart';
-import '../../core/models/room_kind_model.dart';
-import '../widgets/button_default.dart';
-import '../widgets/dialog.dart';
-import '../widgets/inputTitleWidget.dart';
+import '../../../core/constants/color_palatte.dart';
+import '../../../core/helpers/text_styles.dart';
+import '../../../core/models/room_kind_model.dart';
+import '../../widgets/button_default.dart';
+import '../../widgets/dialog.dart';
+import '../../widgets/inputTitleWidget.dart';
 
 class EditRoomKindScreen extends StatefulWidget {
   EditRoomKindScreen({super.key, this.roomKindModel});
@@ -148,7 +148,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
     try {
       showDialog(
           context: context,
-          builder: (context) {
+          builder: (_context) {
             return QuestionYesNoDialog(
               task: 'Delete Room Kind',
               icon: FontAwesomeIcons.solidTrashCan,
@@ -157,8 +157,8 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
                     widget.roomKindModel?.RoomKindID ?? '')) {
                   Navigator.pop(context);
                   showDialog(
-                      context: context,
-                      builder: (context) {
+                      context: _context,
+                      builder: (_context) {
                         return DialogOverlay(
                           isSuccess: false,
                           task: 'Delete Room Kind',
@@ -171,14 +171,15 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
                       .doc(widget.roomKindModel?.RoomKindID ?? '');
                   await docRoomKind.delete();
                   Navigator.pop(context);
-                  showDialog(
-                      context: context,
-                      builder: (context) {
+                  await showDialog(
+                      context: _context,
+                      builder: (_context) {
                         return DialogOverlay(
                           isSuccess: true,
                           task: 'Delete Room Kind',
                         );
-                      }).whenComplete(() => Navigator.of(context).pop());
+                      }); //.whenComplete(() => Navigator.of(context).pop());
+                  Navigator.of(context).pop();
                 }
               },
               noOnTap: () {
