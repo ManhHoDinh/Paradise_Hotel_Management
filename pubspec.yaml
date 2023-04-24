@@ -41,6 +41,15 @@ dependencies:
   cloud_firestore: ^4.4.5
   firebase_core: ^2.8.0
   salomon_bottom_bar: ^3.3.1
+  dropdown_button2: ^2.0.0
+  grpc: ^3.1.0
+  table_calendar: ^3.0.9
+  keyboard_dismisser: ^3.0.0
+  image_picker: ^0.8.7+1
+  auto_size_text: ^3.0.0
+  firebase_storage: ^11.1.0
+  loading_animation_widget: ^1.2.0+4
+  counter: ^0.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,7 +74,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-
     - assets/icons/
     - assets/icons/2x/
     - assets/icons/3x/
@@ -73,6 +81,8 @@ flutter:
     - assets/fonts/
     - assets/fonts/rubik/
     - assets/fonts/lexend/
+    - assets/fonts/poppins/
+    - assets/fonts/inter/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -92,6 +102,18 @@ fonts:
     - family: Lexend
       fonts:
        - asset: assets/fonts/lexend/Lexend-Regular.ttf
+    - family: Poppins
+      fonts:
+      - asset: assets/fonts/poppins/Poppins-Regular.ttf
+      - asset: assets/fonts/poppins/Poppins-Medium.ttf
+        style: Medium
+        weight: 500
+      - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
+        style: SemiBold
+        weight: 600
+    - family: Inter
+      fonts:
+      - asset: assets/fonts/inter/Inter-Regular.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
