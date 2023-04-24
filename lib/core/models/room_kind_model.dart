@@ -46,4 +46,5 @@ class RoomKindModel {
       return 0;
     }
   }
+
 }

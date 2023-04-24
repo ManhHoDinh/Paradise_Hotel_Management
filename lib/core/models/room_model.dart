@@ -28,13 +28,12 @@ class RoomModel {
       };
 
   static RoomModel fromJson(Map<String, dynamic> json) {
-    List<String> SubImages = [];
     return RoomModel(
         roomID: json['roomID'],
         RoomKindID: json['roomKindID'],
         PrimaryImage: json['PrimaryImage'],
         State: json['State'],
-        SubImages: SubImages,
+        SubImages: List.from(json["SubImages"]),
         Description: json['Description'],
         maxCapacity: int.parse(json['maxCapacity']));
   }

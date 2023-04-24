@@ -7,11 +7,12 @@ class ButtonDefault extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
   Color? backgroundColor;
-  ButtonDefault(
-      {super.key,
-      required this.label,
-      required this.onTap,
-      this.backgroundColor});
+  ButtonDefault({
+    super.key,
+    required this.label,
+    required this.onTap,
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {

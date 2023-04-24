@@ -91,3 +91,18 @@ class _CounterViewState extends State<CounterView> {
     );
   }
 }
+
+  Widget _createIncrementDicrementButton(IconData icon, onPressed) {
+    return RawMaterialButton(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      constraints: BoxConstraints(minWidth: 32.0, minHeight: 32.0),
+      onPressed: onPressed,
+      elevation: 2.0,
+      child: Icon(
+        icon,
+        color: ColorPalette.primaryColor,
+        size: 12.0,
+      ),
+      shape: CircleBorder(),
+    );
+  }
