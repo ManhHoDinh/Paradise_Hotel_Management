@@ -5,8 +5,8 @@ import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/AddRoomKindScreen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
+import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
-import 'package:paradise/presentations/screens/createRoom_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => SplashScreen(),

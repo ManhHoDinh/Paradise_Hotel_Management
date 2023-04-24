@@ -11,14 +11,15 @@ class Guest {
   });
 
   Map<String, dynamic> toJson() => {
-        'cmnd': cmnd,
-        'name': name,
-        'guestKindId': guestKindId,
-        'address': address,
+        'CMND': cmnd,
+        'Name': name,
+        'GuestKindID': guestKindId,
+        'Address': address,
       };
+      
   static Guest fromJson(Map<String, dynamic> json) => Guest(
-      cmnd: json['cmnd'],
-      name: json['name'],
-      guestKindId: json['guestKindId'],
-      address: json['address']);
+      cmnd: json['CMND'],
+      name: json['Name'],
+      guestKindId: json['GuestKindID'],
+      address: json['Address']);
 }
