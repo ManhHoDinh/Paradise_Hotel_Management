@@ -37,4 +37,40 @@ class ImageHelper {
       );
     }
   }
+
+  static Widget loadFromNetwork(String imageFilePath,
+      {double? width,
+      double? height,
+      BorderRadius? radius,
+      BoxFit? fit,
+      Color? tintColor,
+      Alignment? alignment,
+      double? scale}) {
+    if (imageFilePath.toLowerCase().endsWith('svg')) {
+      return ClipRRect(
+        borderRadius: radius ?? BorderRadius.zero,
+        child: SvgPicture.asset(
+          imageFilePath,
+          width: width,
+          height: height,
+          fit: fit ?? BoxFit.contain,
+          color: tintColor,
+          alignment: alignment ?? Alignment.center,
+        ),
+      );
+    } else {
+      return ClipRRect(
+        borderRadius: radius ?? BorderRadius.zero,
+        child: Image.network(
+          imageFilePath,
+          width: width,
+          height: height,
+          fit: fit ?? BoxFit.contain,
+          color: tintColor,
+          scale: scale ?? 1,
+          alignment: alignment ?? Alignment.center,
+        ),
+      );
+    }
+  }
 }

@@ -18,12 +18,18 @@ class AssetHelper {
   static const String iconInRoom = iconAssets + 'ico_inroom.png';
   static const String iconLine = iconAssets + 'ico_line.png';
   static const String iconLine6 = iconAssets + 'ico_line6.png';
+  static const String iconCircleUser = iconAssets + 'ico_circle_user.png';
+  static const String iconEdit = iconAssets + 'ico_edit.png';
+  static const String iconMoney = iconAssets + 'ico_money.png';
 
   //Assets in images
   static const String imgAssets = 'assets/images/';
 
   //splash
   static const String logo1 = imgAssets + 'logo.png';
+
+  //staff
+  static const String staff1 = imgAssets + 'staff_avt.png';
 
   //home
   static const String avatar = 'assets/images/avatar.png';
@@ -33,4 +39,12 @@ class AssetHelper {
   static const String room4 = imgAssets + 'room4.png';
   static const String room5 = imgAssets + 'room5.png';
   static const String room6 = imgAssets + 'room6.png';
+  static const String roomDetail1 = imgAssets + 'room_detail11.png';
+  static const String roomDetail2 = imgAssets + 'room_detail12.png';
+  static const String roomDetail3 = imgAssets + 'room_detail13.png';
+  static const String roomDetail4 = imgAssets + 'room_detail14.png';
+  static const String nullImage = imgAssets + 'null_image.png';
+  static const String nullImageful = imgAssets + 'null_image_color.png';
+
+  static const String checked = imgAssets + 'checked.png';
 }
