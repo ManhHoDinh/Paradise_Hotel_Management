@@ -15,6 +15,7 @@ import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/rentalform_mode.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/core/models/user_model.dart';
+import 'package:paradise/presentations/screens/Rooms/detail_room.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -320,7 +321,12 @@ class _RentalFormState extends State<RentalForm> {
           leading: InkWell(
             customBorder: CircleBorder(),
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => DetailRoom(
+                      room: widget.room ??
+                          RoomModel.AllRooms.where(
+                                  (room) => room.roomID! == roomIDSelected)
+                              .first)));
             },
             child: Container(
               child: Icon(
@@ -800,6 +806,7 @@ class _RentalFormState extends State<RentalForm> {
       addNewGuest();
       addRentalForm();
       changeStateRoom();
+      ResetView();
       showDialog(
           context: context,
           builder: (context) {
@@ -807,8 +814,7 @@ class _RentalFormState extends State<RentalForm> {
               isSuccess: true,
               task: 'Book Room ${widget.room!.roomID}',
             );
-          });
-      ResetView();
+          }).whenComplete(() => Navigator.of(context).pop());
     } else {
       showDialog(
           context: context,
