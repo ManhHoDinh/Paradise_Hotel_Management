@@ -621,15 +621,6 @@ class _RentalFormState extends State<RentalForm> {
                           borderRadius: BorderRadius.circular(20),
                           splashColor: Colors.black38,
                           onTap: () {
-                            Map<String, dynamic> formRental = {
-                              'Name': 'Binh',
-                              'Price': '10000',
-                              'RoomKindId': "4",
-                            };
-
-                            FirebaseFirestore.instance
-                                .collection("RoomKind")
-                                .add(formRental);
                             if (formKey.currentState!.validate() &&
                                 _selectedDay != null) {
                               showDialog(

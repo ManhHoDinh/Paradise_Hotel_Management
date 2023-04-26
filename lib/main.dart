@@ -4,6 +4,7 @@ import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/home_screen.dart';
+import 'package:paradise/presentations/screens/report_screen.dart';
 import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'package:paradise/presentations/screens/staff_detail_screen.dart';
 import 'core/constants/color_palatte.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: ReportScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
