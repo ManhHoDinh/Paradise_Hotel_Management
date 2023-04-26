@@ -4,7 +4,7 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/detail_room.dart';
+import 'package:paradise/presentations/screens/Rooms/detail_room.dart';
 
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
@@ -53,8 +53,8 @@ class _RoomItemState extends State<RoomItem> {
                   child: Container(
                     decoration: BoxDecoration(
                         color: widget.room.State == 'Booked'
-                            ? Colors.red.withOpacity(0.8)
-                            : Colors.orange.withOpacity(0.8),
+                            ? Colors.orangeAccent.withOpacity(0.8)
+                            : Colors.greenAccent.withOpacity(0.8),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(kMinPadding * 1.5))),
                     height: 20,
@@ -102,7 +102,8 @@ class _RoomItemState extends State<RoomItem> {
                 Container(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     alignment: Alignment.centerLeft,
-                    child: Text('\$ ${widget.room.price} VNĐ',
+                    child: Text(
+                        '\$ ${RoomKindModel.getRoomKindPrice(widget.room.RoomKindID ?? '')} VNĐ',
                         style: TextStyles
                             .defaultStyle.DarkPrimaryTextColor.medium))
               ],

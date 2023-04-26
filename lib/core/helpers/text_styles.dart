@@ -148,6 +148,51 @@ class TextStyles {
       color: ColorPalette.blackText,
       fontWeight: FontWeight.w600,
       fontFamily: AppFonts.inter);
+  static const TextStyle staffInforDetail = TextStyle(
+      fontSize: 14,
+      color: ColorPalette.rankText,
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.poppins);
+  static const TextStyle labelStaffDetail = TextStyle(
+      fontSize: 16,
+      color: ColorPalette.primaryColor,
+      fontWeight: FontWeight.w600,
+      fontFamily: AppFonts.poppins);
+  static const TextStyle titleInfoDetail = TextStyle(
+      fontSize: 14,
+      color: ColorPalette.infoDetail,
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.poppins);
+  static const TextStyle outsideMonth = TextStyle(
+      fontSize: 14,
+      color: Color(0xffD6D8E1),
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.inter);
+  static const TextStyle defaultMonth = TextStyle(
+      fontSize: 14,
+      color: Color(0xff45454A),
+      fontWeight: FontWeight.w600,
+      fontFamily: AppFonts.inter);
+  static const TextStyle calendarNote = TextStyle(
+      fontSize: 12,
+      color: ColorPalette.detailBorder,
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.inter);
+  static const TextStyle inforRoomDetail = TextStyle(
+      fontSize: 14,
+      color: Color(0xff1B1446),
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.poppins);
+  static const TextStyle descriptionRoom = TextStyle(
+      fontSize: 14,
+      color: ColorPalette.rankText,
+      fontWeight: FontWeight.w400,
+      fontFamily: AppFonts.inter);
+  static const TextStyle iconInDetailRoom = TextStyle(
+      fontSize: 14,
+      color: Color(0xff000000),
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.inter);
 }
 
 // How to use?

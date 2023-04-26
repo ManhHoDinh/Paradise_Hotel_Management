@@ -28,8 +28,23 @@ class RoomKindModel {
   static List<RoomKindModel> AllRoomKinds = [];
 
   static String getRoomKindName(String id) {
-    RoomKindModel kindSelected = RoomKindModel.AllRoomKinds.where(
-        (roomKind) => roomKind.RoomKindID! == id).first;
-    return kindSelected.Name ?? '';
+    try {
+      RoomKindModel kindSelected = RoomKindModel.AllRoomKinds.where(
+          (roomKind) => roomKind.RoomKindID! == id).first;
+      return kindSelected.Name ?? '';
+    } catch (e) {
+      return '';
+    }
   }
+
+  static int getRoomKindPrice(String id) {
+    try {
+      RoomKindModel kindSelected = RoomKindModel.AllRoomKinds.where(
+          (roomKind) => roomKind.RoomKindID! == id).first;
+      return kindSelected.Price ?? 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
 }

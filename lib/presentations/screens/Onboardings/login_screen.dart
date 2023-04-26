@@ -3,9 +3,10 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/presentations/screens/home_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:paradise/presentations/widgets/input_widget.dart';
+
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static String routeName = 'login_screen';
@@ -40,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: kItemPadding),
                   child: Image.asset(

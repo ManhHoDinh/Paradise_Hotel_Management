@@ -29,6 +29,7 @@ class UploadButton extends StatefulWidget {
 
 class _UploadButtonState extends State<UploadButton> {
   Future getImages() async {
+    ResetUploadButton();
     final images = await ImagePicker().pickMultiImage();
     if (images.isEmpty) return;
 
@@ -64,11 +65,10 @@ class _UploadButtonState extends State<UploadButton> {
           child: PageView.builder(
             itemBuilder: (context, index) {
               return Container(
-                margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
                 child: Image.file(
                   File(UploadButton._images![index].path),
                   fit: BoxFit.scaleDown,
-                  scale: 0.75,
+                  scale: 0.6,
                 ),
               );
             },

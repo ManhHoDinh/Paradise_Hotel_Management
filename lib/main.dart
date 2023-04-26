@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/presentations/routes.dart';
-import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
-import 'package:paradise/presentations/screens/home_screen.dart';
-import 'package:paradise/presentations/screens/report_screen.dart';
-import 'package:paradise/presentations/screens/splash_screen.dart';
-import 'package:paradise/presentations/screens/staff_detail_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
+import 'core/models/firebase_request.dart';
 
 Future main() async {
   await Hive.initFlutter();
@@ -20,8 +16,6 @@ Future main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

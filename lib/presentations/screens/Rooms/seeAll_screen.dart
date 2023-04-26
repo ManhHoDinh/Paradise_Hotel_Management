@@ -10,14 +10,13 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
-import 'package:paradise/presentations/screens/rental_form.dart';
+import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import '../../core/helpers/assets_helper.dart';
-import '../../core/helpers/image_helper.dart';
-import '../widgets/button_default.dart';
+import '../../../core/helpers/assets_helper.dart';
+import '../../../core/helpers/image_helper.dart';
+import '../../widgets/button_default.dart';
 
 class SeeAllScreen extends StatefulWidget {
   static final String routeName = 'see_all_screen';
@@ -65,9 +64,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
     List<RoomModel> newList = List.from(list);
 
     if (priceDecrease) {
-      list.sort((a, b) => b.price!.compareTo(a.price!));
+      list.sort((a, b) => b.getPrice().compareTo(a.getPrice()));
     } else {
-      list.sort((a, b) => a.price!.compareTo(b.price!));
+      list.sort((a, b) => a.getPrice().compareTo(b.getPrice()));
     }
     switch (status) {
       case "All":
@@ -115,70 +114,36 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
           },
         ),
         appBar: AppBar(
-            elevation: 0,
-            backgroundColor: ColorPalette.primaryColor,
-            leadingWidth: kDefaultIconSize * 3,
-            leading: Container(
-              width: double.infinity,
-              child: InkWell(
-                customBorder: CircleBorder(),
-                onHighlightChanged: (param) {},
-                splashColor: ColorPalette.primaryColor,
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  child: Icon(FontAwesomeIcons.arrowLeft),
-                ),
+          elevation: 0,
+          backgroundColor: ColorPalette.primaryColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
               ),
             ),
-            title: Container(
-                child: Text('ROOMS',
-                    style: TextStyles.slo.bold.copyWith(
-                      shadows: [
-                        Shadow(
-                          color: Colors.black12,
-                          offset: Offset(3, 6),
-                          blurRadius: 6,
-                        )
-                      ],
-                    )))),
-        endDrawer: Drawer(
-          child: Container(
-            margin:
-                const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
-                  child: Text(
-                    'ROOM OPTIONS',
-                    style: TextStyles.h2.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: ColorPalette.primaryColor),
-                  ),
-                ),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child: ButtonDefault(
-                        label: 'Book Room',
-                        onTap: () {
-                          Navigator.of(context).pushNamed(RentalForm.routeName);
-                        })),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child:
-                        ButtonDefault(label: 'Create New Room', onTap: () {})),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                    child: ButtonDefault(label: 'Edit Room', onTap: () {})),
-              ],
-            ),
           ),
+          title: Container(
+              child: Text('ROOMS',
+                  style: TextStyles.slo.bold.copyWith(
+                    shadows: [
+                      Shadow(
+                        color: Colors.black12,
+                        offset: Offset(3, 6),
+                        blurRadius: 6,
+                      )
+                    ],
+                  ))),
+          centerTitle: true,
+          toolbarHeight: kToolbarHeight * 1.5,
         ),
         body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
@@ -295,7 +260,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                   buttonStyleData: const ButtonStyleData(
                                     padding: const EdgeInsets.only(left: 12),
                                     height: 28,
-                                    width: 120,
+                                    width: 100,
                                   ),
                                   menuItemStyleData: const MenuItemStyleData(
                                     height: 28,
@@ -323,7 +288,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                               )),
                           Container(
                               height: 28,
-                              width: 120,
+                              width: 140,
                               decoration: BoxDecoration(
                                   border:
                                       Border.all(color: ColorPalette.grayText),
@@ -362,7 +327,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                   buttonStyleData: const ButtonStyleData(
                                     padding: const EdgeInsets.only(left: 12),
                                     height: 28,
-                                    width: 150,
+                                    width: 10,
                                   ),
                                   menuItemStyleData: const MenuItemStyleData(
                                     height: 28,
@@ -377,39 +342,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                               ))
                         ],
                       ))),
-              Container(
-                padding: const EdgeInsets.only(bottom: kMinPadding),
-                alignment: Alignment.centerLeft,
-                child: Row(children: [
-                  Material(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      customBorder: CircleBorder(),
-                      child: Container(
-                        width: 26,
-                        height: 26,
-                        child: Icon(
-                          FontAwesomeIcons.arrowLeft,
-                          size: 18,
-                          color: ColorPalette.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    'All room',
-                    style: TextStyles.defaultStyle.primaryTextColor,
-                  ),
-                ]),
-              ),
               Expanded(
                   child: Container(
-                //padding: const EdgeInsets.only(bottom: kMediumPadding),
+                margin: EdgeInsets.only(top: 30),
                 child: StreamBuilder<List<RoomModel>>(
                     stream: FireBaseDataBase.readRooms(),
                     builder: (context, snapshot) {
@@ -420,6 +355,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                         );
                       } else if (snapshot.hasData) {
                         listRoom = snapshot.data!;
+                        RoomModel.AllRooms = snapshot.data!;
                         return GridView.count(
                             padding:
                                 const EdgeInsets.only(bottom: kMediumPadding),

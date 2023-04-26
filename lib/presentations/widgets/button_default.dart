@@ -6,11 +6,12 @@ import 'package:paradise/core/helpers/text_styles.dart';
 class ButtonDefault extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
-
-  const ButtonDefault({
+  Color? backgroundColor;
+  ButtonDefault({
     super.key,
     required this.label,
     required this.onTap,
+    this.backgroundColor,
   });
 
   @override
@@ -23,11 +24,10 @@ class ButtonDefault extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           width: double.infinity,
-          decoration:
-              BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(100)),
-                color: ColorPalette.primaryColor,
-              ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+            color: backgroundColor ?? ColorPalette.primaryColor,
+          ),
           padding: const EdgeInsets.symmetric(vertical: kMinPadding * 2),
           child: Text(
             label,

@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
-import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
-import 'package:paradise/presentations/screens/RoomKindView.dart';
-import 'package:paradise/presentations/screens/seeAll_screen.dart';
-import 'package:paradise/presentations/screens/splash_screen.dart';
+import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
+import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
+import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,12 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../core/constants/color_palatte.dart';
-import '../../core/helpers/assets_helper.dart';
-import '../../core/helpers/image_helper.dart';
-import '../../core/models/firebase_request.dart';
-import '../../core/models/room_model.dart';
-import '../widgets/filter_containter_widget.dart';
+
+import '../../../core/constants/color_palatte.dart';
+import '../../../core/helpers/assets_helper.dart';
+import '../../../core/helpers/image_helper.dart';
+import '../../../core/models/firebase_request.dart';
+import '../../../core/models/room_model.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -221,6 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       } else if (snapshot.hasData) {
                         listRoom = snapshot.data!;
+                        RoomModel.AllRooms = snapshot.data!;
                         return GridView.builder(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
