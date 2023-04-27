@@ -30,4 +30,11 @@ class GuestKindModel {
             .first;
     return kindSelected.Name ?? '';
   }
+
+  static double getGuestKindRatio(String id) {
+    GuestKindModel kindSelected =
+      GuestKindModel.AllGuestKinds.where((element) => element.ID == id)
+        .first;
+    return kindSelected.ratio;
+  }
 }

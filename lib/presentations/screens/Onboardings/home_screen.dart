@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/presentations/screens/Receipts/ReceiptDetailScreen.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
@@ -119,7 +120,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ButtonWidget(
               label: 'Receipt',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(
+                      builder: (context) => ReceiptDetailScreen()));
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
+import 'package:paradise/presentations/screens/Receipts/ReceiptDetailScreen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: ReceiptDetailScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

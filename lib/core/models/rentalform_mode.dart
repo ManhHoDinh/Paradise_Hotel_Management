@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 
 class RentalFormModel {
@@ -20,10 +21,12 @@ class RentalFormModel {
       };
   static RentalFormModel fromJson(Map<String, dynamic> json) {
     return RentalFormModel(
-      RoomID: json['RoomKindID'],
-      BeginDate: json['Name'],
+      RoomID: json['RoomID'],
+      BeginDate: DateTime(2023, 4, 26),
       GuestIDs: List.from(json['GuestIDs']),
       RentalID: json['RentalID'],
     );
   }
+
+  
 }
