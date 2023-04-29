@@ -26,8 +26,7 @@ class RoomModel {
         'Description': Description,
         'maxCapacity': maxCapacity.toString()
       };
-
-  static RoomModel fromJson(Map<String, dynamic> json) {
+  factory RoomModel.fromJson(Map<String, dynamic> json) {
     //List<String> names = List.from(json['names']);
     return RoomModel(
         roomID: json['roomID'],
@@ -38,6 +37,17 @@ class RoomModel {
         Description: json['Description'],
         maxCapacity: int.parse(json['maxCapacity']));
   }
+  // static RoomModel fromJson(Map<String, dynamic> json) {
+  //   //List<String> names = List.from(json['names']);
+  //   return RoomModel(
+  //       roomID: json['roomID'],
+  //       RoomKindID: json['roomKindID'],
+  //       PrimaryImage: json['PrimaryImage'],
+  //       State: json['State'],
+  //       SubImages: List.from(json['SubImages']),
+  //       Description: json['Description'],
+  //       maxCapacity: int.parse(json['maxCapacity']));
+  // }
 
   static List<RoomModel> AllRooms = [];
 
