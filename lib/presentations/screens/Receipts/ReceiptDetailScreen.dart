@@ -28,8 +28,8 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
   List<RentalFormModel> forms = [];
   ReceiptModel receiptModel = ReceiptModel(
     receiptID: 'Rc001', 
-    guestName: '', 
-    address: '', 
+    guestName: 'Guest name', 
+    address: 'Address', 
     total: 0, 
     rentalForms: ['Re001', 'Re002'],
   );
@@ -162,7 +162,7 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                                   horizontal: kDefaultPadding,
                                   vertical: kDefaultPadding,
                                 ),
-                                child: Text('Guest name',
+                                child: Text(receiptModel.guestName!,
                                   style: TextStyles.h6.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: ColorPalette.darkBlueText
@@ -185,7 +185,7 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                                       right: kDefaultPadding,
                                       bottom: kDefaultPadding,
                                     ),
-                                    child: Text('Address',
+                                    child: Text(receiptModel.address!,
                                       style: TextStyles.h6.copyWith(
                                         color: ColorPalette.rankText,
                                       ),
