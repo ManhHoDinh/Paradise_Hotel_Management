@@ -26,6 +26,7 @@ class RoomModel {
         'Description': Description,
         'maxCapacity': maxCapacity.toString()
       };
+  static String CollectionName = 'Rooms';
 
   static RoomModel fromJson(Map<String, dynamic> json) {
     //List<String> names = List.from(json['names']);
@@ -49,11 +50,17 @@ class RoomModel {
     }
   }
 
-  // String getRoomKindName() {
-  //   return RoomKindModel.getRoomKindName(roomID ?? '');
-  // }
+  static int getPriceWithRoomID(String id) {
+    try {
+      List<RoomModel> Rooms =
+          RoomModel.AllRooms.where((room) => room.roomID == id).toList();
+      return RoomKindModel.getRoomKindPrice(Rooms[0].RoomKindID ?? '');
+    } catch (e) {
+      return 0;
+    }
+  }
 
-  static bool ExistRoomWithRoomID(String id) {
+  static bool ExistRoomWithRoomKindID(String id) {
     try {
       print(id);
       List<RoomModel> Rooms =

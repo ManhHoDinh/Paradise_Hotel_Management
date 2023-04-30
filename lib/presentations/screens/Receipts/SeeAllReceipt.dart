@@ -1,43 +1,43 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:paradise/core/constants/color_palatte.dart';
-import 'package:paradise/core/constants/dimension_constants.dart';
-import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/core/models/firebase_request.dart';
-import 'package:paradise/core/models/room_kind_model.dart';
-import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
-import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
-import 'package:paradise/presentations/widgets/room_item.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:paradise/core/models/guest_kind_model.dart';
+import 'package:paradise/core/models/guest_model.dart';
+import 'package:paradise/core/models/receipt_model.dart';
+import 'package:paradise/core/models/rentalform_mode.dart';
+import 'package:paradise/presentations/screens/Receipts/AddReceipt.dart';
+import 'package:paradise/presentations/widgets/receipt_item.dart';
+
+import '../../../core/constants/color_palatte.dart';
+import '../../../core/constants/dimension_constants.dart';
 import '../../../core/helpers/assets_helper.dart';
-import '../../../core/helpers/image_helper.dart';
-import '../../widgets/button_default.dart';
+import '../../../core/helpers/text_styles.dart';
+import '../../../core/models/firebase_request.dart';
+import '../../../core/models/room_kind_model.dart';
+import '../../../core/models/room_model.dart';
+import '../../widgets/filter_containter_widget.dart';
+import '../../widgets/room_item.dart';
+import '../Rooms/CreateRoom_screen.dart';
 
-class SeeAllRoomsScreen extends StatefulWidget {
-  static final String routeName = 'see_all_room_screen';
-
-  SeeAllRoomsScreen({super.key});
+class SeeAllReceipts extends StatefulWidget {
+  const SeeAllReceipts({super.key});
+  static final String routeName = 'see_all_receipt';
 
   @override
-  State<SeeAllRoomsScreen> createState() => _SeeAllRoomsScreenState();
+  State<SeeAllReceipts> createState() => _SeeAllReceiptsState();
 }
 
-class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
-  late List<RoomModel> listRoom;
+class _SeeAllReceiptsState extends State<SeeAllReceipts> {
+  late List<ReceiptModel> Receipts;
   bool isVisibleFilter = false;
   bool priceDecrease = false;
   String? kindRoom;
-  String? status;
   String? valueSearch;
   String? dropdownKindValue;
   String? dropdownStatusValue;
   List<String> kindItems = ['All'];
-  final statusItems = ['All', 'Booked', 'Available'];
   DropdownMenuItem<String> buildMenuKindItem(String item) => DropdownMenuItem(
       value: item,
       onTap: () {
@@ -49,52 +49,28 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
         item,
         style: TextStyles.defaultStyle.grayText,
       ));
-  DropdownMenuItem<String> buildMenuStatusItem(String item) => DropdownMenuItem(
-      value: item,
-      onTap: () {
-        setState(() {
-          status = item;
-        });
-      },
-      child: Text(
-        item,
-        style: TextStyles.defaultStyle.grayText,
-      ));
-  List<RoomModel> loadListRoom(List<RoomModel> list) {
-    List<RoomModel> newList = List.from(list);
+  List<ReceiptModel> loadReceipts(List<ReceiptModel> list) {
+    List<ReceiptModel> newList = List.from(list);
 
     if (priceDecrease) {
-      list.sort((a, b) => b.getPrice().compareTo(a.getPrice()));
+      //list.sort((a, b) => b.getPrice().compareTo(a.getPrice()));
     } else {
-      list.sort((a, b) => a.getPrice().compareTo(b.getPrice()));
+      //list.sort((a, b) => a.getPrice().compareTo(b.getPrice()));
     }
-    switch (status) {
-      case "All":
-        newList = newList;
-        break;
-      case "Booked":
-        newList = newList.where((room) => room.State! == 'Booked').toList();
-        break;
-      case "Available":
-        newList = newList.where((room) => room.State! == 'Available').toList();
-        break;
-      default:
-        newList = newList;
-    }
-    if (kindRoom == 'All') {
-      newList = newList;
-    } else if (kindRoom != null) {
-      newList = newList
-          .where((room) =>
-              RoomKindModel.getRoomKindName(room.RoomKindID ?? '') == kindRoom)
-          .toList();
-    }
-    if (valueSearch != null) {
-      newList = newList
-          .where((e) =>
-              e.roomID!.toLowerCase().contains(valueSearch!.toLowerCase()))
-          .toList();
-    }
+    // if (kindRoom == 'All') {
+    //   newList = newList;
+    // } else if (kindRoom != null) {
+    //   newList = newList
+    //       .where((room) =>
+    //           RoomKindModel.getRoomKindName(room.receiptID ?? '') == kindRoom)
+    //       .toList();
+    // }
+    // if (valueSearch != null) {
+    //   newList = newList
+    //       .where((e) =>
+    //           e.receiptID!.toLowerCase().contains(valueSearch!.toLowerCase()))
+    //       .toList();
+    // }
     return newList;
   }
 
@@ -110,7 +86,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
             style: TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
+            Navigator.of(context).pushNamed(AddReceipt.routeName);
           },
         ),
         appBar: AppBar(
@@ -132,7 +108,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
             ),
           ),
           title: Container(
-              child: Text('ROOMS',
+              child: Text('Receipts',
                   style: TextStyles.slo.bold.copyWith(
                     shadows: [
                       Shadow(
@@ -150,6 +126,31 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
             color: ColorPalette.backgroundColor,
             // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
             child: Column(children: [
+              StreamBuilder(
+                  stream: FireBaseDataBase.readRentalForms(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      RentalFormModel.AllRentalFormModels = snapshot.data!;
+                    }
+                    return Container();
+                  }),
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuestKinds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestKindModel.AllGuestKinds = snapshot.data!;
+                      print(GuestKindModel.AllGuestKinds.length);
+                    }
+                    return Container();
+                  }),
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuests(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestModel.AllGuests = snapshot.data!;
+                    }
+                    return Container();
+                  }),
               const SizedBox(height: 36),
               Container(
                 child: Container(
@@ -205,7 +206,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FilterContainerWidget(
-                            name: 'price',
+                            name: 'Price',
                             icon1: Icon(
                               FontAwesomeIcons.arrowDown,
                               size: 12,
@@ -231,61 +232,6 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                               });
                             },
                           ),
-                          Container(
-                              width: 100,
-                              height: 28,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorPalette.grayText),
-                                  borderRadius:
-                                      BorderRadius.circular(kMediumPadding)),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton2(
-                                  alignment: Alignment.centerLeft,
-                                  value: dropdownStatusValue,
-                                  hint: Text(
-                                    "Status",
-                                    style: TextStyles.defaultStyle.grayText
-                                        .copyWith(fontSize: 13),
-                                  ),
-                                  iconStyleData: IconStyleData(
-                                      iconEnabledColor:
-                                          ColorPalette.primaryColor),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      dropdownStatusValue = value;
-                                    });
-                                  },
-                                  buttonStyleData: const ButtonStyleData(
-                                    padding: const EdgeInsets.only(left: 12),
-                                    height: 28,
-                                    width: 100,
-                                  ),
-                                  menuItemStyleData: const MenuItemStyleData(
-                                    height: 28,
-                                  ),
-                                  dropdownStyleData: DropdownStyleData(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              kMinPadding))),
-                                  items: statusItems
-                                      .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          onTap: () {
-                                            setState(() {
-                                              status = e;
-                                              print(status);
-                                            });
-                                          },
-                                          child: Text(
-                                            e,
-                                            style: TextStyles
-                                                .defaultStyle.grayText,
-                                          )))
-                                      .toList(),
-                                ),
-                              )),
                           Container(
                               height: 28,
                               width: 140,
@@ -345,8 +291,8 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
               Expanded(
                   child: Container(
                 margin: EdgeInsets.only(top: 30),
-                child: StreamBuilder<List<RoomModel>>(
-                    stream: FireBaseDataBase.readRooms(),
+                child: StreamBuilder<List<ReceiptModel>>(
+                    stream: FireBaseDataBase.readReceipts(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Center(
@@ -354,8 +300,8 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                               Text('Something went wrong! ${snapshot.error}'),
                         );
                       } else if (snapshot.hasData) {
-                        listRoom = snapshot.data!;
-                        RoomModel.AllRooms = snapshot.data!;
+                        Receipts = snapshot.data!;
+                        ReceiptModel.AllReceipts = snapshot.data!;
                         return GridView.count(
                             padding:
                                 const EdgeInsets.only(bottom: kMediumPadding),
@@ -363,9 +309,9 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                             mainAxisSpacing: 24,
                             crossAxisSpacing: 24,
                             childAspectRatio: 0.8,
-                            children: loadListRoom(listRoom)
-                                .map((e) => RoomItem(
-                                      room: e,
+                            children: loadReceipts(Receipts)
+                                .map((e) => ReceiptItem(
+                                      Receipt: e,
                                     ))
                                 .toList());
                       } else

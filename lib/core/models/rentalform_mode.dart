@@ -1,7 +1,6 @@
-import 'package:paradise/core/models/firebase_request.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RentalFormModel {
-  //static List<RoomKindModel> AllRoomKinds = [];
   String? RentalID;
   String? RoomID;
   DateTime? BeginDate;
@@ -14,16 +13,19 @@ class RentalFormModel {
   });
   Map<String, dynamic> toJson() => {
         'RoomID': RoomID,
-        'BeginDate': BeginDate,
+        'BeginDate': Timestamp.fromDate(BeginDate!),
         'GuestIDs': GuestIDs,
         'RentalID': RentalID,
       };
   static RentalFormModel fromJson(Map<String, dynamic> json) {
     return RentalFormModel(
-      RoomID: json['RoomKindID'],
-      BeginDate: json['Name'],
+      RoomID: json['RoomID'],
+      BeginDate: (json['BeginDate'] as Timestamp).toDate(),
       GuestIDs: List.from(json['GuestIDs']),
       RentalID: json['RentalID'],
     );
   }
+
+  static String CollectionName = 'RentalForm';
+  static List<RentalFormModel> AllRentalFormModels = [];
 }

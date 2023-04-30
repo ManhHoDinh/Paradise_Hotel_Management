@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
+import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
@@ -68,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Book Room',
+              label: 'Guest Kind',
               color: ColorPalette.primaryColor,
               onTap: () {
-                Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
+                Navigator.of(context).pushNamed(GuestKindView.routeName);
               },
               textColor: ColorPalette.backgroundColor,
             ),
@@ -79,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Kind Room',
+              label: 'Room Kind',
               color: ColorPalette.primaryColor,
               onTap: () {
                 Navigator.of(context).pushNamed(RoomKindView.routeName);
@@ -119,7 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ButtonWidget(
               label: 'Receipt',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),
@@ -201,7 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(SeeAllScreen.routeName);
+                        Navigator.of(context)
+                            .pushNamed(SeeAllRoomsScreen.routeName);
                       },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],

@@ -13,6 +13,7 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/rentalform_mode.dart';
+import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/core/models/user_model.dart';
 import 'package:paradise/presentations/screens/Rooms/detail_room.dart';
@@ -111,7 +112,7 @@ class _DropDownState extends State<DropDown> {
 
 class _RentalFormState extends State<RentalForm> {
   bool isPressed = false;
-  int _gia = 150000;
+  int _gia = 0;
   int _soNgay = 0;
   int currentId = 0;
   DateTime _focusedDay = DateTime.now();
@@ -119,8 +120,6 @@ class _RentalFormState extends State<RentalForm> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   List<String> list = [];
-
-  DatabaseReference ref = FirebaseDatabase.instance.ref('Users');
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   Sex? _GT = Sex.male;
@@ -162,6 +161,7 @@ class _RentalFormState extends State<RentalForm> {
     _PhoneNumberController = TextEditingController();
     _NoteController = TextEditingController();
     roomIDSelected = widget.room?.roomID ?? '';
+    _gia = RoomKindModel.getRoomKindPrice(widget.room?.RoomKindID ?? '');
     initAvailableRoomID();
   }
 
@@ -321,12 +321,7 @@ class _RentalFormState extends State<RentalForm> {
           leading: InkWell(
             customBorder: CircleBorder(),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => DetailRoom(
-                      room: widget.room ??
-                          RoomModel.AllRooms.where(
-                                  (room) => room.roomID! == roomIDSelected)
-                              .first)));
+              Navigator.of(context).pop();
             },
             child: Container(
               child: Icon(
@@ -547,7 +542,7 @@ class _RentalFormState extends State<RentalForm> {
                                       .withOpacity(0.04),
                                   borderRadius: BorderRadius.circular(8)),
                               child: TableCalendar(
-                                focusedDay: _focusedDay,
+                                focusedDay: _selectedDay ?? DateTime.now(),
                                 firstDay: DateTime(2010),
                                 lastDay: DateTime(2030),
                                 startingDayOfWeek: StartingDayOfWeek.monday,
@@ -776,14 +771,14 @@ class _RentalFormState extends State<RentalForm> {
         TextFormField cartIdGuest = padding2.child as TextFormField;
         TextFormField addressGuest = padding4.child as TextFormField;
         DropDown typeGuest = padding3.child as DropDown;
-        Guest guest = new Guest(
+        GuestModel guest = new GuestModel(
             cmnd: cartIdGuest.controller!.text,
             name: nameGuest.controller!.text,
-            guestKindId: typeGuest.selectedValue(),
+            guestKindID: typeGuest.selectedValue(),
             address: addressGuest.controller!.text);
         final Json = guest.toJson();
         FirebaseFirestore.instance
-            .collection('Guests')
+            .collection(GuestModel.CollectionName)
             .doc(cartIdGuest.controller!.text)
             .set(Json);
         list.add(cartIdGuest.controller!.text);
@@ -814,7 +809,13 @@ class _RentalFormState extends State<RentalForm> {
               isSuccess: true,
               task: 'Book Room ${widget.room!.roomID}',
             );
-          }).whenComplete(() => Navigator.of(context).pop());
+          }).whenComplete(() {
+        RoomModel room =
+            RoomModel.AllRooms.where((room) => room.roomID! == roomIDSelected)
+                .first;
+        room.State = "Booked";
+        return Navigator.of(context).pop();
+      });
     } else {
       showDialog(
           context: context,

@@ -10,6 +10,7 @@ class RoomKindModel {
     required this.Price,
     required this.RoomKindID,
   });
+  static String CollectionName = 'RoomKind';
   Map<String, dynamic> toJson() => {
         'RoomKindID': RoomKindID,
         'Name': Name,
@@ -46,5 +47,4 @@ class RoomKindModel {
       return 0;
     }
   }
-
 }
