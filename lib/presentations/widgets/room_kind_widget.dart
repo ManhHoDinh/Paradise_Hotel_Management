@@ -8,7 +8,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
-import 'package:paradise/presentations/screens/EditRoomKindScreen.dart';
+import 'package:paradise/presentations/screens/RoomKinds/EditRoomKindScreen.dart';
 
 class RoomKindWidget extends StatelessWidget {
   RoomKindWidget({super.key, this.roomKind});

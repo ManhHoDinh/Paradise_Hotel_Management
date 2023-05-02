@@ -1,11 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/all_rental_form.dart';
-import 'package:paradise/presentations/screens/seeAll_screen.dart';
-import 'package:paradise/presentations/screens/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';

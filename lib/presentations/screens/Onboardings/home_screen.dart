@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
-import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
-import 'package:paradise/presentations/screens/RoomKindView.dart';
-import 'package:paradise/presentations/screens/seeAll_screen.dart';
-import 'package:paradise/presentations/screens/splash_screen.dart';
+import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
+import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
+import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,12 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../core/constants/color_palatte.dart';
-import '../../core/helpers/assets_helper.dart';
-import '../../core/helpers/image_helper.dart';
-import '../../core/models/firebase_request.dart';
-import '../../core/models/room_model.dart';
-import '../widgets/filter_containter_widget.dart';
+
+import '../../../core/constants/color_palatte.dart';
+import '../../../core/helpers/assets_helper.dart';
+import '../../../core/helpers/image_helper.dart';
+import '../../../core/models/firebase_request.dart';
+import '../../../core/models/room_model.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -189,157 +188,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     for (RoomKindModel k in RoomKindModel.AllRoomKinds) {
                       RoomKindModel.kindItems.add(k.Name ?? '');
                     }
-                    print("Room Kind updated");
                   }
                   return Container();
                 }),
             const SizedBox(height: 36),
-            // Container(
-            //   child: Container(
-            //     child: SizedBox(
-            //       height: 42,
-            //       width: double.infinity,
-            //       child: TextField(
-            //         onChanged: (value) => valueSearch = value,
-            //         decoration: InputDecoration(
-            //             contentPadding: const EdgeInsets.only(top: 4),
-            //             prefixIcon: InkWell(
-            //               customBorder: CircleBorder(),
-            //               onTap: () {},
-            //               child: Icon(
-            //                 FontAwesomeIcons.magnifyingGlass,
-            //                 size: 16,
-            //                 color: ColorPalette.greenText,
-            //               ),
-            //             ),
-            //             suffixIcon: InkWell(
-            //                 customBorder: CircleBorder(),
-            //                 onTap: () {
-            //                   setState(() {
-            //                     isVisibleFilter = !isVisibleFilter;
-            //                   });
-            //                 },
-            //                 child: Image.asset(AssetHelper.iconFilter)),
-            //             hintText: 'Search',
-            //             hintStyle: TextStyle(
-            //               fontSize: 14,
-            //               color: ColorPalette.grayText,
-            //             ),
-            //             border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(8),
-            //             ),
-            //             focusedBorder: OutlineInputBorder(
-            //                 borderSide: BorderSide(
-            //                     color: ColorPalette.primaryColor, width: 2))),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(height: 24),
-            // Container(
-            //     alignment: Alignment.centerLeft,
-            //     child: Visibility(
-            //         visible: isVisibleFilter,
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             FilterContainerWidget(
-            //               name: 'name',
-            //               icon1: Icon(
-            //                 FontAwesomeIcons.arrowDown,
-            //                 size: 12,
-            //                 color: nameDecrease
-            //                     ? ColorPalette.primaryColor
-            //                     : ColorPalette.blackText,
-            //               ),
-            //               icon2: Icon(
-            //                 FontAwesomeIcons.arrowUp,
-            //                 size: 12,
-            //                 color: nameDecrease
-            //                     ? ColorPalette.blackText
-            //                     : ColorPalette.primaryColor,
-            //               ),
-            //               onTapIconDown: () {
-            //                 setState(() {
-            //                   nameDecrease = true;
-            //                 });
-            //               },
-            //               onTapIconUp: () {
-            //                 setState(() {
-            //                   nameDecrease = false;
-            //                 });
-            //               },
-            //             ),
-            //             FilterContainerWidget(
-            //               name: 'price',
-            //               icon1: Icon(
-            //                 FontAwesomeIcons.arrowDown,
-            //                 size: 12,
-            //                 color: priceDecrease
-            //                     ? ColorPalette.primaryColor
-            //                     : ColorPalette.blackText,
-            //               ),
-            //               icon2: Icon(
-            //                 FontAwesomeIcons.arrowUp,
-            //                 size: 12,
-            //                 color: priceDecrease
-            //                     ? ColorPalette.blackText
-            //                     : ColorPalette.primaryColor,
-            //               ),
-            //               onTapIconDown: () {
-            //                 setState(() {
-            //                   priceDecrease = true;
-            //                 });
-            //               },
-            //               onTapIconUp: () {
-            //                 setState(() {
-            //                   priceDecrease = false;
-            //                 });
-            //               },
-            //             ),
-            //             Container(
-            //               width: 100,
-            //               height: 28,
-            //               alignment: Alignment.center,
-            //               decoration: BoxDecoration(
-            //                   border: Border.all(color: ColorPalette.grayText),
-            //                   borderRadius:
-            //                       BorderRadius.circular(kMediumPadding)),
-            //               child: DropdownButtonHideUnderline(
-            //                 child: DropdownButton<String>(
-            //                     value: dropdownValue,
-            //                     items: items.map(buildMenuItem).toList(),
-            //                     icon: Icon(FontAwesomeIcons.caretDown),
-            //                     iconSize: 12,
-            //                     hint: Text(
-            //                       "Kind",
-            //                       style: TextStyles.defaultStyle.grayText,
-            //                     ),
-            //                     iconEnabledColor: ColorPalette.primaryColor,
-            //                     onChanged: (value) {
-            //                       setState(() {
-            //                         this.dropdownValue = value;
-            //                       });
-            //                     }),
-            //               ),
-            //             )
-            //             // FilterContainerWidget(
-            //             //   name: 'Kind',
-            //             //   icon1: Icon(
-            //             //     FontAwesomeIcons.caretDown,
-            //             //     size: 12,
-            //             //     color: ColorPalette.primaryColor,
-            //             //   ),
-            //             //   onTapIconDown: () {},
-
-            //             //   // icon2: Icon(
-            //             //   //   FontAwesomeIcons.arrowDown,
-            //             //   //   size: 12,
-            //             //   //   color: ColorPalette.blackText,
-            //             //   // ),
-            //             // )
-            //           ],
-            //         ))),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),
               child: Row(

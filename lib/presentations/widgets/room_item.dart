@@ -4,7 +4,7 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/detail_room.dart';
+import 'package:paradise/presentations/screens/Rooms/detail_room.dart';
 
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';

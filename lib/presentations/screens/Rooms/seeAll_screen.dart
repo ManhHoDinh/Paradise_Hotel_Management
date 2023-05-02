@@ -10,12 +10,13 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/CreateRoom_screen.dart';
+import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import '../../core/helpers/assets_helper.dart';
-import '../../core/helpers/image_helper.dart';
+import '../../../core/helpers/assets_helper.dart';
+import '../../../core/helpers/image_helper.dart';
+import '../../widgets/button_default.dart';
 
 class SeeAllScreen extends StatefulWidget {
   static final String routeName = 'see_all_screen';
@@ -27,6 +28,7 @@ class SeeAllScreen extends StatefulWidget {
 }
 
 class _SeeAllScreenState extends State<SeeAllScreen> {
+  late List<RoomModel> listRoom;
   bool isVisibleFilter = false;
   bool priceDecrease = false;
   String? kindRoom;
@@ -36,7 +38,6 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
   String? dropdownStatusValue;
   List<String> kindItems = ['All'];
   final statusItems = ['All', 'Booked', 'Available'];
-  late List<RoomModel> listRoom;
   DropdownMenuItem<String> buildMenuKindItem(String item) => DropdownMenuItem(
       value: item,
       onTap: () {
@@ -114,49 +115,35 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
         ),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: ColorPalette.backgroundColor,
-          leading: InkWell(
-            customBorder: CircleBorder(),
-            onTap: () {},
-            child: Container(
-              child: Icon(
-                FontAwesomeIcons.bars,
-                color: ColorPalette.primaryColor,
+          backgroundColor: ColorPalette.primaryColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
               ),
             ),
           ),
-          title: Padding(
-            padding: const EdgeInsets.only(left: 100),
-            child: Container(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [
-                          Text('WELCOME',
-                              style: TextStyle(
-                                  fontSize: 10, color: ColorPalette.grayText)),
-                          Text(
-                            'Vinpearl Hotel',
-                            style: TextStyle(
-                                fontSize: 16, color: ColorPalette.primaryColor),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 24),
-                      InkWell(
-                        onTap: () {},
-                        child: ImageHelper.loadFromAsset(AssetHelper.avatar,
-                            height: 40),
+          title: Container(
+              child: Text('ROOMS',
+                  style: TextStyles.slo.bold.copyWith(
+                    shadows: [
+                      Shadow(
+                        color: Colors.black12,
+                        offset: Offset(3, 6),
+                        blurRadius: 6,
                       )
                     ],
-                  )
-                ],
-              ),
-            ),
-          ),
+                  ))),
+          centerTitle: true,
+          toolbarHeight: kToolbarHeight * 1.5,
         ),
         body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
@@ -355,39 +342,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                               ))
                         ],
                       ))),
-              Container(
-                padding: const EdgeInsets.only(bottom: kMinPadding),
-                alignment: Alignment.centerLeft,
-                child: Row(children: [
-                  Material(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      customBorder: CircleBorder(),
-                      child: Container(
-                        width: 26,
-                        height: 26,
-                        child: Icon(
-                          FontAwesomeIcons.arrowLeft,
-                          size: 18,
-                          color: ColorPalette.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    'All room',
-                    style: TextStyles.defaultStyle.primaryTextColor,
-                  ),
-                ]),
-              ),
               Expanded(
                   child: Container(
-                //padding: const EdgeInsets.only(bottom: kMediumPadding),
+                margin: EdgeInsets.only(top: 30),
                 child: StreamBuilder<List<RoomModel>>(
                     stream: FireBaseDataBase.readRooms(),
                     builder: (context, snapshot) {

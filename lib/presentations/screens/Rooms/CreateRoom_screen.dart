@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:counter/counter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/presentations/screens/rental_form.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/check_box.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
@@ -23,7 +21,7 @@ import 'package:paradise/presentations/widgets/input_default.dart';
 import 'package:paradise/presentations/widgets/input_widget.dart';
 import 'package:paradise/presentations/widgets/upload_button.dart';
 
-import '../widgets/counter.dart';
+import '../../widgets/counter.dart';
 
 class CreateRoomScreen extends StatefulWidget {
   static String routeName = 'CreateRoom_screen';
@@ -289,8 +287,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                 ],
               ),
             ),
-            alignment: Alignment.center,
+            //alignment: Alignment.center,
           ),
+          centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,
         ),
       ),
@@ -377,7 +376,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             return DialogOverlay(
               task: 'Create Room',
               isSuccess: true,
-              
             );
           });
       setState(() {
