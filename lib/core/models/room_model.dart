@@ -63,4 +63,15 @@ class RoomModel {
       return false;
     }
   }
+
+  static String getRoomImageByID(String id) {
+    try {
+      RoomModel room =
+          RoomModel.AllRooms.where((roomCheck) => roomCheck.roomID! == id)
+              .first;
+      return room.PrimaryImage ?? '';
+    } catch (e) {
+      return '';
+    }
+  }
 }
