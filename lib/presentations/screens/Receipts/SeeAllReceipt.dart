@@ -139,7 +139,6 @@ class _SeeAllReceiptsState extends State<SeeAllReceipts> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       GuestKindModel.AllGuestKinds = snapshot.data!;
-                      print(GuestKindModel.AllGuestKinds.length);
                     }
                     return Container();
                   }),
@@ -294,6 +293,7 @@ class _SeeAllReceiptsState extends State<SeeAllReceipts> {
                 child: StreamBuilder<List<ReceiptModel>>(
                     stream: FireBaseDataBase.readReceipts(),
                     builder: (context, snapshot) {
+                      print(snapshot.data);
                       if (snapshot.hasError) {
                         return Center(
                           child:

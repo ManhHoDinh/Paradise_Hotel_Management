@@ -1,12 +1,14 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
 import 'package:paradise/core/models/guest_model.dart';
-import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/color_palatte.dart';
@@ -15,11 +17,16 @@ import '../../../core/helpers/text_styles.dart';
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/rentalform_mode.dart';
 import '../../widgets/button_default.dart';
+import '../../widgets/dialog.dart';
 import '../../widgets/inputTitleWidget.dart';
 
 class AddReceipt extends StatefulWidget {
-  const AddReceipt({super.key});
+  AddReceipt({super.key});
   static final String routeName = 'add_receipt';
+  int TotalPrice = 0;
+  void updateTotalPrice(NewTotalPrice) {
+    TotalPrice = NewTotalPrice;
+  }
 
   @override
   State<AddReceipt> createState() => _AddReceiptState();
@@ -29,12 +36,41 @@ class _AddReceiptState extends State<AddReceipt> {
   DateTime? _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   List<TableRow> listRow = [];
+  StreamController<int> TotalPriceStream = StreamController<int>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  List<String> RentalFormIDs = [];
+  TextEditingController phoneNumberController = TextEditingController();
+
+  void updatePrice(int newPrice) {
+    TotalPriceStream.sink.add(newPrice);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     listRow.add(TitleRow());
     resetRentalForms();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    TotalPriceStream.close();
+    super.dispose();
+  }
+
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return ColorPalette.primaryColor;
+    }
+    return ColorPalette.primaryColor;
   }
 
   @override
@@ -57,22 +93,22 @@ class _AddReceiptState extends State<AddReceipt> {
             ),
             InputTitleWidget(
               Title: 'Guest name',
-              //controller: nameController,
+              controller: nameController,
               hintInput: 'Type here',
             ),
             Container(
-              margin: EdgeInsets.only(top: 40),
+              margin: EdgeInsets.only(top: 20),
               child: InputTitleWidget(
                 Title: 'Address',
-                //controller: ratioController,
+                controller: addressController,
                 hintInput: 'Type here',
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 40),
+              margin: EdgeInsets.only(top: 20),
               child: InputTitleWidget(
                 Title: 'Phone number',
-                //controller: ratioController,
+                controller: phoneNumberController,
                 hintInput: 'Type here',
               ),
             ),
@@ -133,6 +169,9 @@ class _AddReceiptState extends State<AddReceipt> {
                         // _rangeEnd = null;
                         // _rangeSelectionMode =
                         //     RangeSelectionMode.toggledOff;
+                        widget.TotalPrice = 0;
+                        updatePrice(widget.TotalPrice);
+                        RentalFormIDs.clear();
                       });
                     }
                   },
@@ -153,45 +192,91 @@ class _AddReceiptState extends State<AddReceipt> {
                 ),
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Table(
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  border: TableBorder.all(
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(top: 40, left: 73),
+              child: Text(
+                'All rental forms',
+                style: TextStyles.h6.copyWith(
+                    color: ColorPalette.darkBlueText,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, left: 40),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Table(
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    border: TableBorder.all(
                       color: ColorPalette.grayText,
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(4),
-                          topRight: Radius.circular(4))),
-                  columnWidths: {
-                    0: FixedColumnWidth(40),
-                    1: FixedColumnWidth(100),
-                    2: FixedColumnWidth(140),
-                    3: FixedColumnWidth(120),
-                    //
-                    for (int i = 0;
-                        i < GuestKindModel.AllGuestKinds.length;
-                        i++)
-                      4 + i: FixedColumnWidth(160),
-                    //
-                    4 + GuestKindModel.AllGuestKinds.length:
-                        FixedColumnWidth(160),
-                    5 + GuestKindModel.AllGuestKinds.length:
-                        FixedColumnWidth(120),
-                    6 + GuestKindModel.AllGuestKinds.length:
-                        FixedColumnWidth(160),
-                    7 + GuestKindModel.AllGuestKinds.length:
-                        FixedColumnWidth(200),
-                    8 + GuestKindModel.AllGuestKinds.length:
-                        FixedColumnWidth(200),
-                    9 + GuestKindModel.AllGuestKinds.length:
-                        FixedColumnWidth(160),
-                  },
-                  children: listRow),
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10)),
+                    ),
+                    columnWidths: {
+                      0: FixedColumnWidth(40),
+                      1: FixedColumnWidth(100),
+                      2: FixedColumnWidth(60),
+                      3: FixedColumnWidth(80),
+                      //
+                      for (int i = 0;
+                          i < GuestKindModel.AllGuestKinds.length;
+                          i++)
+                        4 + i: FixedColumnWidth(120),
+                      //
+                      4 + GuestKindModel.AllGuestKinds.length:
+                          FixedColumnWidth(100),
+                      5 + GuestKindModel.AllGuestKinds.length:
+                          FixedColumnWidth(80),
+                      6 + GuestKindModel.AllGuestKinds.length:
+                          FixedColumnWidth(140),
+                      7 + GuestKindModel.AllGuestKinds.length:
+                          FixedColumnWidth(200),
+                      8 + GuestKindModel.AllGuestKinds.length:
+                          FixedColumnWidth(200),
+                      9 + GuestKindModel.AllGuestKinds.length:
+                          FixedColumnWidth(100),
+                    },
+                    children: listRow),
+              ),
+            ),
+            Row(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(top: 20, left: 40, bottom: 20),
+                  child: Text(
+                    'Total',
+                    style: TextStyles.h4.copyWith(
+                        color: ColorPalette.primaryColor,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Spacer(),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(top: 20, right: 40, bottom: 20),
+                    child: StreamBuilder<int>(
+                      stream: TotalPriceStream.stream,
+                      initialData: 0,
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return Text(
+                          '${NumberFormat.decimalPattern().format(snapshot.data)} VND',
+                          style: TextStyles.h4.copyWith(
+                              color: ColorPalette.primaryColor,
+                              fontWeight: FontWeight.w500),
+                        );
+                      },
+                    )),
+              ],
             ),
             Container(
-                margin: EdgeInsets.only(top: 60, bottom: 80),
+                margin: EdgeInsets.only(top: 10, bottom: 50),
                 width: 150,
-                child: ButtonDefault(label: 'Create', onTap: () {})),
+                child: ButtonDefault(label: 'Create', onTap: createRecept)),
           ]),
         ),
         appBar: AppBar(
@@ -240,19 +325,56 @@ class _AddReceiptState extends State<AddReceipt> {
   void resetRentalForms() {
     listRow.clear();
     listRow.add(TitleRow());
-    for (RentalFormModel rental in RentalFormModel.AllRentalFormModels) {
-      TextEditingController _nameGuestController = TextEditingController();
-      TextEditingController _cardIdGuestController = TextEditingController();
-      TextEditingController _addressGuestController = TextEditingController();
-      int numberOfForeignGuest = NumberOfForeignGuest(rental.GuestIDs);
+    widget.TotalPrice = 0;
+    RentalFormIDs.clear();
+    updatePrice(widget.TotalPrice);
+    for (RentalFormModel rental
+        in RentalFormModel.AllUnpaidRentalFormModels()) {
       int days =
           _selectedDay?.difference(rental.BeginDate ?? DateTime.now()).inDays ??
               0;
+      bool isChecked = false;
       List<Widget> list = [
         Container(
           width: 50,
           height: 40,
           alignment: Alignment.center,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Checkbox(
+                checkColor: Colors.white,
+                fillColor: MaterialStateColor.resolveWith(
+                    (states) => getColor(states)),
+                value: isChecked,
+                onChanged: (value) {
+                  setState(() {
+                    if (days < 0) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DialogOverlay(
+                              isSuccess: false,
+                              task: 'Choose rental form',
+                              error:
+                                  'Checkout date cannot be before booking date',
+                            );
+                          });
+                    } else {
+                      isChecked = !isChecked;
+                      if (isChecked) {
+                        widget.TotalPrice += Total(rental, days);
+                        RentalFormIDs.add(rental.RentalID ?? '');
+                      } else {
+                        widget.TotalPrice -= Total(rental, days);
+                        RentalFormIDs.remove(rental.RentalID);
+                      }
+                      updatePrice(widget.TotalPrice);
+                    }
+                  });
+                },
+              );
+            },
+          ),
         ),
         Container(
           width: 200,
@@ -289,13 +411,16 @@ class _AddReceiptState extends State<AddReceipt> {
         ),
       ];
       for (GuestKindModel guestKind in GuestKindModel.AllGuestKinds) {
+        int numberOfGuestKind =
+            NumberOfGuestKind(rental.GuestIDs, guestKind.GuestKindID ?? '');
+
         list.add(
           Container(
             width: 200,
             height: 40,
             alignment: Alignment.center,
             child: Text(
-              guestKind.Name ?? '',
+              numberOfGuestKind.toString(),
               textAlign: TextAlign.center,
               style: TextStyles.defaultStyle.copyWith(
                   color: ColorPalette.primaryColor,
@@ -310,7 +435,8 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            RoomModel.getPriceWithRoomID(rental.RoomID ?? '').toString(),
+            NumberFormat.decimalPattern()
+                .format(RoomModel.getPriceWithRoomID(rental.RoomID ?? '')),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -343,7 +469,8 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            '',
+            NumberFormat.decimalPattern().format(
+                GuestKindSurcharge(rental.GuestIDs, rental.RoomID ?? '', days)),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -354,7 +481,7 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            'Total',
+            NumberFormat.decimalPattern().format(ExcessCustomerSurcharge()),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -365,7 +492,7 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            'Total',
+            NumberFormat.decimalPattern().format(Total(rental, days)),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -376,16 +503,145 @@ class _AddReceiptState extends State<AddReceipt> {
     }
   }
 
-  NumberOfForeignGuest(List<String>? guestIDs) {
+  NumberOfGuestKind(List<String>? guestIDs, String guestKindID) {
     int Result = 0;
     for (String guestID in guestIDs!)
-      if (GuestModel.IsForeignGuest(guestID)) Result++;
+      if (GuestModel.IsSameGuestKind(guestID, guestKindID)) Result++;
     return Result;
   }
 
-  SurchargeOfForeignGuests(
-      {required int days, required int numberOfForeignGuest}) {
-    if (numberOfForeignGuest > 0) {}
+  HighestGuestKindRatio(List<String>? guestIDs) {
+    double Result = 0;
+    for (String guestID in guestIDs!)
+      if (GuestKindModel.getGuestKindRatio(guestID) >= Result)
+        Result = GuestKindModel.getGuestKindRatio(guestID);
+    return Result;
+  }
+
+  int GuestKindSurcharge(List<String>? guestIDs, String roomID, int days) {
+    try {
+      int unitPrice = RoomModel.getPriceWithRoomID(roomID);
+      double ratio = HighestGuestKindRatio(guestIDs);
+      if (days < 0) throw Exception();
+      if (ratio < 1) throw Exception();
+      return ((ratio - 1) * unitPrice * days).toInt();
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  void changeRentalFormState(String rentalFormID) {
+    try {
+      CollectionReference roomCollection =
+          FirebaseFirestore.instance.collection(RentalFormModel.CollectionName);
+      FirebaseFirestore.instance
+          .collection(RentalFormModel.CollectionName)
+          .where("RentalID", isEqualTo: rentalFormID)
+          .get()
+          .then((value) {
+        DocumentReference document = roomCollection.doc(value.docs[0].id);
+        document.update({"Status": "Paid"});
+      });
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Check out ${rentalFormID}',
+              error: e.toString(),
+            );
+          });
+    }
+  }
+
+  int ExcessCustomerSurcharge() {
+    return 10;
+  }
+
+  int Total(RentalFormModel rental, int days) {
+    try {
+      if (days < 0) throw Exception();
+      int guestKindSurcharge =
+          GuestKindSurcharge(rental.GuestIDs, rental.RoomID ?? '', days);
+      int normalFee = RoomModel.getPriceWithRoomID(rental.RoomID ?? '') * days;
+      int excessCustomerSurcharge = ExcessCustomerSurcharge();
+      return guestKindSurcharge + normalFee + excessCustomerSurcharge;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  void createRecept() {
+    print(RentalFormIDs);
+
+    if (nameController.text == '') {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Create Receipt',
+              error: "Check input guest Name, please!!!",
+            );
+          });
+    } else if (addressController.text == '') {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Create Receipt',
+              error: "Check input address, please!!!",
+            );
+          });
+    } else if (phoneNumberController.text == '') {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Create Receipt',
+              error: "Check input phone number, please!!!",
+            );
+          });
+    } else {
+      try {
+        DocumentReference doc = FirebaseFirestore.instance
+            .collection(ReceiptModel.CollectionName)
+            .doc();
+        ReceiptModel receipt = new ReceiptModel(
+            receiptID: doc.id,
+            guestName: nameController.text,
+            rentalFormIDs: RentalFormIDs,
+            phoneNumber: phoneNumberController.text,
+            checkOutDate: _selectedDay,
+            total: widget.TotalPrice,
+            address: addressController.text);
+        for (String rentalFormID in RentalFormIDs)
+          changeRentalFormState(rentalFormID);
+        doc.set(receipt.toJson()).whenComplete(() {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return DialogOverlay(
+                  isSuccess: true,
+                  task: 'Create Receipt',
+                );
+              });
+
+          setState(() {
+            addressController.text = '';
+            nameController.text = '';
+            phoneNumberController.text = '';
+            _selectedDay = DateTime.now();
+            widget.TotalPrice = 0;
+            updatePrice(widget.TotalPrice);
+            RentalFormIDs.clear();
+          });
+        });
+      } catch (e) {}
+    }
   }
 }
 
@@ -437,7 +693,7 @@ TitleRow() {
         height: 40,
         alignment: Alignment.center,
         child: Text(
-          guestKind.Name ?? '',
+          (guestKind.Name ?? '') + ' (${guestKind.ratio})',
           textAlign: TextAlign.center,
           style: TextStyles.defaultStyle.copyWith(
               color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),

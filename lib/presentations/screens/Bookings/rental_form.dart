@@ -745,7 +745,8 @@ class _RentalFormState extends State<RentalForm> {
           RoomID: roomIDSelected,
           BeginDate: _selectedDay,
           GuestIDs: list,
-          RentalID: doc.id);
+          RentalID: doc.id,
+          Status: 'Unpaid');
       doc.set(ren.toJson());
     } catch (e) {
       showDialog(
@@ -772,9 +773,10 @@ class _RentalFormState extends State<RentalForm> {
         TextFormField addressGuest = padding4.child as TextFormField;
         DropDown typeGuest = padding3.child as DropDown;
         GuestModel guest = new GuestModel(
-            cmnd: cartIdGuest.controller!.text,
+            guestID: cartIdGuest.controller!.text,
             name: nameGuest.controller!.text,
-            guestKindID: typeGuest.selectedValue(),
+            guestKindID:
+                GuestKindModel.getGuestKindID(typeGuest.selectedValue()),
             address: addressGuest.controller!.text);
         final Json = guest.toJson();
         FirebaseFirestore.instance

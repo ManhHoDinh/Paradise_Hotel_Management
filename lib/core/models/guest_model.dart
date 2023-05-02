@@ -4,37 +4,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
 
 class GuestModel {
-  String? cmnd;
+  String? guestID;
   String? name;
   String? guestKindID;
   String? address;
   GuestModel({
-    required this.cmnd,
+    required this.guestID,
     required this.name,
     required this.guestKindID,
     required this.address,
   });
 
   Map<String, dynamic> toJson() => {
-        'CMND': cmnd,
+        'GuestID': guestID,
         'Name': name,
         'GuestKindID': guestKindID,
         'Address': address,
       };
 
   static GuestModel fromJson(Map<String, dynamic> json) => GuestModel(
-      cmnd: json['CMND'],
+      guestID: json['GuestID'],
       name: json['Name'],
       guestKindID: json['GuestKindID'],
       address: json['Address']);
   static List<GuestModel> AllGuests = [];
   static String CollectionName = 'Guests';
-  static bool IsForeignGuest(String id) {
+  static bool IsSameGuestKind(String guestID, String guestKindID) {
     try {
       GuestModel guest =
-          GuestModel.AllGuests.where((guest) => guest.cmnd == id).first;
-      return GuestKindModel.getGuestKindName(guest.guestKindID ?? '') ==
-          "Foreign";
+          GuestModel.AllGuests.where((guest) => guest.guestID == guestID).first;
+      return guest.guestKindID == guestKindID;
     } catch (e) {
       return false;
     }
