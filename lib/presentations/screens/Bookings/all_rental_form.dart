@@ -11,7 +11,7 @@ import 'package:paradise/presentations/widgets/form_item.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import '../../core/helpers/assets_helper.dart';
+import '../../../core/helpers/assets_helper.dart';
 
 class AllRentalForm extends StatefulWidget {
   static final String routeName = 'all_rental_form';
@@ -54,16 +54,16 @@ class _AllRentalFormState extends State<AllRentalForm> {
     }
 
     if (dateDecrease) {
-      list.sort((a, b) => b.beginDate.compareTo(a.beginDate));
+      list.sort((a, b) => (b.beginDate).compareTo(a.beginDate));
     } else {
-      list.sort((a, b) => a.beginDate.compareTo(b.beginDate));
+      list.sort((a, b) => (a.beginDate).compareTo(b.beginDate));
     }
 
     switch (status) {
-      case "Booked":
+      case "Paid":
         newList = newList.where((form) => form.Status == 'Paid').toList();
         break;
-      case "Available":
+      case "Unpaid":
         newList = newList.where((form) => form.Status == 'Unpaid').toList();
         break;
       default:
@@ -108,7 +108,6 @@ class _AllRentalFormState extends State<AllRentalForm> {
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
           color: ColorPalette.backgroundColor,
-          // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
           child: Column(
             children: [
               const SizedBox(height: 36),
@@ -349,24 +348,28 @@ class _AllRentalFormState extends State<AllRentalForm> {
               SalomonBottomBarItem(
                   icon: Icon(
                     FontAwesomeIcons.house,
+                    color: ColorPalette.primaryColor,
                     size: 20,
                   ),
                   title: Text('Home')),
               SalomonBottomBarItem(
                   icon: Icon(
                     FontAwesomeIcons.gear,
+                    color: ColorPalette.primaryColor,
                     size: 20,
                   ),
                   title: Text('Setting')),
               SalomonBottomBarItem(
                   icon: Icon(
                     FontAwesomeIcons.bell,
+                    color: ColorPalette.primaryColor,
                     size: 20,
                   ),
                   title: Text('Notification')),
               SalomonBottomBarItem(
                   icon: Icon(
                     FontAwesomeIcons.user,
+                    color: ColorPalette.primaryColor,
                     size: 20,
                   ),
                   title: Text('Account')),

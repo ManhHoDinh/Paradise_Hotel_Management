@@ -12,7 +12,7 @@ import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/guest_model.dart';
-import 'package:paradise/core/models/rentalform_mode.dart';
+import 'package:paradise/core/models/rental_form_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/core/models/user_model.dart';
 import 'package:paradise/presentations/screens/Rooms/detail_room.dart';
@@ -748,7 +748,7 @@ class _RentalFormState extends State<RentalForm> {
           FirebaseFirestore.instance.collection('RentalForm').doc();
       RentalFormModel ren = new RentalFormModel(
           RoomID: roomIDSelected,
-          BeginDate: _selectedDay,
+          beginDate: _selectedDay ?? DateTime.now(),
           GuestIDs: list,
           RentalID: doc.id);
       doc.set(ren.toJson());

@@ -11,7 +11,7 @@ class RentalFormModel {
       required this.GuestIDs,
       required this.beginDate,
       required this.RoomID,
-      required this.Status});
+      this.Status = ""});
   Map<String, dynamic> toJson() => {
         'BeginDate': beginDate,
         'GuestIDs': GuestIDs,

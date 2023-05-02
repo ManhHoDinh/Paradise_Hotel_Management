@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 
@@ -84,6 +85,7 @@ class _FormItemState extends State<FormItem> {
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     formModel.RentalID,
+                    maxLines: 1,
                     style: TextStyles.defaultStyle.DarkPrimaryTextColor.medium,
                   ),
                 ),
@@ -108,6 +110,7 @@ class _FormItemState extends State<FormItem> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                         '${formModel.beginDate.day} ${numberToMonthMap[formModel.beginDate.month]}',
+                        maxLines: 1,
                         style: TextStyles
                             .defaultStyle.DarkPrimaryTextColor.medium))
               ],

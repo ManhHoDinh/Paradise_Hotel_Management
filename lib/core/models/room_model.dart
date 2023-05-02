@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 
 class RoomModel {
