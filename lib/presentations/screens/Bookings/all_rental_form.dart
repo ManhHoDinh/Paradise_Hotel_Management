@@ -45,23 +45,19 @@ class _AllRentalFormState extends State<AllRentalForm> {
         style: TextStyles.defaultStyle.grayText,
       ));
   List<RentalFormModel> loadListForms(List<RentalFormModel> list) {
-    List<RentalFormModel> newList = List.from(list);
-
     if (idDecrease) {
       list.sort((a, b) => b.RentalID.compareTo(a.RentalID));
-      newList = List.from(list);
     } else {
       list.sort((a, b) => a.RentalID.compareTo(b.RentalID));
-      newList = List.from(list);
     }
 
     if (dateDecrease) {
       list.sort((a, b) => (b.beginDate).compareTo(a.beginDate));
-      newList = List.from(list);
     } else {
       list.sort((a, b) => (a.beginDate).compareTo(b.beginDate));
-      newList = List.from(list);
     }
+
+    List<RentalFormModel> newList = List.from(list);
 
     switch (status) {
       case "Paid":
