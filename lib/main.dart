@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: AllRentalForm(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

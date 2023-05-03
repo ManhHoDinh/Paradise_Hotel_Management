@@ -49,25 +49,36 @@ class _AllRentalFormState extends State<AllRentalForm> {
 
     if (idDecrease) {
       list.sort((a, b) => b.RentalID.compareTo(a.RentalID));
+      newList = List.from(list);
     } else {
       list.sort((a, b) => a.RentalID.compareTo(b.RentalID));
+      newList = List.from(list);
     }
 
     if (dateDecrease) {
       list.sort((a, b) => (b.beginDate).compareTo(a.beginDate));
+      newList = List.from(list);
     } else {
       list.sort((a, b) => (a.beginDate).compareTo(b.beginDate));
+      newList = List.from(list);
     }
 
     switch (status) {
       case "Paid":
-        newList = newList.where((form) => form.Status == 'Paid').toList();
+        newList = newList.where((form) => form.Status == status).toList();
         break;
       case "Unpaid":
-        newList = newList.where((form) => form.Status == 'Unpaid').toList();
+        newList = newList.where((form) => form.Status == status).toList();
         break;
       default:
         newList = newList;
+    }
+
+    if (valueSearch != null) {
+      newList = newList
+          .where((e) =>
+              e.RentalID.toLowerCase().contains(valueSearch!.toLowerCase()))
+          .toList();
     }
 
     return newList;

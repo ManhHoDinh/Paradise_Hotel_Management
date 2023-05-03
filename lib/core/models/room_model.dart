@@ -67,6 +67,9 @@ class RoomModel {
 
   static String getRoomImageByID(String id) {
     try {
+      if (AllRooms.length == 0) {
+        print('Khong co phan tu\n');
+      }
       RoomModel room =
           RoomModel.AllRooms.where((roomCheck) => roomCheck.roomID! == id)
               .first;
