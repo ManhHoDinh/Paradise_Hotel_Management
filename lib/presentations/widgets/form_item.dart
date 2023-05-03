@@ -33,6 +33,11 @@ class _FormItemState extends State<FormItem> {
     12: "December",
   };
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     RentalFormModel formModel = widget.form;
     return GestureDetector(

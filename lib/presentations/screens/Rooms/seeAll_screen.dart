@@ -61,13 +61,12 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
         style: TextStyles.defaultStyle.grayText,
       ));
   List<RoomModel> loadListRoom(List<RoomModel> list) {
-    List<RoomModel> newList = List.from(list);
-
     if (priceDecrease) {
       list.sort((a, b) => b.getPrice().compareTo(a.getPrice()));
     } else {
       list.sort((a, b) => a.getPrice().compareTo(b.getPrice()));
     }
+    List<RoomModel> newList = List.from(list);
     switch (status) {
       case "All":
         newList = newList;
