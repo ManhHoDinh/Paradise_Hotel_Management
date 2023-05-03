@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/core/models/firebase_request.dart';
-import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 
 import '../../core/helpers/assets_helper.dart';

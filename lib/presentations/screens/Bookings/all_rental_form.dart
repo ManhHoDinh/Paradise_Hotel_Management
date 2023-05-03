@@ -6,6 +6,7 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/rental_form_model.dart';
+import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/form_item.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
@@ -106,7 +107,7 @@ class _AllRentalFormState extends State<AllRentalForm> {
           ),
           title: Align(
             child: Text(
-              'RENTAL FORMS',
+              'RENTAL FORMS       ',
               style: TextStyles.h8.copyWith(letterSpacing: 3.05),
             ),
             alignment: Alignment.center,
@@ -117,6 +118,14 @@ class _AllRentalFormState extends State<AllRentalForm> {
           color: ColorPalette.backgroundColor,
           child: Column(
             children: [
+              StreamBuilder(
+                  stream: FireBaseDataBase.readRooms(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      RoomModel.AllRooms = snapshot.data!;
+                    }
+                    return Container();
+                  }),
               const SizedBox(height: 36),
               Container(
                 child: Container(
