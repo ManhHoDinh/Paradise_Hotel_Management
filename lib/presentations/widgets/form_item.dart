@@ -51,15 +51,25 @@ class _FormItemState extends State<FormItem> {
         child: Column(children: [
           Stack(
             children: [
-              ImageHelper.loadFromNetwork(
-                RoomModel.getRoomImageByID(formModel.RoomID),
-                width: double.maxFinite,
-                height: 105,
-                fit: BoxFit.fitWidth,
-                radius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
-              ),
+              RoomModel.getRoomImageByID(formModel.RoomID).length != 0
+                  ? ImageHelper.loadFromNetwork(
+                      RoomModel.getRoomImageByID(formModel.RoomID),
+                      width: double.maxFinite,
+                      height: 105,
+                      fit: BoxFit.fill,
+                      radius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                    )
+                  : ImageHelper.loadFromAsset(
+                      AssetHelper.roomDetail1,
+                      width: double.maxFinite,
+                      height: 105,
+                      fit: BoxFit.fill,
+                      radius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                    ),
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.bottomRight,
