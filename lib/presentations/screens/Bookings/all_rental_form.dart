@@ -228,14 +228,14 @@ class _AllRentalFormState extends State<AllRentalForm> {
                               icon1: Icon(
                                 FontAwesomeIcons.arrowDown,
                                 size: 13,
-                                color: idDecrease
+                                color: dateDecrease
                                     ? ColorPalette.primaryColor
                                     : ColorPalette.blackText,
                               ),
                               icon2: Icon(
                                 FontAwesomeIcons.arrowUp,
                                 size: 13,
-                                color: idDecrease
+                                color: dateDecrease
                                     ? ColorPalette.blackText
                                     : ColorPalette.primaryColor,
                               ),
