@@ -71,7 +71,8 @@ class _DetailRoomState extends State<DetailRoom> {
                                     builder: (context) {
                                       return DialogOverlay(
                                         isSuccess: false,
-                                        task: 'Book room ${roomModel.roomID}',
+                                        task:
+                                            'Book room ${roomModel.RoomKindID}',
                                         error:
                                             'Room ${roomModel.RoomKindID} is booked!!!',
                                       );
