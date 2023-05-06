@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 
+import '../screens/Receipts/ReceiptDetailScreen.dart';
+
 class ReceiptItem extends StatefulWidget {
   ReceiptModel Receipt;
   ReceiptItem({super.key, required this.Receipt});
@@ -17,12 +19,12 @@ class _ReceiptItemState extends State<ReceiptItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (_) => DetailReceipt(
-        //               Receipt: widget.Receipt,
-        //             )));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ReceiptDetailScreen(
+                      Receipt: widget.Receipt,
+                    )));
       },
       child: Container(
         decoration: BoxDecoration(
