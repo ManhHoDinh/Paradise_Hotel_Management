@@ -11,7 +11,6 @@ class RoomKindModel {
     required this.Price,
     required this.RoomKindID,
   });
-<<<<<<< HEAD
   static String CollectionName = 'RoomKind';
   Map<String, dynamic> toJson() => {
         'RoomKindID': RoomKindID,
@@ -20,20 +19,12 @@ class RoomKindModel {
       };
 
   static RoomKindModel fromJson(Map<String, dynamic> json) {
-=======
-  factory RoomKindModel.fromJson(Map<String, dynamic> json) {
->>>>>>> dev_VoCongBinh
     return RoomKindModel(
       RoomKindID: json['RoomKindID'],
       Name: json['Name'],
       Price: int.parse(json['Price']),
     );
   }
-  Map<String, dynamic> toJson() => {
-        'RoomKindID': RoomKindID,
-        'Name': Name,
-        'Price': Price.toString(),
-      };
 
   // static RoomKindModel fromJson(Map<String, dynamic> json) {
   //   return RoomKindModel(

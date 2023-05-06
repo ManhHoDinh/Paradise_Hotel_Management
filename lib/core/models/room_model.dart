@@ -26,13 +26,9 @@ class RoomModel {
         'Description': Description,
         'maxCapacity': maxCapacity.toString()
       };
-<<<<<<< HEAD
   static String CollectionName = 'Rooms';
 
   static RoomModel fromJson(Map<String, dynamic> json) {
-=======
-  factory RoomModel.fromJson(Map<String, dynamic> json) {
->>>>>>> dev_VoCongBinh
     //List<String> names = List.from(json['names']);
     return RoomModel(
         roomID: json['roomID'],
