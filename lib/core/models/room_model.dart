@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 
 class RoomModel {
@@ -79,6 +80,18 @@ class RoomModel {
       return Rooms.length != 0;
     } catch (e) {
       return false;
+    }
+  }
+
+  static String getRoomImageByID(String id) {
+    try {
+      print(AllRooms.length);
+      RoomModel room =
+          RoomModel.AllRooms.where((roomCheck) => roomCheck.roomID! == id)
+              .first;
+      return room.PrimaryImage ?? "";
+    } catch (e) {
+      return "";
     }
   }
 }

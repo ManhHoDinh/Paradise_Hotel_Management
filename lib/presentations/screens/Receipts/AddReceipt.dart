@@ -15,7 +15,7 @@ import '../../../core/constants/color_palatte.dart';
 import '../../../core/constants/dimension_constants.dart';
 import '../../../core/helpers/text_styles.dart';
 import '../../../core/models/firebase_request.dart';
-import '../../../core/models/rentalform_mode.dart';
+import '../../../core/models/rental_form_model.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/dialog.dart';
 import '../../widgets/inputTitleWidget.dart';

@@ -3,11 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
 import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
-import 'package:paradise/core/models/rentalform_mode.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/firebase_options.dart';
-
+import 'package:paradise/core/models/rental_form_model.dart';
 class FireBaseDataBase {
   static CollectionReference? referenceRooms;
   static Stream<List<RoomModel>> readRooms() => FirebaseFirestore.instance

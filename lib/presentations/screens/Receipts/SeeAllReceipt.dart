@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
 import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
-import 'package:paradise/core/models/rentalform_mode.dart';
+import 'package:paradise/core/models/rental_form_model.dart';
 import 'package:paradise/presentations/screens/Receipts/AddReceipt.dart';
 import 'package:paradise/presentations/widgets/receipt_item.dart';
 

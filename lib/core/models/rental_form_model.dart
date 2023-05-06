@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RentalFormModel {
-  String? RentalID;
-  String? RoomID;
-  DateTime? BeginDate;
-  List<String>? GuestIDs;
-  String? Status;
+  String RentalID;
+  String RoomID;
+  DateTime BeginDate;
+  List<String> GuestIDs;
+  String Status;
   RentalFormModel({
     required this.RoomID,
     required this.BeginDate,
