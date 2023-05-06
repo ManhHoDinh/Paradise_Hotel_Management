@@ -50,7 +50,11 @@ dependencies:
   firebase_storage: ^11.1.0
   loading_animation_widget: ^1.2.0+4
   firebase_database: ^10.1.1
+<<<<<<< HEAD
   intl: ^0.18.1
+=======
+  provider: ^6.0.5
+>>>>>>> dev_VoCongBinh
 dev_dependencies:
   flutter_test:
     sdk: flutter

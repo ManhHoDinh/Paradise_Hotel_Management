@@ -10,7 +10,11 @@ import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
+<<<<<<< HEAD
 import 'package:paradise/presentations/screens/RoomKinds/AddRoomKindScreen.dart';
+=======
+import 'package:paradise/presentations/screens/report_screen.dart';
+>>>>>>> dev_VoCongBinh
 
 final Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => SplashScreen(),
@@ -21,8 +25,12 @@ final Map<String, WidgetBuilder> routes = {
   SeeAllRoomsScreen.routeName: (context) => SeeAllRoomsScreen(),
   AddRoomKindScreen.routeName: (context) => AddRoomKindScreen(),
   RentalForm.routeName: (context) => RentalForm(),
+<<<<<<< HEAD
   GuestKindView.routeName: (context) => GuestKindView(),
   AddGuestKindScreen.routeName: (context) => AddGuestKindScreen(),
   AddReceipt.routeName: (context) => AddReceipt(),
   SeeAllReceipts.routeName: (context) => SeeAllReceipts(),
+=======
+  ReportScreen.routeName: (context) => ReportScreen()
+>>>>>>> dev_VoCongBinh
 };
