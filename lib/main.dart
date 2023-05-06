@@ -4,6 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
+import 'package:paradise/presentations/screens/Receipts/ReceiptDetailScreen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: AllRentalForm(),
+      home: SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

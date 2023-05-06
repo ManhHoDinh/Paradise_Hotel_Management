@@ -1,13 +1,9 @@
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:paradise/core/models/guest_kind_model.dart';
 
 class GuestModel {
-  String? guestID;
-  String? name;
-  String? guestKindID;
-  String? address;
+  String guestID;
+  String name;
+  String guestKindID;
+  String address;
   GuestModel({
     required this.guestID,
     required this.name,

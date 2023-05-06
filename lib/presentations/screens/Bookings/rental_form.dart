@@ -773,7 +773,6 @@ class _RentalFormState extends State<RentalForm> {
       addNewGuest();
       addRentalForm();
       changeStateRoom();
-      ResetView();
       showDialog(
           context: context,
           builder: (context) {

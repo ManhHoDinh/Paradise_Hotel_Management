@@ -56,7 +56,7 @@ class RoomModel {
 
   int getPrice() {
     try {
-      return RoomKindModel.getRoomKindPrice(roomID ?? '');
+      return RoomKindModel.getRoomKindPrice(RoomKindID ?? '');
     } catch (e) {
       return 0;
     }

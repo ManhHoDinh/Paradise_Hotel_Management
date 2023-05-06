@@ -1,8 +1,8 @@
 import 'package:paradise/core/models/guest_model.dart';
 
 class GuestKindModel {
-  String? GuestKindID;
-  String? Name;
+  String GuestKindID;
+  String Name;
   double ratio;
   GuestKindModel({
     required this.GuestKindID,
@@ -30,16 +30,16 @@ class GuestKindModel {
   static String getGuestKindName(String id) {
     try {
       GuestKindModel kindSelected = GuestKindModel.AllGuestKinds.where(
-          (guestKind) => guestKind.GuestKindID! == id).first;
-      return kindSelected.Name ?? '';
+          (guestKind) => guestKind.GuestKindID == id).first;
+      return kindSelected.Name ;
     } catch (e) {
       return '';
     }
   }static String getGuestKindID(String name) {
     try {
       GuestKindModel kindSelected = GuestKindModel.AllGuestKinds.where(
-          (guestKind) => guestKind.Name! == name).first;
-      return kindSelected.GuestKindID ?? '';
+          (guestKind) => guestKind.Name == name).first;
+      return kindSelected.GuestKindID;
     } catch (e) {
       return '';
     }
@@ -50,7 +50,7 @@ class GuestKindModel {
       GuestModel guest =
           GuestModel.AllGuests.where((guest) => guest.guestID == GuestID).first;
       GuestKindModel kindSelected = GuestKindModel.AllGuestKinds.where(
-          (guestKind) => guestKind.GuestKindID! == guest.guestKindID).first;
+          (guestKind) => guestKind.GuestKindID == guest.guestKindID).first;
       return kindSelected.ratio;
     } catch (e) {
       return 0;
