@@ -1,10 +1,7 @@
-import 'dart:math';
+// ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_kind_model.dart';

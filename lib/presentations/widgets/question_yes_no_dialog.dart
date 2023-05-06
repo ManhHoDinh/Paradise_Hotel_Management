@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
-import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
 class QuestionYesNoDialog extends StatelessWidget {

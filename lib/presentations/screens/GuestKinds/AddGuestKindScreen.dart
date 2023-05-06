@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
 import '../../../core/models/guest_kind_model.dart';

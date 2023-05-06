@@ -1,5 +1,6 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../core/constants/color_palatte.dart';

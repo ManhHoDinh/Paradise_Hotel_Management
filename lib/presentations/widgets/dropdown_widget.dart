@@ -1,13 +1,14 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: unnecessary_import
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 
 import '../../core/constants/dimension_constants.dart';
 import '../../core/helpers/text_styles.dart';
 
+// ignore: must_be_immutable
 class DropDownWidget extends StatefulWidget {
   DropDownWidget({super.key, this.title, this.selected, this.Items});
   List<String>? Items = [];

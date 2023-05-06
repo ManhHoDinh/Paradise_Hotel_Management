@@ -1,26 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
-import 'package:paradise/core/helpers/assets_helper.dart';
-import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/rentalform_mode.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:paradise/core/models/user_model.dart';
-import 'package:paradise/presentations/screens/Rooms/detail_room.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:firebase_database/firebase_database.dart';
-
 import '../../../core/models/guest_kind_model.dart';
 import '../../widgets/dialog.dart';
 
@@ -28,6 +19,7 @@ enum Sex { male, female }
 
 String? gender = 'Male';
 
+// ignore: must_be_immutable
 class RentalForm extends StatefulWidget {
   static final String routeName = 'rental_form';
   RoomModel? room;
@@ -113,21 +105,10 @@ class _DropDownState extends State<DropDown> {
 class _RentalFormState extends State<RentalForm> {
   bool isPressed = false;
   int _gia = 0;
-  int _soNgay = 0;
   int currentId = 0;
-  DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
   List<String> list = [];
 
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
-  Sex? _GT = Sex.male;
-  late TextEditingController _RoomIDController;
-  late TextEditingController _GuestNameController;
-  late TextEditingController _GuestIDController;
-  late TextEditingController _PhoneNumberController;
-  late TextEditingController _NoteController;
   bool isErrorGuest = false;
   bool isErrorDate = false;
 
@@ -155,11 +136,6 @@ class _RentalFormState extends State<RentalForm> {
   @override
   void initState() {
     super.initState();
-    _RoomIDController = TextEditingController();
-    _GuestNameController = TextEditingController();
-    _GuestIDController = TextEditingController();
-    _PhoneNumberController = TextEditingController();
-    _NoteController = TextEditingController();
     roomIDSelected = widget.room?.roomID ?? '';
     _gia = RoomKindModel.getRoomKindPrice(widget.room?.RoomKindID ?? '');
     initAvailableRoomID();
@@ -309,7 +285,6 @@ class _RentalFormState extends State<RentalForm> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final double itemWidth = (size.width - 72) / 2;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return KeyboardDismisser(
@@ -402,11 +377,6 @@ class _RentalFormState extends State<RentalForm> {
                                           onTap: () {
                                             setState(() {
                                               roomIDSelected = e;
-                                              RoomModel RoomSelected =
-                                                  RoomModel.AllRooms.where(
-                                                          (room) =>
-                                                              room.roomID! == e)
-                                                      .first;
                                             });
                                           },
                                           child: Text(
