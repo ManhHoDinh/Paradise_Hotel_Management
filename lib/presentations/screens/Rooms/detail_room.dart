@@ -46,7 +46,25 @@ class _DetailRoomState extends State<DetailRoom> {
               child: ButtonWidget(
                 label: 'Book Room',
                 color: ColorPalette.primaryColor,
-                onTap: () {},
+                onTap: () {
+                  if (widget.room.State == 'Available') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => RentalForm(room: roomModel)));
+                  } else {
+                    _globalKey.currentState!.closeEndDrawer();
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return DialogOverlay(
+                            isSuccess: false,
+                            task: 'Book room ${roomModel.roomID}',
+                            error: 'Room ${roomModel.RoomKindID} is booked!!!',
+                          );
+                        });
+                  }
+                },
                 textColor: ColorPalette.backgroundColor,
               ),
             ),
