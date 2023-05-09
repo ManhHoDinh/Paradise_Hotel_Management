@@ -32,7 +32,7 @@ class _AllRentalFormState extends State<AllRentalForm> {
   String? status;
   String? valueSearch;
   String? dropdownStatusValue;
-  final statusItems = ['Unpaid', 'Paid'];
+  final statusItems = ['All', 'Unpaid', 'Paid'];
   late List<RentalFormModel> listRentalForm;
   DropdownMenuItem<String> buildMenuStatusItem(String item) => DropdownMenuItem(
       value: item,
@@ -61,6 +61,9 @@ class _AllRentalFormState extends State<AllRentalForm> {
     List<RentalFormModel> newList = List.from(list);
 
     switch (status) {
+      case "All":
+        newList = newList;
+        break;
       case "Paid":
         newList = newList.where((form) => form.Status == status).toList();
         break;
@@ -69,6 +72,7 @@ class _AllRentalFormState extends State<AllRentalForm> {
         break;
       default:
         newList = newList;
+        break;
     }
 
     if (valueSearch != null) {
