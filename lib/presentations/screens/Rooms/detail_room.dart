@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,10 +30,10 @@ class DetailRoom extends StatefulWidget {
 
 class _DetailRoomState extends State<DetailRoom> {
   bool isPressed = false;
-  int _currenImage = 0;
   PageController _pageController = new PageController();
   @override
   Widget build(BuildContext context) {
+    int _currenImage = 0;
     Size size = MediaQuery.of(context).size;
     RoomModel roomModel = widget.room;
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
@@ -114,6 +115,7 @@ class _DetailRoomState extends State<DetailRoom> {
                       },
                       itemCount: (roomModel.SubImages.length + 1),
                       itemBuilder: (context, index) {
+                        _currenImage = index;
                         return Container(
                           height: 219,
                           alignment: Alignment.bottomCenter,
