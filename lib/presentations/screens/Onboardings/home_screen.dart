@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
@@ -18,6 +19,7 @@ import '../../../core/helpers/assets_helper.dart';
 import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/room_model.dart';
+import '../Staffs/staff_detail.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -94,7 +96,22 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ButtonWidget(
               label: 'Staff',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => StaffDetail()));
+              },
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Rental Form',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => AllRentalForm()));
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),
