@@ -103,18 +103,6 @@ class RentalFormItem extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  // left: kDefaultPadding,
-                                  bottom: kDefaultPadding
-                                ),
-                                child: Text('TOTAL',
-                                  style: TextStyles.h5.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorPalette.primaryColor
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                           Column(
@@ -189,20 +177,6 @@ class RentalFormItem extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            width: 150,
-                                            alignment: Alignment.centerRight,
-                                            margin: const EdgeInsets.only(
-                                              bottom: kDefaultPadding
-                                            ),
-                                            child: Text(total.toString() + ' VND',
-                                              softWrap: true,
-                                              style: TextStyles.h5.copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                color: ColorPalette.primaryColor
-                                              ),
-                                            ),
-                                          ),
                                         ],
                                       );
                                     } else 
@@ -236,6 +210,37 @@ class RentalFormItem extends StatelessWidget {
                                 ),
                               ),
                             ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              // left: kDefaultPadding,
+                              bottom: kDefaultPadding
+                            ),
+                            child: Text('TOTAL',
+                              style: TextStyles.h5.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: ColorPalette.primaryColor
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                              bottom: kDefaultPadding
+                            ),
+                            child: Text(total.toString() + ' VND',
+                              softWrap: true,
+                              style: TextStyles.h5.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: ColorPalette.primaryColor
+                              ),
+                            ),
                           ),
                         ],
                       ),
