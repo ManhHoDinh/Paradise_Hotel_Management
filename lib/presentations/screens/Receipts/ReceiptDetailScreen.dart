@@ -253,7 +253,7 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(
-                        horizontal: kMaxPadding * 2.5,
+                        horizontal: kMaxPadding * 2,
                         vertical: kDefaultPadding,
                       ),
                       child: ButtonDefault(
