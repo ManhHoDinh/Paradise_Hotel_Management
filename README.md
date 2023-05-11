@@ -21,7 +21,7 @@
 <ol id="sub_nav">
     <li><a style="text-decoration: none;" href="#yTuong">Idea</a></li>
     <li><a style="text-decoration: none;" href="#congNghe">Technology</a></li>
-    <li><a style="text-decoration: none;" href="#nguoiDung">Users</a></li>
+    <li><a style="text-decoration: none;" href="#doiTuongSuDung">Users</a></li>
     <li><a style="text-decoration: none;" href="#mucTieu">Goals</a></li>
     <li><a style="text-decoration: none;" href="#tinhNang">Features</a></li>
 </ol>
@@ -73,67 +73,66 @@
 
 <div id="congNghe">
         <h4>Technology</h4>
-    <p>
-        * API System: WPF - MVVM model <br>
-        * IDE: Visual Studio 2022 (C#/.Net) <br>
-        * Database: SQL Server<br>
-        * Management tools: Git, GitHub<br>
-    </p>
+
+<p>The application is developed using the following technologies:</p>
+
+<ul>
+    <li>API System: WPF - MVVM model</li>
+    <li>IDE: Visual Studio 2022 (C#/.Net)</li>
+    <li>Database: SQL Server</li>
+    <li>Management tools: Git, GitHub</li>
+</ul>
+
+
+  
 </div>
 <div id="doiTuongSuDung">
     <h4>Target users</h4>
 
-    <p>* Hotel employee <br>
-        *Hotel manager
+   <p>* Hotel Staff <br>
+    * Hotel Manager
     
 </div>
 <div id="mucTieu">
     <h4>Goal</h4>
 
-    <strong>
-        Practical application
-    </strong>
-    <p>Highly practical and easy to use, easy to modify</p>
+   <strong>
+    Practical Application
+</strong>
+<p>A highly practical and user-friendly application that is easy to modify.</p>
+<strong>Application Requirements</strong>
 
-    <strong>Application requirements</strong>
-
-    <p>
-        * Easy information retrieval <br>
-        * The application must be compatible with most common operating systems such as Window Vista SP1, Window 8.1,
-        Window 10,
-        Window 11... Especially, the application must operate stably, avoiding system crashes that cause inconvenience
-        for users during use. The expansion and upgrading of the application later must be easy when users have a need. <br>
-        * Friendly interface, easy to use, reasonable layout, harmonious in color and high synchronization, granting
-        user permissions through an account.
-    </p>
+<p>
+    * Easy information retrieval. <br>
+    * The application must be compatible with most common operating systems such as Windows Vista SP1, Windows 8.1,
+    Windows 10, Windows 11, etc. It should operate stably, avoiding system crashes that cause inconvenience to users
+    during use. Additionally, the application should be easy to expand and upgrade in the future. <br>
+    * A friendly interface with a reasonable layout that is harmonious in color and highly synchronized, and allows
+    granting of user permissions through an account.
+</p>
+  
 </div>
 <div id="tinhNang">
     <h4>Features</h4>
 
-    <p>
-        Account management
-        * Allow users to create new accounts.
-        * Allow users to retrieve passwords when forgotten or lost.
-        * Allow users to add, delete, and edit their information.
-    </p>
-
-    <p>
-        Room management
-        * Allow users to create new room types and rooms.
-
-        * Allow users to add, delete, and edit room information.
-    </p>
-    <p>
-        Customer management
-        * Allow input and editing of customer information
-        * Allow customer lookup
-    </p>
-
-    <p>
-        Management of rental vouchers and invoices
-        * Allow input and editing of information
-        * Allow lookup of rental vouchers and invoices
-    </p>
+The application includes the following features:
+    
+Account Management
+* Users can create new accounts.
+* Users can retrieve passwords when forgotten or lost.
+* Users can add, delete, and edit their information.
+    
+Room Management  
+* Users can create new room types and rooms.
+* Users can add, delete, and edit room information.
+    
+Customer Management 
+* Users can input and edit customer information.
+* Users can perform customer lookup.
+    
+Rental Vouchers and Invoices Management 
+* Users can input and edit information related to rental vouchers and invoices.
+* Users can perform lookup of rental vouchers and invoices.
 </div>
 </div>
 <div id="caiDat">
@@ -142,7 +141,7 @@
         * Step 1: Download source from: https://github.com/ManhHoDinh/Paradise_Hotel_Management <br>
         * Step 2: Run local database: paradise.sql in the resource folder. <br>
         * Step 3: Change the name of the local database from DinhManh\SQLEXPRESS to your local database inside the app.config file.
-    </p>
+
 </div>
 <div id="tacGia">
     <h3>Author</h3>
