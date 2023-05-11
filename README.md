@@ -60,7 +60,7 @@
     <h3>Description</h3>
   
 <div id="yTuong">
-    <h4>1. Idea</h4>
+    <h4>Idea</h4>
     <p>* Aim to improve the quality of hotel management
         <br>
         * Use the MVVM model to separate the interface and processing, increasing the reusability of components or changing the program interface without having to rewrite too much code, can develop applications quickly, easily upgrade, maintain, expand, or repair.
@@ -73,8 +73,6 @@
 
 <div id="congNghe">
         <h4>Technology</h4>
-php
-Copy code
     <p>
         * API System: WPF - MVVM model <br>
         * IDE: Visual Studio 2022 (C#/.Net) <br>
@@ -85,10 +83,9 @@ Copy code
 <div id="doiTuongSuDung">
     <h4>Target users</h4>
 
-    <p>
-        * Hotel employees <br>
-        * Hotel management
-    </p>
+    <p>* Hotel employee <br>
+        *Hotel manager
+    
 </div>
 <div id="mucTieu">
     <h4>Goal</h4>
@@ -155,26 +152,21 @@ Copy code
     <li><a style="text-decoration: none;" href="https://github.com/TuongPhamCT">Pham Thanh Tuong </a></li>
     <li><a style="text-decoration: none;" href="https://github.com/vocongbinh">Vo Cong Binh</a></li>
     <li><a style="text-decoration: none;" href="https://github.com/thienenpi">Nguyen Phuoc Thien</a></li>
+    <li><a style="text-decoration: none;" href="https://github.com/buubuu203">Châu Ngọc Bửu Đăng</a></li>
 </
-  
-  </div>
+   </div>
   
   <!-- Instructor -->
 <div id="nguoiHuongDan">
-    * Instructor: Đỗ Thị Thanh Tuyền
+   <h3>Instructor</h3>Đỗ Thị Thanh Tuyền
 </div>
 <!-- Summary -->
 <div id="tongKet">
+    <h3>Conclusion</h3>
     <p>
         This product is the result of the project that the members in the team have worked on together. Through this process, the members have gained knowledge and specific professional skills in real programming processes, gained a better understanding of programming, and learned valuable lessons for their future work.
-css
-Copy code
     In addition, the team would like to express their sincere gratitude and deep appreciation to the instructor, Ms. Đỗ Thị Thanh Tuyền, who has accompanied them throughout the project to achieve today's results.
-
     Thank you for your interest!
 
-    ---
 
-<p align="right"><a style="text-decoration: none;" href="#Top">Back to top</a></p>
-</p>
 </div>
