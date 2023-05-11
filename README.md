@@ -157,7 +157,7 @@ Rental Vouchers and Invoices Management
   
   <!-- Instructor -->
 <div id="nguoiHuongDan">
-   <h3>Instructor</h3>Đỗ Thị Thanh Tuyền
+   <h3>Instructor</h3>GV. Đỗ Thị Thanh Tuyền
 </div>
 <!-- Summary -->
 <div id="tongKet">
