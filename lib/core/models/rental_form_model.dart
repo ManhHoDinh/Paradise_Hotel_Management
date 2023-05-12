@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/core/models/room_model.dart';
+
+import 'guest_kind_model.dart';
 
 class RentalFormModel {
   String RentalID;
@@ -34,5 +38,45 @@ class RentalFormModel {
   static List<RentalFormModel> AllUnpaidRentalFormModels() {
     return AllRentalFormModels.where((rental) => rental.Status == 'Unpaid')
         .toList();
+  }
+  int ExcessCustomerSurcharge() {
+    return 10;
+  }
+
+  int Total(int days) {
+    try {
+      if (days < 0) throw Exception();
+      int guestKindSurcharge =
+          GuestKindSurcharge(days);
+      int normalFee = RoomModel.getPriceWithRoomID(RoomID ) * days;
+      int excessCustomerSurcharge = ExcessCustomerSurcharge();
+      return guestKindSurcharge + normalFee + excessCustomerSurcharge;
+    } catch (e) {
+      return 0;
+    }
+  }
+  
+  HighestGuestKindRatio() {
+    double Result = 0;
+    for (String guestID in GuestIDs)
+      if (GuestKindModel.getGuestKindRatio(guestID) >= Result)
+        Result = GuestKindModel.getGuestKindRatio(guestID);
+    return Result;
+  }
+
+  int GuestKindSurcharge(int days) {
+    try {
+      int unitPrice = RoomModel.getPriceWithRoomID(RoomID);
+      double ratio = HighestGuestKindRatio();
+      if (days < 0) throw Exception();
+      if (ratio < 1) throw Exception();
+      return ((ratio - 1) * unitPrice * days).toInt();
+    } catch (e) {
+      return 0;
+    }
+  }
+  RoomModel getRoom()
+  {
+    return RoomModel.AllRooms.where((element) => RoomID==element.roomID).first;
   }
 }

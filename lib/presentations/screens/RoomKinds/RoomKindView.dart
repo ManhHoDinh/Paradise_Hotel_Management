@@ -24,8 +24,8 @@ class _RoomKindViewState extends State<RoomKindView> {
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
         title: Text('ROOM TYPE'),
-        toolbarHeight: 100,
-        centerTitle: true,
+         toolbarHeight: kToolbarHeight * 1.5,
+         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorPalette.primaryColor,

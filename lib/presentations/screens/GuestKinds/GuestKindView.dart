@@ -21,7 +21,7 @@ class _GuestKindViewState extends State<GuestKindView> {
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
         title: Text('GUEST TYPE'),
-        toolbarHeight: 100,
+        toolbarHeight: kToolbarHeight * 1.5,
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
@@ -36,7 +36,6 @@ class _GuestKindViewState extends State<GuestKindView> {
       ),
       body: Column(
         children: [
-         
           Expanded(
             child: SingleChildScrollView(
               child: StreamBuilder(

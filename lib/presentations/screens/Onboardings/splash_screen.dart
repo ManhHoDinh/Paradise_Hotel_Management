@@ -4,6 +4,9 @@ import 'package:paradise/core/helpers/local_storage_helper.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
+import '../../../core/models/firebase_request.dart';
+import '../../../core/models/rental_form_model.dart';
+import '../../../core/models/room_kind_model.dart';
 import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -45,7 +48,26 @@ class _SplashScreenState extends State<SplashScreen> {
         backgroundColor: ColorPalette.primaryColor.withOpacity(0.9),
         body: Stack(
           alignment: Alignment.bottomCenter,
-          children: [
+          children: [StreamBuilder(
+                stream: FireBaseDataBase.readRoomKinds(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    RoomKindModel.kindItems.clear();
+                    RoomKindModel.AllRoomKinds = snapshot.data!;
+                    for (RoomKindModel k in RoomKindModel.AllRoomKinds) {
+                      RoomKindModel.kindItems.add(k.Name ?? '');
+                    }
+                  }
+                  return Container();
+                }),
+            StreamBuilder(
+                stream: FireBaseDataBase.readRentalForms(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    RentalFormModel.AllRentalFormModels = snapshot.data!;
+                  }
+                  return Container();
+                }),
             Container(
               height: size.height * 1 / 2,
               color: ColorPalette.primaryColor,

@@ -116,6 +116,7 @@ class _AllRentalFormState extends State<AllRentalForm> {
             ),
             alignment: Alignment.center,
           ),
+           toolbarHeight: kToolbarHeight * 1.5,
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),

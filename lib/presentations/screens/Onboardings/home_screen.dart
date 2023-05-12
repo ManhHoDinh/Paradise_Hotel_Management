@@ -3,13 +3,11 @@ import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
-import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,6 +18,7 @@ import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/room_model.dart';
 import '../Staffs/staff_detail.dart';
+import '../report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -37,10 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
 
-    Size size = MediaQuery.of(context).size;
-    final double itemWidth = (size.width - 72) / 2;
-
-    final double itemHeight = 180;
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
@@ -127,19 +122,19 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Report',
+              label: 'Receipt',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () { Navigator.of(context).pushNamed(SeeAllReceipts.routeName);},
               textColor: ColorPalette.backgroundColor,
             ),
           ),
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Receipt',
+              label: 'Report',
               color: ColorPalette.primaryColor,
               onTap: () {
-                Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
+               Navigator.of(context).pushNamed(ReportScreen.routeName);
               },
               textColor: ColorPalette.backgroundColor,
             ),

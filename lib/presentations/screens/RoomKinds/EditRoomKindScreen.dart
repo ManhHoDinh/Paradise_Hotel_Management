@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/widgets/question_yes_no_dialog.dart';
@@ -37,8 +35,8 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
         title: Text('EDIT ROOM TYPE'),
-        toolbarHeight: 100,
-        centerTitle: true,
+         toolbarHeight: kToolbarHeight * 1.5,
+         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(children: [
