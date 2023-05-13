@@ -1,26 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:intl/intl.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/models/firebase_request.dart';
-import 'package:paradise/core/models/kind_room_service.dart';
+import 'package:paradise/core/models/receipt_model.dart';
+import 'package:paradise/core/models/rental_form_model.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
-import 'package:provider/provider.dart';
-
 import '../../core/constants/color_palatte.dart';
 import '../../core/constants/dimension_constants.dart';
-import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/text_styles.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:open_file_plus/open_file_plus.dart';
+import 'package:path/path.dart' as path;
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
-  static final String routeName = '/report_screen';
+  static final String routeName = 'report_screen';
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
@@ -33,107 +34,11 @@ class _ReportScreenState extends State<ReportScreen> {
   String? dropdownYearReportValue;
   String? monthSelected;
   String? yearSelected;
-  int totalMonthPrice = 10202;
-  int totalYearPrice = 10202;
+  String? yearOfMonthReportSelected;
+  int totalMonthPrice = 0;
+  int totalYearPrice = 0;
   List<RoomKindModel> listRoomKind = [];
   List<RoomModel> listRoom = [];
-  List<TableRow> listMonthReports = [
-    TableRow(children: [
-      Container(
-        width: 50,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'No',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-      Container(
-        width: 200,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'Room type',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-      Container(
-        width: 200,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'Revenue(VND)',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-      Container(
-        width: 200,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'Rate',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-    ]),
-  ];
-  List<TableRow> listYearReports = [
-    TableRow(children: [
-      Container(
-        width: 50,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'No',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-      Container(
-        width: 200,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'Room type',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-      Container(
-        width: 200,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'Revenue(VND)',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-      Container(
-        width: 200,
-        height: 40,
-        alignment: Alignment.center,
-        child: Text(
-          'Rate',
-          textAlign: TextAlign.center,
-          style: TextStyles.defaultStyle.copyWith(
-              color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
-        ),
-      ),
-    ]),
-  ];
-
   List<String> monthItems = [
     'JANUARY',
     'FEBRUARY',
@@ -154,18 +59,6 @@ class _ReportScreenState extends State<ReportScreen> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance.collection('RoomKind').get().then((value) {
-      listRoomKind =
-          value.docs.map((e) => RoomKindModel.fromJson(e.data())).toList();
-    });
-    FirebaseFirestore.instance.collection('Rooms').get().then((value) {
-      listRoom = value.docs.map((e) => RoomModel.fromJson(e.data())).toList();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     Size size = MediaQuery.of(context).size;
@@ -174,7 +67,7 @@ class _ReportScreenState extends State<ReportScreen> {
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: kMaxPadding * 2.5,
+          toolbarHeight: kMaxPadding * 2,
           elevation: 5,
           //
           backgroundColor: ColorPalette.primaryColor.withOpacity(0.75),
@@ -198,114 +91,158 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
           ),
           title: Container(
-            padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Row(
-              children: [
-                Expanded(
-                    flex: 5,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text('REPORT', style: TextStyles.h8),
-                    )),
-                Expanded(
-                    child: InkWell(
-                  onTap: () {},
-                  child: Image.asset(AssetHelper.iconMenu),
-                ))
-              ],
-            ),
+            child: Text('REPORT', style: TextStyles.h8),
           ),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Container(
             //margin: const EdgeInsets.symmetric(horizontal: kMediumPadding),
             child: Column(children: [
+              StreamBuilder(
+                  stream: FireBaseDataBase.readRoomKinds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      RoomKindModel.AllRoomKinds = snapshot.data!;
+                    }
+                    return Container();
+                  }),
+              StreamBuilder(
+                  stream: FireBaseDataBase.readReceipts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      ReceiptModel.AllReceipts = snapshot.data!;
+                    }
+                    return Container();
+                  }),
               SizedBox(
                 height: 28,
               ),
-              Container(
-                height: 42,
-                margin: const EdgeInsets.symmetric(horizontal: 40),
-                decoration: BoxDecoration(
-                    border: Border.all(color: ColorPalette.grayText),
-                    borderRadius: BorderRadius.circular(kMediumPadding)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    alignment: Alignment.center,
-                    value: dropdownMonthReportValue,
-                    hint: Text(
-                      "MONTHLY REPORT",
-                      style: TextStyles.defaultStyle.copyWith(
-                          fontSize: 16,
-                          color: ColorPalette.calendarGround,
-                          fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Container(
+                    height: 42,
+                    width: 150,
+                    margin: EdgeInsets.only(right: 10, left: 20),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: ColorPalette.grayText),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                        alignment: Alignment.center,
+                        value: dropdownMonthReportValue,
+                        hint: Text(
+                          "MONTHLY",
+                          style: TextStyles.defaultStyle.copyWith(
+                              fontSize: 16,
+                              color: ColorPalette.calendarGround,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        iconStyleData: IconStyleData(
+                            iconEnabledColor: ColorPalette.grayText,
+                            iconSize: 36),
+                        onChanged: (value) {
+                          setState(() {
+                            dropdownMonthReportValue = value;
+                          });
+                        },
+                        buttonStyleData: const ButtonStyleData(
+                            padding: const EdgeInsets.only(left: 20),
+                            height: 42,
+                            width: 200),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 24,
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kMinPadding))),
+                        items: monthItems
+                            .map((e) => DropdownMenuItem(
+                                value: e,
+                                onTap: () {
+                                  setState(() {
+                                    monthSelected = e;
+                                    ResetTotalOfMonth();
+                                  });
+                                },
+                                child: Text(
+                                  e,
+                                  style: TextStyles.defaultStyle.copyWith(
+                                      color: ColorPalette.calendarGround,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )))
+                            .toList(),
+                      ),
                     ),
-                    iconStyleData: IconStyleData(
-                        iconEnabledColor: ColorPalette.grayText, iconSize: 36),
-                    onChanged: (value) {
-                      setState(() {
-                        dropdownMonthReportValue = value;
-
-                        switch (dropdownMonthReportValue) {
-                          case 'JANUARY':
-                            break;
-
-                          case 'FEBRUARY':
-                            break;
-                          case 'MARCH':
-                            break;
-                          case 'APRIL':
-                            break;
-                          case 'MAY':
-                            break;
-                          case 'JUNE':
-                            break;
-                          case 'JULY':
-                            break;
-                          case 'AUGUST':
-                            break;
-                          case 'SEPTEMBER':
-                            break;
-                          case 'OCTOBER':
-                            break;
-                          case 'NOVEMBER':
-                            break;
-                          case 'DECEMBER':
-                            break;
-                        }
-                      });
-                    },
-                    buttonStyleData: const ButtonStyleData(
-                        padding: const EdgeInsets.only(left: 20),
-                        height: 42,
-                        width: 200),
-                    menuItemStyleData: const MenuItemStyleData(
-                      height: 24,
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(kMinPadding))),
-                    items: monthItems
-                        .map((e) => DropdownMenuItem(
-                            value: e,
-                            onTap: () {
-                              setState(() {
-                                monthSelected = e;
-                              });
-                            },
-                            child: Text(
-                              e,
-                              style: TextStyles.defaultStyle.copyWith(
-                                  color: ColorPalette.calendarGround,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )))
-                        .toList(),
                   ),
-                ),
+                  Spacer(),
+                  Container(
+                    height: 42,
+                    width: 150,
+                    margin: EdgeInsets.only(right: 20),
+                    alignment: Alignment.topRight,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: ColorPalette.grayText),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                        alignment: Alignment.center,
+                        value: yearOfMonthReportSelected,
+                        hint: Text(
+                          "YEARLY",
+                          style: TextStyles.defaultStyle.copyWith(
+                              fontSize: 16,
+                              color: ColorPalette.calendarGround,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        iconStyleData: IconStyleData(
+                            iconEnabledColor: ColorPalette.grayText,
+                            iconSize: 36),
+                        onChanged: (value) {
+                          setState(() {
+                            yearOfMonthReportSelected = value!;
+                          });
+                        },
+                        buttonStyleData: const ButtonStyleData(
+                            padding: const EdgeInsets.only(left: 36),
+                            height: 42,
+                            width: 200),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 24,
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kMinPadding))),
+                        items: yearItems
+                            .map((e) => DropdownMenuItem(
+                                value: e,
+                                onTap: () {
+                                  setState(() {
+                                    yearOfMonthReportSelected = e;
+                                    ResetTotalOfMonth();
+                                  });
+                                },
+                                child: Center(
+                                  child: Text(
+                                    e,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyles.defaultStyle.copyWith(
+                                        color: ColorPalette.calendarGround,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )))
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
-                height: 60,
+                height: 40,
               ),
               Container(
                   child: DataTable(
@@ -316,7 +253,43 @@ class _ReportScreenState extends State<ReportScreen> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(4),
                         topRight: Radius.circular(4))),
-                rows: [],
+                rows: [
+                  for (int i = 1; i <= RoomKindModel.AllRoomKinds.length; i++)
+                    DataRow(cells: [
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${i}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${RoomKindModel.AllRoomKinds[i - 1].Name}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${NumberFormat.decimalPattern().format(getRevenueOfMonthReport(RoomKindModel.AllRoomKinds[i - 1]))}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${NumberFormat('#.##', 'en_US').format(Rate(getRevenueOfMonthReport(RoomKindModel.AllRoomKinds[i - 1]), totalMonthPrice) * 100)}%',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ])
+                ],
                 columns: [
                   DataColumn(
                       label: Container(
@@ -335,7 +308,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       width: width * .25,
                       alignment: Alignment.center,
                       child: Text(
-                        'Family room',
+                        'Room Type',
                         textAlign: TextAlign.center,
                         style: TextStyles.defaultStyle.copyWith(
                             color: ColorPalette.primaryColor,
@@ -370,28 +343,12 @@ class _ReportScreenState extends State<ReportScreen> {
                     ),
                   ),
                 ],
-              )
-
-                  //  Table(
-                  //     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  //     border: TableBorder.all(
-                  //         color: ColorPalette.grayText,
-                  //         borderRadius: BorderRadius.only(
-                  //             topLeft: Radius.circular(4),
-                  //             topRight: Radius.circular(4))),
-                  //     columnWidths: {
-                  //       0: FlexColumnWidth(1),
-                  //       1: FlexColumnWidth(3),
-                  //       2: FlexColumnWidth(4),
-                  //       3: FlexColumnWidth(2),
-                  //     },
-                  //     children: listMonthReports),
-                  ),
+              )),
               SizedBox(
                 height: kMediumPadding,
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 14),
+                margin: const EdgeInsets.symmetric(horizontal: 22),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -399,7 +356,8 @@ class _ReportScreenState extends State<ReportScreen> {
                         style: TextStyles.defaultStyle.bold.copyWith(
                           color: ColorPalette.greenText,
                         )),
-                    Text('$totalMonthPrice',
+                    Text(
+                        '${NumberFormat.decimalPattern().format(totalMonthPrice)} VND',
                         style: TextStyles.defaultStyle.bold.copyWith(
                           color: ColorPalette.greenText,
                         )),
@@ -407,7 +365,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               ),
               SizedBox(
-                height: 32,
+                height: 25,
               ),
               Material(
                 color: ColorPalette.primaryColor,
@@ -416,25 +374,24 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(listRoom.length.toString())));
+                    generatePDF();
                   },
                   child: Container(
                     width: size.width / 2,
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      'Print  ',
+                      'Print',
                       style: TextStyles.h8.copyWith(
                           color: ColorPalette.backgroundColor,
-                          fontSize: 12,
+                          fontSize: 15,
                           fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
               ),
               SizedBox(
-                height: 55,
+                height: 40,
               ),
               Container(
                 height: 42,
@@ -476,10 +433,12 @@ class _ReportScreenState extends State<ReportScreen> {
                             onTap: () {
                               setState(() {
                                 yearSelected = e;
+                                ResetTotalOfYear();
                               });
                             },
                             child: Text(
                               e,
+                              textAlign: TextAlign.center,
                               style: TextStyles.defaultStyle.copyWith(
                                   color: ColorPalette.calendarGround,
                                   fontSize: 16,
@@ -501,7 +460,43 @@ class _ReportScreenState extends State<ReportScreen> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(4),
                         topRight: Radius.circular(4))),
-                rows: [],
+                rows: [
+                  for (int i = 1; i <= RoomKindModel.AllRoomKinds.length; i++)
+                    DataRow(cells: [
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${i}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${RoomKindModel.AllRoomKinds[i - 1].Name}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${NumberFormat.decimalPattern().format(getRevenueOfYearReport(RoomKindModel.AllRoomKinds[i - 1]))}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Center(
+                          child: Text(
+                            '${NumberFormat('#.##', 'en_US').format(Rate(getRevenueOfYearReport(RoomKindModel.AllRoomKinds[i - 1]), totalYearPrice) * 100)}%',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ])
+                ],
                 columns: [
                   DataColumn(
                       label: Container(
@@ -520,7 +515,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       width: width * .25,
                       alignment: Alignment.center,
                       child: Text(
-                        'Family room',
+                        'Room Type',
                         textAlign: TextAlign.center,
                         style: TextStyles.defaultStyle.copyWith(
                             color: ColorPalette.primaryColor,
@@ -576,7 +571,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 height: kMediumPadding,
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 14),
+                margin: const EdgeInsets.symmetric(horizontal: 22),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -584,7 +579,8 @@ class _ReportScreenState extends State<ReportScreen> {
                         style: TextStyles.defaultStyle.bold.copyWith(
                           color: ColorPalette.greenText,
                         )),
-                    Text('$totalYearPrice',
+                    Text(
+                        '${NumberFormat.decimalPattern().format(totalYearPrice)} VND',
                         style: TextStyles.defaultStyle.bold.copyWith(
                           color: ColorPalette.greenText,
                         )),
@@ -631,15 +627,14 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('${listRoomKind.length}')));
+                    generatePDF();
                   },
                   child: Container(
                     width: size.width / 2,
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      'Print  ',
+                      'Print',
                       style: TextStyles.h8.copyWith(
                           color: ColorPalette.backgroundColor,
                           fontSize: 12,
@@ -656,5 +651,113 @@ class _ReportScreenState extends State<ReportScreen> {
         ),
       ),
     );
+  }
+
+  int getRevenueOfMonthReport(RoomKindModel RoomKind) {
+    try {
+      int result = 0;
+
+      List<ReceiptModel> filterYearReceipts = [];
+      filterYearReceipts.addAll(ReceiptModel.AllReceipts.where((element) =>
+          element.checkOutDate!.year ==
+          (int.parse(yearOfMonthReportSelected ?? ''))));
+
+      List<ReceiptModel> filterMonthReceipts = [];
+      filterMonthReceipts.addAll(filterYearReceipts.where((element) =>
+          element.checkOutDate!.month ==
+          (monthItems.indexOf(monthSelected ?? '') + 1)));
+      //RentalFormModel rentalFormModelOfMonth= RentalFormModel.AllRentalFormModels.where((element) => false);
+
+      for (ReceiptModel receipt in filterMonthReceipts) {
+        result += getRentalFormFee(
+            receipt.rentalFormIDs, receipt.checkOutDate!, RoomKind);
+      }
+      return result;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  int getRevenueOfYearReport(RoomKindModel RoomKind) {
+    try {
+      int result = 0;
+
+      List<ReceiptModel> filterYearReceipts = [];
+      filterYearReceipts.addAll(ReceiptModel.AllReceipts.where((element) =>
+          element.checkOutDate!.year == (int.parse(yearSelected ?? ''))));
+
+      for (ReceiptModel receipt in filterYearReceipts) {
+        result += getRentalFormFee(
+            receipt.rentalFormIDs, receipt.checkOutDate!, RoomKind);
+      }
+      return result;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  int getRentalFormFee(List<String> rentalFormIDs, DateTime checkOutDate,
+      RoomKindModel roomKind) {
+    try {
+      int result = 0;
+      for (String rentalFormID in rentalFormIDs) {
+        RentalFormModel rental = RentalFormModel.AllRentalFormModels.where(
+            (element) => element.RentalID == rentalFormID).first;
+        int days = checkOutDate.difference(rental.BeginDate).inDays;
+        RoomModel room = rental.getRoom();
+        if (room.RoomKindID == roomKind.RoomKindID)
+          result += rental.Total(days);
+      }
+      return result;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  void ResetTotalOfMonth() {
+    setState(() {
+      totalMonthPrice = 0;
+      for (int i = 1; i <= RoomKindModel.AllRoomKinds.length; i++)
+        totalMonthPrice +=
+            getRevenueOfMonthReport(RoomKindModel.AllRoomKinds[i - 1]);
+    });
+  }
+
+  void ResetTotalOfYear() {
+    setState(() {
+      totalYearPrice = 0;
+      for (int i = 1; i <= RoomKindModel.AllRoomKinds.length; i++)
+        totalYearPrice +=
+            getRevenueOfYearReport(RoomKindModel.AllRoomKinds[i - 1]);
+    });
+  }
+
+  double Rate(int revenue, int totalPrice) {
+    try {
+      if (totalPrice == 0) return 0;
+      return revenue / totalPrice;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  Future<void> generatePDF() async {
+    PdfDocument document = PdfDocument();
+    document.pages.add();
+    List<int> bytes = await document.save();
+    document.dispose();
+    saveAndLaunchFile(bytes, 'output.pdf');
+  }
+
+  Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
+    final result = await FilePicker.platform.getDirectoryPath();
+    String? selectedPath;
+
+    if (result != null) {
+      selectedPath = result;
+      final file = File(path.join(selectedPath, fileName));
+      await file.writeAsBytes(bytes, flush: true);
+      await OpenFile.open(file.path);
+    }
   }
 }

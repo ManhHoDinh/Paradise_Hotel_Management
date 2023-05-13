@@ -291,7 +291,7 @@ class _RentalFormState extends State<RentalForm> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          toolbarHeight: kMaxPadding * 2.5,
+          toolbarHeight: kMaxPadding * 1.5,
           backgroundColor: ColorPalette.primaryColor.withOpacity(0.75),
           leading: InkWell(
             customBorder: CircleBorder(),

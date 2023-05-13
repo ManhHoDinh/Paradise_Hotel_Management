@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/presentations/widgets/question_yes_no_dialog.dart';
 
 import '../../../../core/constants/color_palatte.dart';
@@ -34,7 +35,7 @@ class _EditGuestKindScreenState extends State<EditGuestKindScreen> {
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
         title: Text('EDIT GUEST TYPE'),
-        toolbarHeight: 100,
+        toolbarHeight: kToolbarHeight * 1.5,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -148,20 +149,34 @@ class _EditGuestKindScreenState extends State<EditGuestKindScreen> {
               task: 'Delete Guest Kind',
               icon: FontAwesomeIcons.solidTrashCan,
               yesOnTap: () async {
-                final docGuestKind = await FirebaseFirestore.instance
-                    .collection(GuestKindModel.CollectionName)
-                    .doc(widget.guestKind?.GuestKindID ?? '');
-                await docGuestKind.delete();
-                Navigator.pop(context);
-                await showDialog(
-                    context: _context,
-                    builder: (_context) {
-                      return DialogOverlay(
-                        isSuccess: true,
-                        task: 'Delete Guest Kind',
-                      );
-                    });
-                Navigator.of(context).pop();
+                if (GuestModel.ExistGuestWithGuestKindID(
+                    widget.guestKind?.GuestKindID ?? '')) {
+                  Navigator.pop(context);
+                  showDialog(
+                      context: _context,
+                      builder: (_context) {
+                        return DialogOverlay(
+                          isSuccess: false,
+                          task: 'Delete Guest Kind',
+                          error: 'Guests have used this type!!!',
+                        );
+                      });
+                } else {
+                  final docGuestKind = await FirebaseFirestore.instance
+                      .collection(GuestKindModel.CollectionName)
+                      .doc(widget.guestKind?.GuestKindID ?? '');
+                  await docGuestKind.delete();
+                  Navigator.pop(context);
+                  await showDialog(
+                      context: _context,
+                      builder: (_context) {
+                        return DialogOverlay(
+                          isSuccess: true,
+                          task: 'Delete Guest Kind',
+                        );
+                      });
+                  Navigator.of(context).pop();
+                }
               },
               noOnTap: () {
                 Navigator.pop(context);

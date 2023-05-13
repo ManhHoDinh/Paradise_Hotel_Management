@@ -25,7 +25,7 @@ class _AddGuestKindScreenState extends State<AddGuestKindScreen> {
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
         title: Text('NEW GUEST TYPE'),
-        toolbarHeight: 100,
+        toolbarHeight: kToolbarHeight * 1.5,
         centerTitle: true,
       ),
       body: GestureDetector(

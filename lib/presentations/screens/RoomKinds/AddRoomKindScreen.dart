@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
@@ -28,7 +27,8 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
         title: Text('NEW ROOM TYPE'),
-        toolbarHeight: 100,
+          toolbarHeight: kToolbarHeight * 1.5,
+        
         centerTitle: true,
       ),
       body: GestureDetector(

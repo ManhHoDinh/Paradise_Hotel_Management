@@ -42,4 +42,5 @@ class ReceiptModel {
       checkOutDate: (json['CheckOutDate'] as Timestamp).toDate(),
     );
   }
-}
+  
+  }

@@ -34,4 +34,15 @@ class GuestModel {
       return false;
     }
   }
+  
+  static bool ExistGuestWithGuestKindID(String id) {
+    try {
+      print(id);
+      List<GuestModel> Guests =
+          GuestModel.AllGuests.where((guest) => guest.guestKindID == id).toList();
+      return Guests.length != 0;
+    } catch (e) {
+      return false;
+    }
+  }
 }
