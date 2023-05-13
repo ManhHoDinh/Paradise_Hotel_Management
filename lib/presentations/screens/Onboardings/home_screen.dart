@@ -44,107 +44,109 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Container(
-            child: Image.asset(AssetHelper.avatar),
-          ),
-          Container(
-              margin: EdgeInsets.only(
-                top: 30,
-                bottom: 10,
+        child: SingleChildScrollView(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Container(
+              child: Image.asset(AssetHelper.avatar),
+            ),
+            Container(
+                margin: EdgeInsets.only(
+                  top: 30,
+                  bottom: 10,
+                ),
+                child: Text(
+                  'WHAT WOULD YOU DO?',
+                  style: TextStyles.h5.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: ColorPalette.primaryColor),
+                )),
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Hotel Information',
+                color: ColorPalette.primaryColor,
+                onTap: () {},
+                textColor: ColorPalette.backgroundColor,
               ),
-              child: Text(
-                'WHAT WOULD YOU DO?',
-                style: TextStyles.h5.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: ColorPalette.primaryColor),
-              )),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Hotel Information',
-              color: ColorPalette.primaryColor,
-              onTap: () {},
-              textColor: ColorPalette.backgroundColor,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Guest Kind',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context).pushNamed(GuestKindView.routeName);
-              },
-              textColor: ColorPalette.backgroundColor,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Guest Kind',
+                color: ColorPalette.primaryColor,
+                onTap: () {
+                  Navigator.of(context).pushNamed(GuestKindView.routeName);
+                },
+                textColor: ColorPalette.backgroundColor,
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Room Kind',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context).pushNamed(RoomKindView.routeName);
-              },
-              textColor: ColorPalette.backgroundColor,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Room Kind',
+                color: ColorPalette.primaryColor,
+                onTap: () {
+                  Navigator.of(context).pushNamed(RoomKindView.routeName);
+                },
+                textColor: ColorPalette.backgroundColor,
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Staff',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => StaffDetail()));
-              },
-              textColor: ColorPalette.backgroundColor,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Staff',
+                color: ColorPalette.primaryColor,
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => StaffDetail()));
+                },
+                textColor: ColorPalette.backgroundColor,
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Rental Form',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => AllRentalForm()));
-              },
-              textColor: ColorPalette.backgroundColor,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Rental Form',
+                color: ColorPalette.primaryColor,
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => AllRentalForm()));
+                },
+                textColor: ColorPalette.backgroundColor,
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Service',
-              color: ColorPalette.primaryColor,
-              onTap: () {},
-              textColor: ColorPalette.backgroundColor,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Service',
+                color: ColorPalette.primaryColor,
+                onTap: () {},
+                textColor: ColorPalette.backgroundColor,
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Report',
-              color: ColorPalette.primaryColor,
-              onTap: () {},
-              textColor: ColorPalette.backgroundColor,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Report',
+                color: ColorPalette.primaryColor,
+                onTap: () {},
+                textColor: ColorPalette.backgroundColor,
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Receipt',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
-              },
-              textColor: ColorPalette.backgroundColor,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: ButtonWidget(
+                label: 'Receipt',
+                color: ColorPalette.primaryColor,
+                onTap: () {
+                  Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
+                },
+                textColor: ColorPalette.backgroundColor,
+              ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
       appBar: AppBar(
         elevation: 0,

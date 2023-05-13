@@ -83,7 +83,6 @@ class RentalFormItem extends StatelessWidget {
                             children: [
                               Container(
                                 margin: const EdgeInsets.symmetric(
-                                  // horizontal: kDefaultPadding,
                                   vertical: kDefaultPadding,
                                 ),
                                 child: Text('Room',
@@ -94,7 +93,6 @@ class RentalFormItem extends StatelessWidget {
                               ),
                               Container(
                                 margin: const EdgeInsets.only(
-                                  // left: kDefaultPadding,
                                   bottom: kDefaultPadding
                                 ),
                                 child: Text('Form',
@@ -109,6 +107,7 @@ class RentalFormItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
+                                width: 50,
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: kDefaultPadding,
                                   vertical: kDefaultPadding,
@@ -120,6 +119,7 @@ class RentalFormItem extends StatelessWidget {
                                 ),
                               ),
                               Container(
+                                width: 50,
                                 margin: const EdgeInsets.only(
                                   left: kDefaultPadding,
                                   bottom: kDefaultPadding
