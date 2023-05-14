@@ -55,7 +55,7 @@ dependencies:
   open_file_plus: ^3.4.1
   syncfusion_flutter_pdf: ^21.2.4
   file_picker: ^5.3.0
-  path: ^1.8.3
+  path: ^1.8.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
