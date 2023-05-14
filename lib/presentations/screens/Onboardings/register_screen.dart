@@ -64,8 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onTap: () {
                   // ScaffoldMessenger.of(context)
                   // .showSnackBar(SnackBar(content: Text(_controller.text)));
-                  // verifyPhoneNumber(_controller.text.trim());
-                  Navigator.of(context).pushNamed(RegisterFormScreen.routeName);
+                  verifyPhoneNumber(_controller.text.trim());
+                  Navigator.of(context).pushNamed(OtpScreen.routeName);
                 },
               ),
             ),

@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   task: 'login',
                                 );
                               });
-                          if (isChecked) {}
+
                           AuthServices.signinUser(_emailController.text,
                               _passwordController.text, context);
                           Navigator.of(context).pushNamed(HomeScreen.routeName);
