@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/otp_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/register_form_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/AddRoomKindScreen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
@@ -18,5 +21,8 @@ final Map<String, WidgetBuilder> routes = {
   SeeAllScreen.routeName: (context) => SeeAllScreen(),
   AddRoomKindScreen.routeName: (context) => AddRoomKindScreen(),
   RentalForm.routeName: (context) => RentalForm(),
-  ReportScreen.routeName: (context) => ReportScreen()
+  ReportScreen.routeName: (context) => ReportScreen(),
+  RegisterScreen.routeName: (context) => RegisterScreen(),
+  OtpScreen.routeName: (context) => OtpScreen(),
+  RegisterFormScreen.routeName: (context) => RegisterFormScreen()
 };

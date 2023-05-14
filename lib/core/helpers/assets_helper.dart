@@ -27,6 +27,8 @@ class AssetHelper {
 
   //splash
   static const String logo1 = imgAssets + 'logo.png';
+  static const String registerLogo = imgAssets + "register.png";
+  static const String otpLogo = imgAssets + "otp.png";
 
   //staff
   static const String staff1 = imgAssets + 'staff_avt.png';

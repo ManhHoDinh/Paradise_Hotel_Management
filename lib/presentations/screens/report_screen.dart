@@ -35,8 +35,8 @@ class _ReportScreenState extends State<ReportScreen> {
   String? yearSelected;
   int totalMonthPrice = 10202;
   int totalYearPrice = 10202;
-  List<RoomKindModel> listRoomKind = [];
-  List<RoomModel> listRoom = [];
+  late List<RoomKindModel> listRoomKind;
+  late List<RoomModel> listRoom;
   List<TableRow> listMonthReports = [
     TableRow(children: [
       Container(
@@ -169,8 +169,8 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     Size size = MediaQuery.of(context).size;
-    listRoomKind = RoomKindModel.AllRoomKinds;
-    listRoom = RoomModel.AllRooms;
+    // listRoomKind = RoomKindModel.AllRoomKinds;
+    //listRoom = RoomModel.AllRooms;
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
@@ -631,8 +631,8 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('${listRoomKind.length}')));
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //     SnackBar(content: Text('${listRoomKind.length}')));
                   },
                   child: Container(
                     width: size.width / 2,

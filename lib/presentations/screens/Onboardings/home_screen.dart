@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
@@ -37,6 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final double itemWidth = (size.width - 72) / 2;
 
     final double itemHeight = 180;
+    Future<void> _signOut() async {
+      await FirebaseAuth.instance.signOut();
+    }
+
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
