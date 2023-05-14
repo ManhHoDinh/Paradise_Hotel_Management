@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
+import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
+import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
@@ -18,6 +21,7 @@ import '../../../core/helpers/assets_helper.dart';
 import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/room_model.dart';
+import '../Staffs/staff_detail.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -74,10 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Book Room',
+              label: 'Guest Kind',
               color: ColorPalette.primaryColor,
               onTap: () {
-                Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
+                Navigator.of(context).pushNamed(GuestKindView.routeName);
               },
               textColor: ColorPalette.backgroundColor,
             ),
@@ -85,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.only(top: 20, left: 25, right: 25),
             child: ButtonWidget(
-              label: 'Kind Room',
+              label: 'Room Kind',
               color: ColorPalette.primaryColor,
               onTap: () {
                 Navigator.of(context).pushNamed(RoomKindView.routeName);
@@ -98,7 +102,22 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ButtonWidget(
               label: 'Staff',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => StaffDetail()));
+              },
+              textColor: ColorPalette.backgroundColor,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Rental Form',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => AllRentalForm()));
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),
@@ -125,7 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ButtonWidget(
               label: 'Receipt',
               color: ColorPalette.primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
+              },
               textColor: ColorPalette.backgroundColor,
             ),
           ),
@@ -207,7 +228,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(SeeAllScreen.routeName);
+                        Navigator.of(context)
+                            .pushNamed(SeeAllRoomsScreen.routeName);
                       },
                       child: Text('See all >', style: TextStyles.defaultStyle))
                 ],

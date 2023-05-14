@@ -1,25 +1,37 @@
-class Guest {
-  String? cmnd;
-  String? name;
-  String? guestKindId;
-  String? address;
-  Guest({
-    required this.cmnd,
+
+class GuestModel {
+  String guestID;
+  String name;
+  String guestKindID;
+  String address;
+  GuestModel({
+    required this.guestID,
     required this.name,
-    required this.guestKindId,
+    required this.guestKindID,
     required this.address,
   });
 
   Map<String, dynamic> toJson() => {
-        'CMND': cmnd,
+        'GuestID': guestID,
         'Name': name,
-        'GuestKindID': guestKindId,
+        'GuestKindID': guestKindID,
         'Address': address,
       };
-      
-  static Guest fromJson(Map<String, dynamic> json) => Guest(
-      cmnd: json['CMND'],
+
+  static GuestModel fromJson(Map<String, dynamic> json) => GuestModel(
+      guestID: json['GuestID'],
       name: json['Name'],
-      guestKindId: json['GuestKindID'],
+      guestKindID: json['GuestKindID'],
       address: json['Address']);
+  static List<GuestModel> AllGuests = [];
+  static String CollectionName = 'Guests';
+  static bool IsSameGuestKind(String guestID, String guestKindID) {
+    try {
+      GuestModel guest =
+          GuestModel.AllGuests.where((guest) => guest.guestID == guestID).first;
+      return guest.guestKindID == guestKindID;
+    } catch (e) {
+      return false;
+    }
+  }
 }

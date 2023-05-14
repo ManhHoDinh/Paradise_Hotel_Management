@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 
 class RoomModel {
@@ -26,7 +27,9 @@ class RoomModel {
         'Description': Description,
         'maxCapacity': maxCapacity.toString()
       };
-  factory RoomModel.fromJson(Map<String, dynamic> json) {
+  static String CollectionName = 'Rooms';
+
+  static RoomModel fromJson(Map<String, dynamic> json) {
     //List<String> names = List.from(json['names']);
     return RoomModel(
         roomID: json['roomID'],
@@ -53,17 +56,23 @@ class RoomModel {
 
   int getPrice() {
     try {
-      return RoomKindModel.getRoomKindPrice(roomID ?? '');
+      return RoomKindModel.getRoomKindPrice(RoomKindID ?? '');
     } catch (e) {
       return 0;
     }
   }
 
-  // String getRoomKindName() {
-  //   return RoomKindModel.getRoomKindName(roomID ?? '');
-  // }
+  static int getPriceWithRoomID(String id) {
+    try {
+      List<RoomModel> Rooms =
+          RoomModel.AllRooms.where((room) => room.roomID == id).toList();
+      return RoomKindModel.getRoomKindPrice(Rooms[0].RoomKindID ?? '');
+    } catch (e) {
+      return 0;
+    }
+  }
 
-  static bool ExistRoomWithRoomID(String id) {
+  static bool ExistRoomWithRoomKindID(String id) {
     try {
       print(id);
       List<RoomModel> Rooms =
@@ -71,6 +80,17 @@ class RoomModel {
       return Rooms.length != 0;
     } catch (e) {
       return false;
+    }
+  }
+
+  static String getRoomImageByID(String id) {
+    try {
+      RoomModel room =
+          RoomModel.AllRooms.where((roomCheck) => roomCheck.roomID! == id)
+              .first;
+      return room.PrimaryImage ?? "";
+    } catch (e) {
+      return "";
     }
   }
 }

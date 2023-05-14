@@ -1,16 +1,16 @@
-// ignore_for_file: must_be_immutable
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/core/models/guest_kind_model.dart';
 
-import '../screens/RoomKinds/EditRoomKindScreen.dart';
+import '../screens/GuestKinds/EditGuestKindScreen.dart';
 
-class RoomKindWidget extends StatelessWidget {
-  RoomKindWidget({super.key, this.roomKind});
-  RoomKindModel? roomKind;
+class GuestKindWidget extends StatelessWidget {
+  GuestKindWidget({super.key, this.GuestKind});
+  GuestKindModel? GuestKind;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +26,7 @@ class RoomKindWidget extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                roomKind!.Name ?? '',
+                GuestKind!.Name ?? '',
                 style: TextStyles.h3.copyWith(color: ColorPalette.primaryColor),
               ),
               Spacer(),
@@ -35,8 +35,8 @@ class RoomKindWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => EditRoomKindScreen(
-                                roomKindModel: roomKind,
+                          builder: (_) => EditGuestKindScreen(
+                                guestKind: GuestKind,
                               )));
                 },
                 child: Icon(
@@ -62,7 +62,7 @@ class RoomKindWidget extends StatelessWidget {
                 padding: EdgeInsets.only(right: 10),
                 width: 115,
                 child: Text(
-                  roomKind!.RoomKindID ?? '',
+                  GuestKind!.GuestKindID ?? '',
                   style:
                       TextStyles.h6.copyWith(color: ColorPalette.primaryColor),
                   overflow: TextOverflow.ellipsis,
@@ -75,14 +75,14 @@ class RoomKindWidget extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                'Price:',
+                'R.O.S:',
                 style: TextStyles.h6.copyWith(color: ColorPalette.grayText),
               ),
               SizedBox(
                 width: 50,
               ),
               Text(
-                roomKind!.Price.toString(),
+                GuestKind!.ratio.toString() ?? '',
                 style: TextStyles.h6.copyWith(color: ColorPalette.primaryColor),
               )
             ],

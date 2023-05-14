@@ -1,33 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
-import '../../../../core/models/room_kind_model.dart';
+import '../../../core/models/guest_kind_model.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/dialog.dart';
 import '../../widgets/inputTitleWidget.dart';
 
-class AddRoomKindScreen extends StatefulWidget {
-  AddRoomKindScreen({super.key});
-  static final String routeName = 'add_room_kind_view';
+class AddGuestKindScreen extends StatefulWidget {
+  AddGuestKindScreen({super.key});
+  static final String routeName = 'add_guest_kind_view';
 
   @override
-  State<AddRoomKindScreen> createState() => _AddRoomKindScreenState();
+  State<AddGuestKindScreen> createState() => _AddGuestKindScreenState();
 }
 
-class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
+class _AddGuestKindScreenState extends State<AddGuestKindScreen> {
   TextEditingController nameController = new TextEditingController();
-  TextEditingController priceController = new TextEditingController();
+  TextEditingController ratioController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
-        title: Text('NEW ROOM TYPE'),
+        title: Text('NEW GUEST TYPE'),
         toolbarHeight: 100,
         centerTitle: true,
       ),
@@ -40,7 +37,7 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
             Container(
               margin: EdgeInsets.only(top: 80, bottom: 40),
               child: Text(
-                'ROOM KIND',
+                'GUEST KIND',
                 style: TextStyles.h2.copyWith(
                     color: ColorPalette.primaryColor,
                     fontWeight: FontWeight.w600),
@@ -54,8 +51,8 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
             Container(
               margin: EdgeInsets.only(top: 40),
               child: InputTitleWidget(
-                Title: 'Price',
-                controller: priceController,
+                Title: 'Ratio',
+                controller: ratioController,
                 hintInput: 'Type here',
               ),
             ),
@@ -65,9 +62,9 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
                 child: ButtonDefault(
                     label: 'Create',
                     onTap: () {
-                      createRoomKind(
+                      createGuestKind(
                           name: nameController.text,
-                          price: priceController.text);
+                          ratio: ratioController.text);
                     })),
           ]),
         ),
@@ -75,7 +72,7 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
     );
   }
 
-  void createRoomKind({required String name, required String price}) async {
+  void createGuestKind({required String name, required String ratio}) async {
     try {
       if (name == '') {
         showDialog(
@@ -83,39 +80,42 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Create Room Kind',
+                task: 'Create Guest Kind',
                 error: "Input Type Name, please!!!",
               );
             });
-      } else if (price == '' || int.tryParse(price) == null) {
+      } else if (ratio == '' || double.tryParse(ratio) == null) {
         showDialog(
             context: context,
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Create Room Kind',
-                error: "Check input price, please!!!",
+                task: 'Create Guest Kind',
+                error: "Check input ratio, please!!!",
               );
             });
       } else {
-        final docRoomKind =
-            await FirebaseFirestore.instance.collection('RoomKind').doc();
-        RoomKindModel roomKindModel = new RoomKindModel(
-            Name: name, Price: int.parse(price), RoomKindID: docRoomKind.id);
+        final docGuestKind = await FirebaseFirestore.instance
+            .collection(GuestKindModel.CollectionName)
+            .doc();
+        GuestKindModel guestKindModel = new GuestKindModel(
+            Name: name,
+            ratio: double.parse(ratio),
+            GuestKindID: docGuestKind.id);
 
-        final json = roomKindModel.toJson();
+        final json = guestKindModel.toJson();
 
-        await docRoomKind.set(json);
+        await docGuestKind.set(json);
         showDialog(
             context: context,
             builder: (context) {
               return DialogOverlay(
                 isSuccess: true,
-                task: 'Create Room Kind',
+                task: 'Create Guest Kind',
               );
             });
         nameController.text = '';
-        priceController.text = '';
+        ratioController.text = '';
       }
     } catch (e) {
       showDialog(
@@ -123,7 +123,7 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Create Room Kind',
+              task: 'Create Guest Kind',
               error: e.toString(),
             );
           });

@@ -1,34 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/widgets/question_yes_no_dialog.dart';
 
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
-import '../../../../core/models/room_kind_model.dart';
+import '../../../core/models/guest_kind_model.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/dialog.dart';
 import '../../widgets/inputTitleWidget.dart';
 
-class EditRoomKindScreen extends StatefulWidget {
-  EditRoomKindScreen({super.key, this.roomKindModel});
-  RoomKindModel? roomKindModel;
+class EditGuestKindScreen extends StatefulWidget {
+  EditGuestKindScreen({super.key, this.guestKind});
+  GuestKindModel? guestKind;
   @override
-  State<EditRoomKindScreen> createState() => _EditRoomKindScreenState();
+  State<EditGuestKindScreen> createState() => _EditGuestKindScreenState();
 }
 
-class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
+class _EditGuestKindScreenState extends State<EditGuestKindScreen> {
   TextEditingController nameController = new TextEditingController();
-  TextEditingController priceController = new TextEditingController();
+  TextEditingController RatioController = new TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    nameController.text = widget.roomKindModel?.Name ?? '';
-    priceController.text = widget.roomKindModel?.Price.toString() ?? '';
+    nameController.text = widget.guestKind?.Name ?? '';
+    RatioController.text = widget.guestKind?.ratio.toString() ?? '';
   }
 
   @override
@@ -36,7 +33,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
-        title: Text('EDIT ROOM TYPE'),
+        title: Text('EDIT GUEST TYPE'),
         toolbarHeight: 100,
         centerTitle: true,
       ),
@@ -45,7 +42,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
           Container(
             margin: EdgeInsets.only(top: 80, bottom: 40),
             child: Text(
-              'ROOM KIND',
+              'GUEST KIND',
               style: TextStyles.h2.copyWith(
                   color: ColorPalette.primaryColor,
                   fontWeight: FontWeight.w600),
@@ -59,8 +56,8 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
           Container(
             margin: EdgeInsets.only(top: 40),
             child: InputTitleWidget(
-              Title: 'Price',
-              controller: priceController,
+              Title: 'Ratio',
+              controller: RatioController,
               hintInput: 'Type here',
             ),
           ),
@@ -70,8 +67,8 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
               child: ButtonDefault(
                   label: 'Save',
                   onTap: () {
-                    UpdateRoomKind(
-                        name: nameController.text, price: priceController.text);
+                    UpdateGuestKind(
+                        name: nameController.text, Ratio: RatioController.text);
                   })),
           Container(
               margin: EdgeInsets.only(top: 30),
@@ -80,7 +77,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
                 label: 'Delete',
                 backgroundColor: ColorPalette.redColor,
                 onTap: () {
-                  DeleteRoomKind();
+                  DeleteGuestKind();
                 },
               )),
         ]),
@@ -88,7 +85,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
     );
   }
 
-  void UpdateRoomKind({required String name, required String price}) async {
+  void UpdateGuestKind({required String name, required String Ratio}) async {
     try {
       if (name == '') {
         showDialog(
@@ -96,32 +93,30 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Edit Room Kind',
+                task: 'Edit Guest Kind',
                 error: "Input Type Name, please!!!",
               );
             });
-      } else if (price == '' || int.tryParse(price) == null) {
+      } else if (Ratio == '' || double.tryParse(Ratio) == null) {
         showDialog(
             context: context,
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Edit Room Kind',
-                error: "Check input price, please!!!",
+                task: 'Edit Guest Kind',
+                error: "Check input Ratio, please!!!",
               );
             });
       } else {
-        final docRoomKind = await FirebaseFirestore.instance
-            .collection('RoomKind')
-            .doc(widget.roomKindModel?.RoomKindID ?? '');
-        RoomKindModel roomKindModel = new RoomKindModel(
+        final docGuestKind = await FirebaseFirestore.instance
+            .collection(GuestKindModel.CollectionName)
+            .doc(widget.guestKind?.GuestKindID ?? '');
+        GuestKindModel guestKind = new GuestKindModel(
             Name: name,
-            Price: int.parse(price),
-            RoomKindID: widget.roomKindModel?.RoomKindID ?? '');
-        final json = roomKindModel.toJson();
-        await docRoomKind.update(json);
-        final CollectionReference roomReference =
-            FirebaseFirestore.instance.collection('Rooms');
+            ratio: double.parse(Ratio),
+            GuestKindID: widget.guestKind?.GuestKindID ?? '');
+        final json = guestKind.toJson();
+        await docGuestKind.update(json);
         showDialog(
             context: context,
             builder: (context) {
@@ -144,43 +139,29 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
     }
   }
 
-  void DeleteRoomKind() async {
+  void DeleteGuestKind() async {
     try {
       showDialog(
           context: context,
           builder: (_context) {
             return QuestionYesNoDialog(
-              task: 'Delete Room Kind',
+              task: 'Delete Guest Kind',
               icon: FontAwesomeIcons.solidTrashCan,
               yesOnTap: () async {
-                if (RoomModel.ExistRoomWithRoomKindID(
-                    widget.roomKindModel?.RoomKindID ?? '')) {
-                  Navigator.pop(context);
-                  showDialog(
-                      context: _context,
-                      builder: (_context) {
-                        return DialogOverlay(
-                          isSuccess: false,
-                          task: 'Delete Room Kind',
-                          error: 'Rooms have used this type!!!',
-                        );
-                      });
-                } else {
-                  final docRoomKind = await FirebaseFirestore.instance
-                      .collection('RoomKind')
-                      .doc(widget.roomKindModel?.RoomKindID ?? '');
-                  await docRoomKind.delete();
-                  Navigator.pop(context);
-                  await showDialog(
-                      context: _context,
-                      builder: (_context) {
-                        return DialogOverlay(
-                          isSuccess: true,
-                          task: 'Delete Room Kind',
-                        );
-                      }); //.whenComplete(() => Navigator.of(context).pop());
-                  Navigator.of(context).pop();
-                }
+                final docGuestKind = await FirebaseFirestore.instance
+                    .collection(GuestKindModel.CollectionName)
+                    .doc(widget.guestKind?.GuestKindID ?? '');
+                await docGuestKind.delete();
+                Navigator.pop(context);
+                await showDialog(
+                    context: _context,
+                    builder: (_context) {
+                      return DialogOverlay(
+                        isSuccess: true,
+                        task: 'Delete Guest Kind',
+                      );
+                    });
+                Navigator.of(context).pop();
               },
               noOnTap: () {
                 Navigator.pop(context);
@@ -193,7 +174,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Delete Room Kind',
+              task: 'Delete Guest Kind',
               error: e.toString(),
             );
           });
@@ -204,7 +185,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
 Future<bool> checkIfDocExists(String docId) async {
   bool result = false;
   await FirebaseFirestore.instance
-      .collection('RoomKind')
+      .collection('GuestKind')
       .doc(docId)
       .get()
       .then((DocumentSnapshot documentSnapshot) {
