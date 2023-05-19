@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: NotificationScreen(),
+      home: SettingScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

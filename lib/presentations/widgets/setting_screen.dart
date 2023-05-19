@@ -3,11 +3,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/presentations/widgets/notification_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../core/constants/color_palatte.dart';
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
+import '../screens/Onboardings/home_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   static final String routeName = 'setting_screen';
@@ -337,6 +339,13 @@ class _SettingScreenState extends State<SettingScreen> {
             setState(() {
               currentId = id;
             });
+            if (id == 0) {
+              Navigator.of(context).pushNamed(HomeScreen.routeName);
+            } else if (id == 1) {
+              Navigator.of(context).pushNamed(SettingScreen.routeName);
+            } else if (id == 2) {
+              Navigator.of(context).pushNamed(NotificationScreen.routeName);
+            }
           },
           items: [
             SalomonBottomBarItem(

@@ -19,6 +19,8 @@ import '../../../core/helpers/assets_helper.dart';
 import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/room_model.dart';
+import '../../widgets/notification_screen.dart';
+import '../../widgets/setting_screen.dart';
 import '../Staffs/staff_detail.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -293,6 +295,15 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               currentId = id;
             });
+            if (id == 0) {
+              Navigator.of(context).pushNamed(HomeScreen.routeName);
+            }
+            if (id == 1) {
+              Navigator.of(context).pushNamed(SettingScreen.routeName);
+            }
+            if (id == 2) {
+              Navigator.of(context).pushNamed(NotificationScreen.routeName);
+            }
           },
           items: [
             SalomonBottomBarItem(
