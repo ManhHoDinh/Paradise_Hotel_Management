@@ -193,6 +193,26 @@ class TextStyles {
       color: Color(0xff000000),
       fontWeight: FontWeight.w500,
       fontFamily: AppFonts.inter);
+  static const TextStyle desFunction = TextStyle(
+    fontFamily: AppFonts.poppins,
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    color: ColorPalette.rankText,
+  );
+  static const TextStyle titlenotifi = TextStyle(
+    fontFamily: AppFonts.inter,
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    color: ColorPalette.greenText,
+    letterSpacing: 0.8,
+  );
+  static const TextStyle timenotifi = TextStyle(
+    fontFamily: AppFonts.inter,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    color: ColorPalette.detailBorder,
+    letterSpacing: 0.8,
+  );
 }
 
 // How to use?

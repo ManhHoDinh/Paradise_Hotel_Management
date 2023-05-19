@@ -108,6 +108,7 @@ class _DetailRoomState extends State<DetailRoom> {
                   children: [
                     PageView.builder(
                       controller: _pageController,
+                      reverse: true,
                       onPageChanged: (value) {
                         setState(() {
                           _currenImage = value;

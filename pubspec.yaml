@@ -52,6 +52,8 @@ dependencies:
   firebase_database: ^10.1.1
   intl: ^0.18.1
   provider: ^6.0.5
+  flutter_animated_button: ^2.0.0
+  google_fonts: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
