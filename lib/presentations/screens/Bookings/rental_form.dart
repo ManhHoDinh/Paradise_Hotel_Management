@@ -133,11 +133,14 @@ class _RentalFormState extends State<RentalForm> {
   );
   String roomIDSelected = '';
   List<String> AvailableRoomID = [];
+  RoomModel? room;
+
   @override
   void initState() {
     super.initState();
+
     roomIDSelected = widget.room?.roomID ?? '';
-    _gia = RoomKindModel.getRoomKindPrice(widget.room?.RoomKindID ?? '');
+    room = widget.room;
     initAvailableRoomID();
   }
 
@@ -160,8 +163,10 @@ class _RentalFormState extends State<RentalForm> {
     TextEditingController _cardIdGuestController = TextEditingController();
     TextEditingController _addressGuestController = TextEditingController();
     DropDown dropDown = new DropDown();
+    int currentIndex = listRow.length;
+
     listRow.add(TableRow(children: [
-      Container(alignment: Alignment.center, child: Text('$_countGuest')),
+      Container(),
       Padding(
         padding: const EdgeInsets.only(left: 8),
         child: dropDown,
@@ -214,12 +219,26 @@ class _RentalFormState extends State<RentalForm> {
               hintStyle: TextStyles.defaultStyle.grayText.italic),
         ),
       ),
+      Container(
+        child: GestureDetector(
+          child: Container(alignment: Alignment.center, child: Text('X')),
+          onTap: () {
+            UpdateDeleteRow(currentIndex);
+          },
+        ),
+      )
     ]));
     // }
     // );
-
-    _countGuest++;
-    setState(() {});
+    for (int i = 1; i < listRow.length; i++) {
+      setState(() {
+        currentIndex = i;
+      });
+      listRow[i].children[0] = Container(
+        alignment: Alignment.center,
+        child: Text('${currentIndex}'),
+      );
+    }
   }
 
   List<TableRow> listRow = [
@@ -278,9 +297,28 @@ class _RentalFormState extends State<RentalForm> {
           style: TextStyles.defaultStyle.copyWith(
               color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
         ),
-      )
+      ),
+      Container()
     ]),
   ];
+  void UpdateDeleteRow(int index) {
+    setState(() {
+      print(index);
+      listRow.removeAt(index);
+      for (int i = 1; i < listRow.length; i++) {
+        listRow[i].children[0] = Container(
+          alignment: Alignment.center,
+          child: Text('${i}'),
+        );
+        listRow[i].children[5] = GestureDetector(
+          child: Container(alignment: Alignment.center, child: Text('X')),
+          onTap: () {
+            UpdateDeleteRow(i);
+          },
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +368,7 @@ class _RentalFormState extends State<RentalForm> {
                             GuestKindModel.AllGuestKinds = snapshot.data!;
                             for (GuestKindModel k
                                 in GuestKindModel.AllGuestKinds) {
-                              GuestKindModel.kindItems.add(k.Name ?? '');
+                              GuestKindModel.kindItems.add(k.Name);
                             }
                           }
                           return Container();
@@ -377,6 +415,10 @@ class _RentalFormState extends State<RentalForm> {
                                           onTap: () {
                                             setState(() {
                                               roomIDSelected = e;
+                                              room = RoomModel.AllRooms.where(
+                                                  (element) =>
+                                                      element.roomID ==
+                                                      roomIDSelected).first;
                                             });
                                           },
                                           child: Text(
@@ -433,27 +475,40 @@ class _RentalFormState extends State<RentalForm> {
                                   2: FixedColumnWidth(140),
                                   3: FixedColumnWidth(120),
                                   4: FixedColumnWidth(160),
+                                  5: FixedColumnWidth(50)
                                 },
                                 children: listRow),
                           ),
                           InkWell(
                             onTap: () {
                               int? maxCapacity;
-                              maxCapacity = widget.room!.maxCapacity;
-                              if (_countGuest <= maxCapacity!) {
-                                addGuest();
-                              } else {
+                              if (room == null) {
                                 showDialog(
                                     context: context,
                                     builder: (context) {
                                       return DialogOverlay(
                                         isSuccess: false,
                                         task: 'Add Guests',
-                                        error: 'Exceed the maximum capacity!',
+                                        error: 'Chose Room ID!',
                                       );
                                     });
-                              }
+                              } else {
+                                maxCapacity = room!.maxCapacity;
 
+                                if (listRow.length <= (maxCapacity ?? 0)) {
+                                  addGuest();
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DialogOverlay(
+                                          isSuccess: false,
+                                          task: 'Add Guests',
+                                          error: 'Exceed the maximum capacity!',
+                                        );
+                                      });
+                                }
+                              }
                               //     .get()
                               //     .then((value) {
                               //   maxCapacity =
@@ -586,63 +641,22 @@ class _RentalFormState extends State<RentalForm> {
                           Container(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Total Price',
+                              'Unit Price per night',
                               style: TextStyles.h8.copyWith(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
                                   color: ColorPalette.darkBlueText),
                             ),
                           ),
-                          Padding(
+                          Container(
                             padding: const EdgeInsets.only(top: 20, bottom: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '${_gia}',
-                                          style: TextStyles.h8.copyWith(
-                                              color: ColorPalette.greenText,
-                                              fontSize: 12,
-                                              letterSpacing: 1.5),
-                                        ),
-                                        Text(
-                                          ' VND',
-                                          style: TextStyles.h8.copyWith(
-                                              color: ColorPalette.greenText,
-                                              fontSize: 12),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '$_gia',
-                                          style: TextStyles.h8.copyWith(
-                                              color: Color(0xff9B9B9B),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w300,
-                                              letterSpacing: 1.5),
-                                        ),
-                                        Text(
-                                          ' VND per night',
-                                          style: TextStyles.h8.copyWith(
-                                              color: Color(0xff9B9B9B),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w300),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              '${RoomKindModel.getRoomKindPrice(room?.RoomKindID ?? '')} VND',
+                              style: TextStyles.h8.copyWith(
+                                  color: ColorPalette.greenText,
+                                  fontSize: 12,
+                                  letterSpacing: 1.5),
                             ),
                           ),
                           Material(
@@ -688,7 +702,7 @@ class _RentalFormState extends State<RentalForm> {
           FirebaseFirestore.instance.collection('Rooms');
       FirebaseFirestore.instance
           .collection('Rooms')
-          .where("roomID", isEqualTo: '${widget.room!.roomID}')
+          .where("roomID", isEqualTo: '${room!.roomID}')
           .get()
           .then((value) {
         DocumentReference document = roomCollection.doc(value.docs[0].id);
@@ -700,7 +714,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${widget.room!.roomID}',
+              task: 'Book Room ${room!.roomID}',
               error: e.toString(),
             );
           });
@@ -724,7 +738,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${widget.room!.roomID}',
+              task: 'Book Room ${room!.roomID}',
               error: e.toString(),
             );
           });
@@ -734,10 +748,10 @@ class _RentalFormState extends State<RentalForm> {
   void addNewGuest() {
     try {
       for (int i = 1; i < _countGuest; i++) {
-        Padding padding1 = (listRow[i].children![2]) as Padding;
-        Padding padding2 = (listRow[i].children![3]) as Padding;
-        Padding padding3 = (listRow[i].children![1]) as Padding;
-        Padding padding4 = (listRow[i].children![4]) as Padding;
+        Padding padding1 = (listRow[i].children[2]) as Padding;
+        Padding padding2 = (listRow[i].children[3]) as Padding;
+        Padding padding3 = (listRow[i].children[1]) as Padding;
+        Padding padding4 = (listRow[i].children[4]) as Padding;
         TextFormField nameGuest = padding1.child as TextFormField;
         TextFormField cartIdGuest = padding2.child as TextFormField;
         TextFormField addressGuest = padding4.child as TextFormField;
@@ -761,7 +775,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${widget.room!.roomID}',
+              task: 'Book Room ${room!.roomID}',
               error: e.toString(),
             );
           });
@@ -778,7 +792,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: true,
-              task: 'Book Room ${widget.room!.roomID}',
+              task: 'Book Room ${room!.roomID}',
             );
           }).whenComplete(() {
         RoomModel room =
@@ -793,7 +807,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${widget.room!.roomID}',
+              task: 'Book Room ${room!.roomID}',
               error: 'Check Information, please!!!',
             );
           });

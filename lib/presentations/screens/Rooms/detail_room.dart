@@ -251,14 +251,6 @@ class _DetailRoomState extends State<DetailRoom> {
                               fontSize: 20,
                             ),
                           ),
-                          Expanded(
-                              child: Container(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              onTap: () {},
-                              child: Image.asset(AssetHelper.iconEdit),
-                            ),
-                          ))
                         ],
                       ),
                     ),
