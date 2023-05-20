@@ -4,6 +4,9 @@ import 'package:paradise/presentations/screens/GuestKinds/AddGuestKindScreen.dar
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/otp_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/register_form_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'package:paradise/presentations/screens/Receipts/AddReceipt.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
@@ -26,5 +29,8 @@ final Map<String, WidgetBuilder> routes = {
   AddGuestKindScreen.routeName: (context) => AddGuestKindScreen(),
   AddReceipt.routeName: (context) => AddReceipt(),
   SeeAllReceipts.routeName: (context) => SeeAllReceipts(),
-  ReportScreen.routeName: (context) => ReportScreen()
+  ReportScreen.routeName: (context) => ReportScreen(),
+  RegisterScreen.routeName: (context) => RegisterScreen(),
+  OtpScreen.routeName: (context) => OtpScreen(),
+  RegisterFormScreen.routeName: (context) => RegisterFormScreen()
 };

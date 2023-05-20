@@ -3,6 +3,8 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/local_storage_helper.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/rental_form_model.dart';
@@ -28,7 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
   // ignore: non_constant_identifier_names
   void NextIntroScreen() async {
     await (Future.delayed(Duration(seconds: 3)));
-    Navigator.of(context).pushNamed(LoginScreen.routeName);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? email = pref.getString('email');
+    if (email == null) {
+      Navigator.of(context).pushNamed(LoginScreen.routeName);
+    } else
+      Navigator.of(context).pushNamed(HomeScreen.routeName);
+
     final ignoreIntroScreen =
         LocalStorageHelper.getValue('ignoreIntro') as bool?;
     if (ignoreIntroScreen != null && ignoreIntroScreen) {

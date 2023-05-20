@@ -10,6 +10,8 @@ class ColorPalette {
   static const Color blackText = Color(0xff000000);
   static const Color yellowColor = Color(0xffBFBFBF);
   static const Color orangeColor = Color(0xffBFBFBF);
+  static const Color bgTextFieldColor = Color(0xffF5F6F9);
+
   static const Color calendarGround = Color(0xff002270);
   static const Color rankText = Color(0xff808080);
   static const Color infoDetail = Color(0xffA8D7D8);

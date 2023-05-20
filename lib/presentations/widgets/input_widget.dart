@@ -7,17 +7,24 @@ class InputWidget extends StatelessWidget {
   final String labelText;
   final String icon;
   final bool? isPassword;
-  const InputWidget({
-    super.key,
-    required this.labelText,
-    required this.icon,
-    this.isPassword,
-  });
+  final TextInputType? type;
+  final TextEditingController? controller;
+  final String? Function(String? input)? validator;
+  const InputWidget(
+      {super.key,
+      required this.labelText,
+      required this.icon,
+      this.isPassword,
+      this.controller,
+      this.validator,
+      this.type});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: TextEditingController(),
+    return TextFormField(
+      keyboardType: type,
+      validator: validator,
+      controller: controller,
       obscureText: isPassword ?? false,
       enableSuggestions: isPassword ?? false,
       autocorrect: isPassword ?? false,
@@ -38,8 +45,15 @@ class InputWidget extends StatelessWidget {
           ),
         ),
       ),
-      onSubmitted: (value) async {},
       onTapOutside: (event) {},
     );
+  }
+}
+
+extension EmailValidator on String {
+  bool isValidEmail() {
+    return RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(this);
   }
 }

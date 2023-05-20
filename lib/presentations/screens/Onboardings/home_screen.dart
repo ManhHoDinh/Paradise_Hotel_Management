@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
+import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
+import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
@@ -35,6 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+
+    Size size = MediaQuery.of(context).size;
+    final double itemWidth = (size.width - 72) / 2;
+
+    final double itemHeight = 180;
+    Future<void> _signOut() async {
+      await FirebaseAuth.instance.signOut();
+    }
 
     return Scaffold(
       key: _globalKey,
