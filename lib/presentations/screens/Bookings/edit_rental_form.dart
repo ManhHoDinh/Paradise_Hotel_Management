@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/core/models/rental_form_model.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -10,7 +11,8 @@ enum Sex { male, female }
 
 class EditForm extends StatefulWidget {
   static final String routeName = 'edit_form';
-  const EditForm({super.key});
+  final RentalFormModel rental;
+  const EditForm({super.key, required this.rental});
   @override
   State<EditForm> createState() => _EditFormState();
 }
