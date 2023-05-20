@@ -284,39 +284,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: SalomonBottomBar(
-          currentIndex: currentId,
-          onTap: (id) {
-            setState(() {
-              currentId = id;
-            });
-          },
-          items: [
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.house,
-                  size: 20,
-                ),
-                title: Text('Home')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.gear,
-                  size: 20,
-                ),
-                title: Text('Setting')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.bell,
-                  size: 20,
-                ),
-                title: Text('Notification')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.user,
-                  size: 20,
-                ),
-                title: Text('Account')),
-          ]),
     );
   }
 }

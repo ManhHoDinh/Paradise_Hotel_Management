@@ -4,6 +4,7 @@ import 'package:paradise/core/helpers/local_storage_helper.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/models/firebase_request.dart';
@@ -35,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (email == null) {
       Navigator.of(context).pushNamed(LoginScreen.routeName);
     } else
-      Navigator.of(context).pushNamed(HomeScreen.routeName);
+      Navigator.of(context).pushNamed(MainScreen.routeName);
 
     final ignoreIntroScreen =
         LocalStorageHelper.getValue('ignoreIntro') as bool?;
@@ -56,7 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
         backgroundColor: ColorPalette.primaryColor.withOpacity(0.9),
         body: Stack(
           alignment: Alignment.bottomCenter,
-          children: [StreamBuilder(
+          children: [
+            StreamBuilder(
                 stream: FireBaseDataBase.readRoomKinds(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
