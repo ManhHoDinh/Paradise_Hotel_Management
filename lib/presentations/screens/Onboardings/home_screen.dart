@@ -15,6 +15,7 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/color_palatte.dart';
 import '../../../core/helpers/assets_helper.dart';
@@ -218,6 +219,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return Container();
                 }),
+            InkWell(
+              child: Text('fdfd'),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+              },
+            ),
             const SizedBox(height: 36),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),
@@ -227,7 +234,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('Room',
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.remove('email');
                         Navigator.of(context)
                             .pushNamed(SeeAllRoomsScreen.routeName);
                       },

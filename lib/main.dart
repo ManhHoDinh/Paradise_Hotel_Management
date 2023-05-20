@@ -10,12 +10,15 @@ import 'package:paradise/presentations/screens/Receipts/ReceiptDetailScreen.dart
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await FireBaseDataBase.initializeDB();
   runApp(
     const MyApp(),
