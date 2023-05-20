@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
-import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
-import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
@@ -39,120 +36,112 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
 
-    Size size = MediaQuery.of(context).size;
-    final double itemWidth = (size.width - 72) / 2;
-
-    final double itemHeight = 180;
-    Future<void> _signOut() async {
-      await FirebaseAuth.instance.signOut();
-    }
-
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
-        child: SingleChildScrollView(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(
-              child: Image.asset(AssetHelper.avatar),
-            ),
-            Container(
-                margin: EdgeInsets.only(
-                  top: 30,
-                  bottom: 10,
-                ),
-                child: Text(
-                  'WHAT WOULD YOU DO?',
-                  style: TextStyles.h5.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: ColorPalette.primaryColor),
-                )),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Hotel Information',
-                color: ColorPalette.primaryColor,
-                onTap: () {},
-                textColor: ColorPalette.backgroundColor,
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            child: Image.asset(AssetHelper.avatar),
+          ),
+          Container(
+              margin: EdgeInsets.only(
+                top: 30,
+                bottom: 10,
               ),
+              child: Text(
+                'WHAT WOULD YOU DO?',
+                style: TextStyles.h5.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: ColorPalette.primaryColor),
+              )),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Hotel Information',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Guest Kind',
-                color: ColorPalette.primaryColor,
-                onTap: () {
-                  Navigator.of(context).pushNamed(GuestKindView.routeName);
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Guest Kind',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pushNamed(GuestKindView.routeName);
+              },
+              textColor: ColorPalette.backgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Room Kind',
-                color: ColorPalette.primaryColor,
-                onTap: () {
-                  Navigator.of(context).pushNamed(RoomKindView.routeName);
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Room Kind',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pushNamed(RoomKindView.routeName);
+              },
+              textColor: ColorPalette.backgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Staff',
-                color: ColorPalette.primaryColor,
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => StaffDetail()));
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Staff',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => StaffDetail()));
+              },
+              textColor: ColorPalette.backgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Rental Form',
-                color: ColorPalette.primaryColor,
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => AllRentalForm()));
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Rental Form',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => AllRentalForm()));
+              },
+              textColor: ColorPalette.backgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Service',
-                color: ColorPalette.primaryColor,
-                onTap: () {},
-                textColor: ColorPalette.backgroundColor,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Service',
+              color: ColorPalette.primaryColor,
+              onTap: () {},
+              textColor: ColorPalette.backgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Receipt',
-                color: ColorPalette.primaryColor,
-                onTap: () { Navigator.of(context).pushNamed(SeeAllReceipts.routeName);},
-                textColor: ColorPalette.backgroundColor,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Receipt',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
+              },
+              textColor: ColorPalette.backgroundColor,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Report',
-                color: ColorPalette.primaryColor,
-                onTap: () {
-                 Navigator.of(context).pushNamed(ReportScreen.routeName);
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+            child: ButtonWidget(
+              label: 'Report',
+              color: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pushNamed(ReportScreen.routeName);
+              },
+              textColor: ColorPalette.backgroundColor,
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
       appBar: AppBar(
         elevation: 0,

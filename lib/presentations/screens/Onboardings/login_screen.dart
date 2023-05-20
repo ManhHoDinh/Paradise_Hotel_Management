@@ -5,6 +5,7 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/screens/Onboardings/AuthFunctions.dart';
+import 'package:paradise/presentations/screens/Onboardings/register_form_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:paradise/presentations/widgets/input_widget.dart';
@@ -172,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () {
                             Navigator.of(context)
-                                .pushNamed(RegisterScreen.routeName);
+                                .pushNamed(RegisterFormScreen.routeName);
                           },
                         ),
                       ),
