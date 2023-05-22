@@ -30,6 +30,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   bool isAccept = false;
+  bool _passwordVisible = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -243,8 +244,21 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     return null;
                 },
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: !_passwordVisible,
                 decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                     isDense: true,
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
@@ -306,7 +320,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             builder: (context) {
                               return DialogOverlay(
                                 isSuccess: true,
-                                task: ' register',
+                                task: ' Register',
                               );
                             });
 

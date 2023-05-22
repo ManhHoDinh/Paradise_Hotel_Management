@@ -7,6 +7,7 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/screens/Onboardings/AuthFunctions.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_form_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
+import 'package:paradise/presentations/screens/forgot_password_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:paradise/presentations/widgets/input_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   final formSignInKey = GlobalKey<FormState>();
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -68,32 +70,75 @@ class _LoginScreenState extends State<LoginScreen> {
                         horizontal: kMaxPadding, vertical: kItemPadding),
                     child: InputWidget(
                         controller: _emailController,
-                        labelText: 'User name',
+                        labelText: 'Enter your email',
                         icon: AssetHelper.icoUser,
                         validator: (input) {
                           final bool emailValid = RegExp(
                                   r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                               .hasMatch(input!);
-                          if (!emailValid) {
-                            return "Email is not Invalid";
+                          if (input == "") {
+                            return "Please enter your email!";
+                          } else if (!emailValid) {
+                            return "Email is invalid";
                           }
                         }),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: kMaxPadding, vertical: kItemPadding),
-                    child: InputWidget(
-                      controller: _passwordController,
-                      isPassword: true,
-                      labelText: 'Password',
-                      icon: AssetHelper.icoLock,
+                    child: TextFormField(
                       validator: (input) {
-                        if (input != null && input.length <= 6) {
+                        if (input == "") {
+                          return "Please enter your password!";
+                        } else if (input != null && input.length <= 6) {
                           return "Password is too short!";
                         } else
                           return null;
                       },
+                      obscureText: !_passwordVisible,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                        labelText: 'Enter your password',
+                        labelStyle: TextStyle(
+                            color: ColorPalette.grayText, fontSize: 12),
+                        contentPadding: const EdgeInsets.only(bottom: 14),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        prefixIcon: Container(
+                          child: Image.asset(AssetHelper.icoLock),
+                          padding: const EdgeInsets.only(right: 16),
+                        ),
+                        prefixIconConstraints: BoxConstraints(
+                          minWidth: 24,
+                        ),
+                      ),
                     ),
+                    // InputWidget(
+                    //   controller: _passwordController,
+                    //   isPassword: true,
+                    //   labelText: 'Password',
+                    //   icon: AssetHelper.icoLock,
+                    //   validator: (input) {
+                    //     if (input == "") {
+                    //       return "Please enter your password!";
+                    //     } else if (input != null && input.length <= 6) {
+                    //       return "Password is too short!";
+                    //     } else
+                    //       return null;
+                    //   },
+                    // ),
                   ),
                   Container(
                     width: double.infinity,
@@ -181,7 +226,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      print('object');
+                      Navigator.of(context)
+                          .pushNamed(ForgotPasswordScreen.routeName);
                     },
                     child: Text(
                       'Forgot password?',

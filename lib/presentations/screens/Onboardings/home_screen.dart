@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
@@ -20,6 +21,7 @@ import '../../../core/models/firebase_request.dart';
 import '../../../core/models/room_model.dart';
 import '../Staffs/staff_detail.dart';
 import '../report_screen.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -194,6 +196,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return Container();
                 }),
+            InkWell(
+              child: Text('fdf'),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushNamed(LoginScreen.routeName);
+              },
+            ),
             const SizedBox(height: 36),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),
@@ -204,9 +213,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
                       onPressed: () async {
-                        SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                        pref.remove('email');
+                        // SharedPreferences pref =
+                        //     await SharedPreferences.getInstance();
+                        // pref.remove('email');
                         Navigator.of(context)
                             .pushNamed(SeeAllRoomsScreen.routeName);
                       },
