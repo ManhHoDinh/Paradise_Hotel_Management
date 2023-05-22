@@ -10,15 +10,11 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
-import 'package:paradise/presentations/widgets/check_box.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
 import 'package:paradise/presentations/widgets/inputTitleWidget.dart';
-import 'package:paradise/presentations/widgets/input_default.dart';
-import 'package:paradise/presentations/widgets/input_widget.dart';
 import 'package:paradise/presentations/widgets/upload_button.dart';
 
 import '../../widgets/counter.dart';
@@ -37,7 +33,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   String roomKindID = '';
   TextEditingController roomIdController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
-  TextEditingController maxCapacityController = new TextEditingController();
+  TextEditingController SurchargeRatioController = new TextEditingController();
+
   String PrimaryImageUrl = '';
   List<String> SubImageUrls = [];
   bool isLoading = false;
@@ -48,6 +45,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
     // TODO: implement initState
     super.initState();
     UploadButton.ResetUploadButton();
+    SurchargeRatioController.text = '1.25';
   }
 
   @override
@@ -180,7 +178,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                                       right: kMaxPadding * 1.5,
                                     ),
                                     child: Text(
-                                      _price.toString() + "VND per night",
+                                      _price.toString() + " VND per night",
                                       style: TextStyles.h6.italic.copyWith(
                                           color: ColorPalette.primaryColor),
                                     ));
@@ -205,10 +203,35 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                         child: CounterView(
                           initNumber: 3,
                           minNumber: 1,
+                          type: 0,
                         ),
                         margin: const EdgeInsets.symmetric(
                             horizontal: kMaxPadding * 1.5,
                             vertical: kItemPadding * 2),
+                      ),
+                      Container(
+                        child: Text(
+                          'Number Guest No SubCharge',
+                          style: TextStyles.h6.copyWith(
+                              color: ColorPalette.darkBlueText,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                      ),
+                      Container(
+                        child: CounterView(
+                          initNumber: 2,
+                          minNumber: 1,
+                          type: 1,
+                        ),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: kMaxPadding * 1.5,
+                            vertical: kItemPadding * 2),
+                      ),
+                      InputTitleWidget(
+                        Title: 'Surcharge Ratio',
+                        controller: SurchargeRatioController,
+                        hintInput: 'Type here',
                       ),
                       InputTitleWidget(
                         Title: 'Description',
@@ -248,7 +271,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                                 State: 'Available',
                                 price: _price,
                                 RoomID: roomIdController.text,
-                                maxCap: CounterView.maxCap);
+                                maxCap: CounterView.maxCap,
+                                numberNoCharge:
+                                    CounterView.numberOfGuestNoSurcharge,
+                                SurchargeRatio:
+                                    SurchargeRatioController.text.toString());
                           },
                         ),
                       ),
@@ -305,7 +332,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
       required int price,
       required String State,
       required String RoomID,
-      required int maxCap}) async {
+      required int maxCap,
+      required int numberNoCharge,
+      required String SurchargeRatio}) async {
     PrimaryImageUrl = '';
     SubImageUrls.clear();
 
@@ -349,6 +378,16 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               error: 'Input Image',
             );
           });
+    } else if (double.tryParse(SurchargeRatio) == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Create Room',
+              error: 'Surcharge Ratio Error',
+            );
+          });
     } else {
       setState(() {
         isLoading = true;
@@ -359,7 +398,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
       await UploadImages(
           PrimaryImagePath: UploadButton.PrimaryImagePath,
           SubImagePaths: UploadButton.SubImagePath);
-      print("----------------------" + SubImageUrls.length.toString());
       RoomModel _room = await RoomModel(
           roomID: roomIdController.text,
           PrimaryImage: PrimaryImageUrl,
@@ -367,7 +405,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           State: State,
           SubImages: SubImageUrls,
           Description: descriptionController.text,
-          maxCapacity: maxCap);
+          maxCapacity: maxCap,
+          SubChargeRatio: double.parse(SurchargeRatio),
+          NumberGuestNoSubCharge: numberNoCharge);
       final json = _room.toJson();
       await docUser.set(json);
       showDialog(
@@ -384,6 +424,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
       setState(() {
         roomIdController.text = '';
         descriptionController.text = '';
+        SurchargeRatioController.text = '1.25';
+        CounterView.maxCap = 3;
+        CounterView.numberOfGuestNoSurcharge = 2;
         price = 0;
         roomKindID = '';
         UploadButton.ResetUploadButton();
@@ -430,10 +473,7 @@ Future<bool> checkIfDocExists(String docId) async {
       .doc(docId)
       .get()
       .then((DocumentSnapshot documentSnapshot) {
-    print('-----before' + result.toString());
     result = documentSnapshot.exists;
-    print('set-----' + result.toString());
   });
-  print('Return' + result.toString());
   return result;
 }

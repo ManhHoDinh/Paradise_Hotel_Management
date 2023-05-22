@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 
 class RoomModel {
@@ -10,6 +8,8 @@ class RoomModel {
   String? Description;
   List<String> SubImages = [];
   int? maxCapacity;
+  int? NumberGuestNoSubCharge;
+  double? SubChargeRatio;
   RoomModel(
       {required this.roomID,
       required this.PrimaryImage,
@@ -17,7 +17,9 @@ class RoomModel {
       required this.State,
       required this.SubImages,
       required this.Description,
-      required this.maxCapacity});
+      required this.maxCapacity,
+      required this.NumberGuestNoSubCharge,
+      required this.SubChargeRatio});
   Map<String, dynamic> toJson() => {
         'roomID': roomID,
         'roomKindID': RoomKindID,
@@ -25,7 +27,9 @@ class RoomModel {
         'State': State,
         'SubImages': SubImages,
         'Description': Description,
-        'maxCapacity': maxCapacity.toString()
+        'maxCapacity': maxCapacity.toString(),
+        'NumberGuestNoSubCharge': NumberGuestNoSubCharge.toString(),
+        'SubChargeRatio': SubChargeRatio.toString()
       };
   static String CollectionName = 'Rooms';
 
@@ -38,19 +42,10 @@ class RoomModel {
         State: json['State'],
         SubImages: List.from(json['SubImages']),
         Description: json['Description'],
-        maxCapacity: int.parse(json['maxCapacity']));
+        maxCapacity: int.parse(json['maxCapacity']),
+        NumberGuestNoSubCharge: int.parse(json['NumberGuestNoSubCharge']),
+        SubChargeRatio: double.parse(json['SubChargeRatio']));
   }
-  // static RoomModel fromJson(Map<String, dynamic> json) {
-  //   //List<String> names = List.from(json['names']);
-  //   return RoomModel(
-  //       roomID: json['roomID'],
-  //       RoomKindID: json['roomKindID'],
-  //       PrimaryImage: json['PrimaryImage'],
-  //       State: json['State'],
-  //       SubImages: List.from(json['SubImages']),
-  //       Description: json['Description'],
-  //       maxCapacity: int.parse(json['maxCapacity']));
-  // }
 
   static List<RoomModel> AllRooms = [];
 

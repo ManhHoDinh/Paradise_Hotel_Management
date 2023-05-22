@@ -67,8 +67,8 @@ class RentalFormItem extends StatelessWidget {
                     ratio = ratios.last;
 
                     return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: kDefaultPadding),
+                      margin:
+                          const EdgeInsets.symmetric(vertical: kDefaultPadding),
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding),
                       width: double.infinity,
@@ -82,12 +82,9 @@ class RentalFormItem extends StatelessWidget {
                               horizontal: kDefaultPadding,
                               vertical: kMinPadding,
                             ),
-                            margin:
-                                const EdgeInsets.only(
-                                  top:  kDefaultPadding),
+                            margin: const EdgeInsets.only(top: kDefaultPadding),
                             decoration: BoxDecoration(
-                                color:
-                                    ColorPalette.primaryColor.withAlpha(50),
+                                color: ColorPalette.primaryColor.withAlpha(50),
                                 borderRadius: kDefaultBorderRadius),
                             child: Text(
                               rentalFormModel.RentalID,
@@ -212,15 +209,15 @@ class RentalFormItem extends StatelessWidget {
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   Container(
-                                                    alignment: Alignment.centerRight,
+                                                    alignment:
+                                                        Alignment.centerRight,
                                                     width: 80,
-                                                    margin: const EdgeInsets
-                                                        .only(
+                                                    margin:
+                                                        const EdgeInsets.only(
                                                       top: kDefaultPadding,
                                                     ),
                                                     child: Text(
-                                                      Price.toString() +
-                                                          ' x',
+                                                      Price.toString() + ' x',
                                                       style: TextStyles.h6
                                                           .copyWith(
                                                               color: ColorPalette
@@ -228,12 +225,13 @@ class RentalFormItem extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Container(
-                                                    alignment: Alignment.centerRight,
+                                                    alignment:
+                                                        Alignment.centerRight,
                                                     width: 80,
                                                     margin: const EdgeInsets
-                                                        .only(
-                                                          top: kDefaultPadding * 1.4
-                                                    ),
+                                                            .only(
+                                                        top: kDefaultPadding *
+                                                            1.4),
                                                     child: Text(
                                                       '100000 x',
                                                       style: TextStyles.h6
@@ -245,8 +243,8 @@ class RentalFormItem extends StatelessWidget {
                                                   Container(
                                                     margin: const EdgeInsets
                                                             .only(
-                                                        top:
-                                                            kDefaultPadding * 1.4),
+                                                        top: kDefaultPadding *
+                                                            1.4),
                                                     child: Text(
                                                       ratio.toString() + ' x',
                                                       style: TextStyles.h6
@@ -258,8 +256,8 @@ class RentalFormItem extends StatelessWidget {
                                                   Container(
                                                     margin: const EdgeInsets
                                                             .only(
-                                                        top:
-                                                            kDefaultPadding * 1.4),
+                                                        top: kDefaultPadding *
+                                                            1.4),
                                                     child: Text(
                                                       '1.25 x',
                                                       style: TextStyles.h6
@@ -290,16 +288,16 @@ class RentalFormItem extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    margin:
-                                        const EdgeInsets.only(top: kMinPadding * 2),
+                                    margin: const EdgeInsets.only(
+                                        top: kMinPadding * 2),
                                     child: itemsWithoutType(
                                       image: AssetHelper.icoService,
                                       counter: 1,
                                     ),
                                   ),
                                   Container(
-                                    margin:
-                                        const EdgeInsets.only(top: kMinPadding * 2),
+                                    margin: const EdgeInsets.only(
+                                        top: kMinPadding * 2),
                                     child: itemsWithType(
                                       image: AssetHelper.icoGuest,
                                       counter: countForeign(guests),
@@ -307,9 +305,9 @@ class RentalFormItem extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    margin:
-                                        const EdgeInsets.symmetric(
-                                          vertical: kMinPadding * 2,),
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: kMinPadding * 2,
+                                    ),
                                     child: itemsWithType(
                                       image: AssetHelper.icoGroup,
                                       counter: countForeign(guests),
@@ -325,8 +323,7 @@ class RentalFormItem extends StatelessWidget {
                             children: [
                               Container(
                                 margin: const EdgeInsets.only(
-                                    top: kMinPadding,
-                                    bottom: kDefaultPadding),
+                                    top: kMinPadding, bottom: kDefaultPadding),
                                 child: Text(
                                   'Total Surcharge',
                                   style: TextStyles.h6.copyWith(
@@ -338,13 +335,12 @@ class RentalFormItem extends StatelessWidget {
                               Container(
                                 alignment: Alignment.centerLeft,
                                 margin: const EdgeInsets.only(
-                                    top: kMinPadding,
-                                    bottom: kDefaultPadding),
+                                    top: kMinPadding, bottom: kDefaultPadding),
                                 child: Text(
-                                  '${rentalFormModel.Total(renDays)} VND',
+                                  '${rentalFormModel.ExcessCustomerSurcharge() + rentalFormModel.GuestKindSurcharge(renDays)} VND',
                                   softWrap: true,
                                   style: TextStyles.h5.copyWith(
-                                    fontStyle: FontStyle.italic,
+                                      fontStyle: FontStyle.italic,
                                       color: ColorPalette.primaryColor),
                                 ),
                               ),
@@ -484,6 +480,7 @@ class RentalFormItem extends StatelessWidget {
       ),
     );
   }
+
   Widget itemsWithType({
     required String image,
     required int counter,
@@ -504,10 +501,7 @@ class RentalFormItem extends StatelessWidget {
             style: TextStyles.h6.copyWith(
                 fontWeight: FontWeight.bold, color: ColorPalette.blackText),
           ),
-          ImageHelper.loadFromAsset(
-            AssetHelper.icoLineVertical,
-            height: 15
-          ),
+          ImageHelper.loadFromAsset(AssetHelper.icoLineVertical, height: 15),
           Text(
             counter.toString(),
             style: TextStyles.h6.copyWith(

@@ -29,16 +29,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var auth = FirebaseAuth.instance;
   bool isLogin = false;
-  // checkLogin() async {
-  //   auth.authStateChanges().listen((User? user) {
-  //     if (user != null && mounted) {
-  //       setState(() {
-  //         isLogin = true;
-  //       });
-  //     } else
-  //       isLogin = false;
-  //   });
-  // }
 
   @override
   void initState() {
