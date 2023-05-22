@@ -15,21 +15,21 @@ class PdfApi {
 
   static Future<File> saveDocument(
       {required String name, required Document pdf}) async {
-    // final result = await FilePicker.platform.getDirectoryPath();
-    // String? selectedPath;
+    final result = await FilePicker.platform.getDirectoryPath();
+    String? selectedPath;
     final bytes = await pdf.save();
 
     // // if (result != null) {
-    // selectedPath = result;
-    // final file = File(path.join(selectedPath!, name));
-    // await file.writeAsBytes(bytes);
-    // return file;
+    selectedPath = result;
+    final file = File(path.join(selectedPath!, name));
+    await file.writeAsBytes(bytes);
+    return file;
     // }
     // return File("");
 
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$name');
-    await file.writeAsBytes(bytes);
-    return file;
+    // final dir = await getApplicationDocumentsDirectory();
+    // final file = File('${dir.path}/$name');
+    // await file.writeAsBytes(bytes);
+    // return file;
   }
 }
