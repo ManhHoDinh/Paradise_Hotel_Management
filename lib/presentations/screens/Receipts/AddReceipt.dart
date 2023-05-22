@@ -34,7 +34,6 @@ class AddReceipt extends StatefulWidget {
 
 class _AddReceiptState extends State<AddReceipt> {
   DateTime? _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
   List<TableRow> listRow = [];
   StreamController<int> TotalPriceStream = StreamController<int>();
   TextEditingController nameController = TextEditingController();
@@ -330,9 +329,7 @@ class _AddReceiptState extends State<AddReceipt> {
     updatePrice(widget.TotalPrice);
     for (RentalFormModel rental
         in RentalFormModel.AllUnpaidRentalFormModels()) {
-      int days =
-          _selectedDay?.difference(rental.BeginDate ?? DateTime.now()).inDays ??
-              0;
+      int days = _selectedDay?.difference(rental.BeginDate).inDays ?? 0;
       bool isChecked = false;
       List<Widget> list = [
         Container(
@@ -362,10 +359,10 @@ class _AddReceiptState extends State<AddReceipt> {
                     } else {
                       isChecked = !isChecked;
                       if (isChecked) {
-                        widget.TotalPrice += Total(rental, days);
-                        RentalFormIDs.add(rental.RentalID ?? '');
+                        widget.TotalPrice += rental.Total(days);
+                        RentalFormIDs.add(rental.RentalID);
                       } else {
-                        widget.TotalPrice -= Total(rental, days);
+                        widget.TotalPrice -= rental.Total(days);
                         RentalFormIDs.remove(rental.RentalID);
                       }
                       updatePrice(widget.TotalPrice);
@@ -381,7 +378,7 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            rental.RoomID ?? '',
+            rental.RoomID,
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -403,7 +400,7 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            (rental.GuestIDs?.length).toString(),
+            (rental.GuestIDs.length).toString(),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -412,7 +409,7 @@ class _AddReceiptState extends State<AddReceipt> {
       ];
       for (GuestKindModel guestKind in GuestKindModel.AllGuestKinds) {
         int numberOfGuestKind =
-            NumberOfGuestKind(rental.GuestIDs, guestKind.GuestKindID ?? '');
+            NumberOfGuestKind(rental.GuestIDs, guestKind.GuestKindID);
 
         list.add(
           Container(
@@ -436,7 +433,7 @@ class _AddReceiptState extends State<AddReceipt> {
           alignment: Alignment.center,
           child: Text(
             NumberFormat.decimalPattern()
-                .format(RoomModel.getPriceWithRoomID(rental.RoomID ?? '')),
+                .format(RoomModel.getPriceWithRoomID(rental.RoomID)),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -458,7 +455,7 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            '${DateFormat('dd/MM').format(rental.BeginDate ?? DateTime.now())} - ${DateFormat('dd/MM').format(_selectedDay ?? DateTime.now())}',
+            '${DateFormat('dd/MM').format(rental.BeginDate)} - ${DateFormat('dd/MM').format(_selectedDay ?? DateTime.now())}',
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -469,8 +466,8 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            NumberFormat.decimalPattern().format(
-                GuestKindSurcharge(rental.GuestIDs, rental.RoomID ?? '', days)),
+            NumberFormat.decimalPattern()
+                .format(rental.GuestKindSurcharge(days)),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -492,7 +489,7 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            NumberFormat.decimalPattern().format(Total(rental, days)),
+            NumberFormat.decimalPattern().format(rental.Total(days)),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -508,26 +505,6 @@ class _AddReceiptState extends State<AddReceipt> {
     for (String guestID in guestIDs!)
       if (GuestModel.IsSameGuestKind(guestID, guestKindID)) Result++;
     return Result;
-  }
-
-  HighestGuestKindRatio(List<String>? guestIDs) {
-    double Result = 0;
-    for (String guestID in guestIDs!)
-      if (GuestKindModel.getGuestKindRatio(guestID) >= Result)
-        Result = GuestKindModel.getGuestKindRatio(guestID);
-    return Result;
-  }
-
-  int GuestKindSurcharge(List<String>? guestIDs, String roomID, int days) {
-    try {
-      int unitPrice = RoomModel.getPriceWithRoomID(roomID);
-      double ratio = HighestGuestKindRatio(guestIDs);
-      if (days < 0) throw Exception();
-      if (ratio < 1) throw Exception();
-      return ((ratio - 1) * unitPrice * days).toInt();
-    } catch (e) {
-      return 0;
-    }
   }
 
   void changeRentalFormState(String rentalFormID) {
@@ -557,19 +534,6 @@ class _AddReceiptState extends State<AddReceipt> {
 
   int ExcessCustomerSurcharge() {
     return 10;
-  }
-
-  int Total(RentalFormModel rental, int days) {
-    try {
-      if (days < 0) throw Exception();
-      int guestKindSurcharge =
-          GuestKindSurcharge(rental.GuestIDs, rental.RoomID ?? '', days);
-      int normalFee = RoomModel.getPriceWithRoomID(rental.RoomID ?? '') * days;
-      int excessCustomerSurcharge = ExcessCustomerSurcharge();
-      return guestKindSurcharge + normalFee + excessCustomerSurcharge;
-    } catch (e) {
-      return 0;
-    }
   }
 
   void createRecept() {
@@ -693,7 +657,7 @@ TitleRow() {
         height: 40,
         alignment: Alignment.center,
         child: Text(
-          (guestKind.Name ?? '') + ' (${guestKind.ratio})',
+          (guestKind.Name) + ' (${guestKind.ratio})',
           textAlign: TextAlign.center,
           style: TextStyles.defaultStyle.copyWith(
               color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),

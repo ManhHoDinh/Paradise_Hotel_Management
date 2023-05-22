@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 
 class AuthServices {
   static signUpUser(String email, String password, String name, String phoneNo,
@@ -19,7 +20,7 @@ class AuthServices {
         'PhoneNumber': phoneNo,
         'Email': email
       });
-      Navigator.of(buildContext).pushNamed(HomeScreen.routeName);
+      Navigator.of(buildContext).pushNamed(MainScreen.routeName);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(buildContext).showSnackBar(
@@ -35,7 +36,7 @@ class AuthServices {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      Navigator.of(context).pushNamed(HomeScreen.routeName);
+      Navigator.of(context).pushNamed(MainScreen.routeName);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(

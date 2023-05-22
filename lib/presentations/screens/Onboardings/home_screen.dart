@@ -1,17 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
-import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
-import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,6 +19,7 @@ import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/room_model.dart';
 import '../Staffs/staff_detail.dart';
+import '../report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String routeName = 'home_screen';
@@ -40,118 +37,96 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
 
-    Size size = MediaQuery.of(context).size;
-    final double itemWidth = (size.width - 72) / 2;
-
-    final double itemHeight = 180;
-    Future<void> _signOut() async {
-      await FirebaseAuth.instance.signOut();
-    }
-
     return Scaffold(
       key: _globalKey,
       drawer: Drawer(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Container(
-            child: Image.asset(AssetHelper.avatar),
-          ),
-          Container(
-              margin: EdgeInsets.only(
-                top: 30,
-                bottom: 10,
+        child: Center(
+          child: SingleChildScrollView(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                child: Image.asset(AssetHelper.avatar),
               ),
-              child: Text(
-                'WHAT WOULD YOU DO?',
-                style: TextStyles.h5.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: ColorPalette.primaryColor),
-              )),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Hotel Information',
-              color: ColorPalette.primaryColor,
-              onTap: () {},
-              textColor: ColorPalette.backgroundColor,
-            ),
+              Container(
+                  margin: EdgeInsets.only(
+                    top: 30,
+                    bottom: 10,
+                  ),
+                  child: Text(
+                    'WHAT WOULD YOU DO?',
+                    style: TextStyles.h5.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: ColorPalette.primaryColor),
+                  )),
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                child: ButtonWidget(
+                  label: 'Hotel Information',
+                  color: ColorPalette.primaryColor,
+                  onTap: () {},
+                  textColor: ColorPalette.backgroundColor,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                child: ButtonWidget(
+                  label: 'Guest Kind',
+                  color: ColorPalette.primaryColor,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(GuestKindView.routeName);
+                  },
+                  textColor: ColorPalette.backgroundColor,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                child: ButtonWidget(
+                  label: 'Room Kind',
+                  color: ColorPalette.primaryColor,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(RoomKindView.routeName);
+                  },
+                  textColor: ColorPalette.backgroundColor,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                child: ButtonWidget(
+                  label: 'Rental Form',
+                  color: ColorPalette.primaryColor,
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => AllRentalForm()));
+                  },
+                  textColor: ColorPalette.backgroundColor,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                child: ButtonWidget(
+                  label: 'Receipt',
+                  color: ColorPalette.primaryColor,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
+                  },
+                  textColor: ColorPalette.backgroundColor,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                child: ButtonWidget(
+                  label: 'Report',
+                  color: ColorPalette.primaryColor,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(ReportScreen.routeName);
+                  },
+                  textColor: ColorPalette.backgroundColor,
+                ),
+              ),
+            ]),
           ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Guest Kind',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context).pushNamed(GuestKindView.routeName);
-              },
-              textColor: ColorPalette.backgroundColor,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Room Kind',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context).pushNamed(RoomKindView.routeName);
-              },
-              textColor: ColorPalette.backgroundColor,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Staff',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => StaffDetail()));
-              },
-              textColor: ColorPalette.backgroundColor,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Rental Form',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => AllRentalForm()));
-              },
-              textColor: ColorPalette.backgroundColor,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Service',
-              color: ColorPalette.primaryColor,
-              onTap: () {},
-              textColor: ColorPalette.backgroundColor,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Report',
-              color: ColorPalette.primaryColor,
-              onTap: () {},
-              textColor: ColorPalette.backgroundColor,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-            child: ButtonWidget(
-              label: 'Receipt',
-              color: ColorPalette.primaryColor,
-              onTap: () {
-                Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
-              },
-              textColor: ColorPalette.backgroundColor,
-            ),
-          ),
-        ]),
+        ),
       ),
       appBar: AppBar(
         elevation: 0,
@@ -219,12 +194,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return Container();
                 }),
-            InkWell(
-              child: Text('fdfd'),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-              },
-            ),
             const SizedBox(height: 36),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),
@@ -303,39 +272,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: SalomonBottomBar(
-          currentIndex: currentId,
-          onTap: (id) {
-            setState(() {
-              currentId = id;
-            });
-          },
-          items: [
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.house,
-                  size: 20,
-                ),
-                title: Text('Home')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.gear,
-                  size: 20,
-                ),
-                title: Text('Setting')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.bell,
-                  size: 20,
-                ),
-                title: Text('Notification')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.user,
-                  size: 20,
-                ),
-                title: Text('Account')),
-          ]),
     );
   }
 }

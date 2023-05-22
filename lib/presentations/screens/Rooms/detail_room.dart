@@ -102,12 +102,13 @@ class _DetailRoomState extends State<DetailRoom> {
           child: Column(
             children: [
               Container(
-                height: 219,
+                height: 250,
                 child: Stack(
                   alignment: Alignment.topCenter,
                   children: [
                     PageView.builder(
                       controller: _pageController,
+                      reverse: true,
                       onPageChanged: (value) {
                         setState(() {
                           _currenImage = value;
@@ -117,20 +118,20 @@ class _DetailRoomState extends State<DetailRoom> {
                       itemBuilder: (context, index) {
                         _currenImage = index;
                         return Container(
-                          height: 219,
+                          height: 250,
                           alignment: Alignment.bottomCenter,
                           child: (index == 0)
                               ? ImageHelper.loadFromNetwork(
                                   roomModel.PrimaryImage ??
                                       AssetHelper.roomDetail1,
                                   fit: BoxFit.fill,
-                                  height: 219,
+                                  height: 250,
                                   width: size.width,
                                 )
                               : Image.network(
                                   roomModel.SubImages[index - 1],
                                   fit: BoxFit.fill,
-                                  height: 219,
+                                  height: 250,
                                   width: size.width,
                                 ),
                         );
@@ -141,7 +142,8 @@ class _DetailRoomState extends State<DetailRoom> {
                       children: [
                         Container(
                           height: 90,
-                          padding: EdgeInsets.only(left: 42, right: 42),
+                          padding:
+                              EdgeInsets.only(left: 42, right: 42, top: 50),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -250,14 +252,6 @@ class _DetailRoomState extends State<DetailRoom> {
                               fontSize: 20,
                             ),
                           ),
-                          Expanded(
-                              child: Container(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              onTap: () {},
-                              child: Image.asset(AssetHelper.iconEdit),
-                            ),
-                          ))
                         ],
                       ),
                     ),

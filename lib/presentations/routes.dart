@@ -14,6 +14,7 @@ import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/AddRoomKindScreen.dart';
+import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 import 'package:paradise/presentations/screens/report_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -32,5 +33,6 @@ final Map<String, WidgetBuilder> routes = {
   ReportScreen.routeName: (context) => ReportScreen(),
   RegisterScreen.routeName: (context) => RegisterScreen(),
   OtpScreen.routeName: (context) => OtpScreen(),
-  RegisterFormScreen.routeName: (context) => RegisterFormScreen()
+  RegisterFormScreen.routeName: (context) => RegisterFormScreen(),
+  MainScreen.routeName: (context) => MainScreen()
 };

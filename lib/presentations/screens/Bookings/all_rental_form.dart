@@ -7,9 +7,9 @@ import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/rental_form_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/form_item.dart';
-import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../../../core/helpers/assets_helper.dart';
@@ -78,7 +78,7 @@ class _AllRentalFormState extends State<AllRentalForm> {
     if (valueSearch != null) {
       newList = newList
           .where((e) =>
-              e.RentalID!.toLowerCase().contains(valueSearch!.toLowerCase()))
+              e.RentalID.toLowerCase().contains(valueSearch!.toLowerCase()))
           .toList();
     }
 
@@ -89,6 +89,16 @@ class _AllRentalFormState extends State<AllRentalForm> {
   Widget build(BuildContext context) {
     return KeyboardDismisser(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ColorPalette.primaryColor,
+          child: Text(
+            '+',
+            style: TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(RentalForm.routeName);
+          },
+        ),
         appBar: AppBar(
           elevation: 5,
           backgroundColor: ColorPalette.primaryColor,
@@ -99,7 +109,9 @@ class _AllRentalFormState extends State<AllRentalForm> {
                 isPressed = param;
               });
             },
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pop();
+            },
             child: Container(
               child: Icon(
                 FontAwesomeIcons.arrowLeft,
@@ -109,13 +121,12 @@ class _AllRentalFormState extends State<AllRentalForm> {
               ),
             ),
           ),
-          title: Align(
-            child: Text(
-              'RENTAL FORMS       ',
-              style: TextStyles.h8.copyWith(letterSpacing: 3.05),
-            ),
-            alignment: Alignment.center,
+          title: Text(
+            'RENTAL FORMS',
+            style: TextStyles.h8.copyWith(letterSpacing: 3.05),
           ),
+          centerTitle: true,
+          toolbarHeight: kToolbarHeight * 1.5,
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),

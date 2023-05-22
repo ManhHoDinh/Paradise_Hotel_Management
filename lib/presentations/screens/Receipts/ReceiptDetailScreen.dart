@@ -8,8 +8,6 @@ import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/presentations/screens/Receipts/RentalFormItem.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
 import '../../../core/models/receipt_model.dart';
 import '../../../core/models/rental_form_model.dart';
 
@@ -58,7 +56,7 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
           ),
         ),
         title: Container(
-            child: Text('RECEIPTS',
+            child: Text('RECEIPT DETAIL',
                 style: TextStyles.slo.bold.copyWith(
                   shadows: [
                     Shadow(
@@ -71,42 +69,6 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
         centerTitle: true,
         toolbarHeight: kToolbarHeight * 1.5,
       ),
-      // endDrawer: Drawer(
-      //   child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         Container(
-      //           padding:
-      //               EdgeInsets.only(top: 20, left: 25, right: 25),
-      //           child: ButtonWidget(
-      //             label: 'Book Room',
-      //             color: ColorPalette.primaryColor,
-      //             onTap: () {},
-      //             textColor: ColorPalette.backgroundColor,
-      //           ),
-      //         ),
-      //         Container(
-      //           padding:
-      //               EdgeInsets.only(top: 20, left: 25, right: 25),
-      //           child: ButtonWidget(
-      //             label: 'Edit Room',
-      //             color: ColorPalette.primaryColor,
-      //             onTap: () {},
-      //             textColor: ColorPalette.backgroundColor,
-      //           ),
-      //         ),
-      //         Container(
-      //           padding:
-      //               EdgeInsets.only(top: 20, left: 25, right: 25),
-      //           child: ButtonWidget(
-      //             label: 'Delete',
-      //             color: ColorPalette.primaryColor,
-      //             onTap: () {},
-      //             textColor: ColorPalette.backgroundColor,
-      //           ),
-      //         ),
-      //       ]),
-      // ),
       body: StreamBuilder<List<RentalFormModel>>(
           stream: FireBaseDataBase.readRentalForms(),
           builder: (context, snapshot) {
@@ -132,7 +94,7 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                     Container(
                       margin: const EdgeInsets.symmetric(
                         // horizontal: kDefaultPadding * 1.5,
-                        vertical: kDefaultPadding * 3,
+                        vertical: kDefaultPadding * 2,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +104,7 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                               vertical: kDefaultPadding,
                             ),
                             child: Text(
-                              'Booking Details',
+                              'Payment guest',
                               style: TextStyles.h5.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: ColorPalette.primaryColor,
@@ -197,6 +159,36 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                                     ),
                                   ],
                                 ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      margin: const EdgeInsets.only(
+                                        left: kDefaultPadding,
+                                        // right: kDefaultPadding,
+                                        bottom: kDefaultPadding,
+                                      ),
+                                      child: Icon(
+                                        FontAwesomeIcons.phone,
+                                        color: ColorPalette.primaryColor,
+                                        size: 13,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                        left: kDefaultPadding,
+                                        right: kDefaultPadding,
+                                        bottom: kDefaultPadding,
+                                      ),
+                                      child: Text(
+                                        receiptModel.phoneNumber!,
+                                        style: TextStyles.h6.copyWith(
+                                          color: ColorPalette.rankText,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           )
@@ -204,9 +196,9 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(
+                      margin: const EdgeInsets.only(
                           // horizontal: kDefaultPadding * 1.5,
-                          ),
+                          bottom: 20),
                       child: Text(
                         'Receipt Details',
                         style: TextStyles.h5.copyWith(
@@ -218,15 +210,17 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                     Container(
                         child: Expanded(
                       child: ListView.builder(
-                        itemBuilder: (context, index) =>
-                            RentalFormItem(rentalFormModel: forms[index]),
+                        itemBuilder: (context, index) => RentalFormItem(
+                          rentalFormModel: forms[index],
+                          checkOutDate: receiptModel.checkOutDate!,
+                        ),
                         itemCount: forms.length,
                       ),
                     )),
                     Container(
-                      margin: const EdgeInsets.symmetric(
+                      margin: const EdgeInsets.only(
                           // horizontal: kDefaultPadding * 1.5,
-                          vertical: kDefaultPadding),
+                          top: 20),
                       child: Row(
                         children: [
                           Container(
@@ -253,7 +247,7 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(
-                        horizontal: kMaxPadding * 2.5,
+                        horizontal: kMaxPadding * 2,
                         vertical: kDefaultPadding,
                       ),
                       child: ButtonDefault(
@@ -276,63 +270,6 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
             } else
               return Container();
           }),
-      bottomNavigationBar: SalomonBottomBar(
-          currentIndex: currentId,
-          onTap: (id) {
-            setState(() {
-              currentId = id;
-            });
-          },
-          items: [
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.house,
-                  size: 20,
-                ),
-                title: Text('Home')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.gear,
-                  size: 20,
-                ),
-                title: Text('Setting')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.bell,
-                  size: 20,
-                ),
-                title: Text('Notification')),
-            SalomonBottomBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.user,
-                  size: 20,
-                ),
-                title: Text('Account')),
-          ]),
-    );
-  }
-
-  Widget items({
-    required String image,
-    required int counter,
-  }) {
-    return Container(
-      width: 50,
-      padding: const EdgeInsets.symmetric(vertical: kMinPadding),
-      decoration: BoxDecoration(
-          borderRadius: kDefaultBorderRadius,
-          border: Border.all(color: ColorPalette.grayText)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Image.asset(image),
-          Text(
-            counter.toString(),
-            style: TextStyles.h6.copyWith(
-                fontWeight: FontWeight.bold, color: ColorPalette.blackText),
-          )
-        ],
-      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/presentations/screens/Bookings/edit_rental_form.dart';
 
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/image_helper.dart';
@@ -39,7 +40,10 @@ class _FormItemState extends State<FormItem> {
   Widget build(BuildContext context) {
     RentalFormModel formModel = widget.form;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => EditForm(rental: widget.form)));
+      },
       child: Container(
         decoration: BoxDecoration(
           color: ColorPalette.backgroundColor,

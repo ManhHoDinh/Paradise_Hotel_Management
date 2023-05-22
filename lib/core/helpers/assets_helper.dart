@@ -25,6 +25,11 @@ class AssetHelper {
   static const String icoMoon = iconAssets + 'ico_moon.png';
   static const String icoBag = iconAssets + 'ico_bag.png';
   static const String icoMap = iconAssets + 'ico_map.png';
+  static const String icoService = iconAssets + 'ico_service.png';
+  static const String icoGuest = iconAssets + 'ico_guest.png';
+  static const String icoGroup = iconAssets + 'ico_group.png';
+  static const String icoLineVertical = iconAssets + 'ico_line_vertical.png';
+
 
   //Assets in images
   static const String imgAssets = 'assets/images/';
