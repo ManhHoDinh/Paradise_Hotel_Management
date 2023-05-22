@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:paradise/api/pdf_api.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -21,7 +22,7 @@ class PdfReportApi {
         buildToTalPrice(total)
       ];
     }));
-    return PdfApi.saveDocument(name: 'bindh_report.pdf', pdf: pdf);
+    return PdfApi.saveDocument(name: '${month}_${year}_report.pdf', pdf: pdf);
   }
 
   static Widget buildTile(String year, String month) {
@@ -44,9 +45,15 @@ class PdfReportApi {
   static Widget buildTableReport(Report report) {
     int index = 0;
     return Table.fromTextArray(
+        cellAlignment: Alignment.center,
         data: report.items.map((e) {
           index++;
-          return ['$index', '${e.roomType}', '${e.revenue}', '${e.rate}'];
+          return [
+            '$index',
+            '${e.roomType}',
+            '${e.revenue}',
+            '${NumberFormat('#.##', 'en_US').format(e.rate * 100)}%'
+          ];
         }).toList(),
         headers: ['No', 'Room Type', 'Revenue (VND)', 'Rate']);
   }
