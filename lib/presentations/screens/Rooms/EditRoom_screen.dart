@@ -41,22 +41,28 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   late int _price;
   late String description;
   late List<String> _images = [];
-  late int initMaxCapacity;
-  late int initNumberOfNoSurcharge;
   bool isLoading = false, isUploaded = false;
   String PrimaryImageUrl = '';
   List<String> SubImageUrls = [];
+  late RoomModel _room;
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController maxCapacityController = new TextEditingController();
   TextEditingController SurchargeRatioController = new TextEditingController();
   String? dropdownKindValue;
+  List<String> BeforeSubImageUrls = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _room = widget.room;
     UploadButton.ResetUploadButton();
     _images.clear();
+    SubImageUrls.addAll(widget.room.SubImages);
+    BeforeSubImageUrls.addAll(widget.room.SubImages);
+    CounterView.maxCap = widget.room.maxCapacity ?? 0;
+    CounterView.numberOfGuestNoSurcharge =
+        widget.room.NumberGuestNoSubCharge ?? 0;
   }
 
   @override
@@ -65,15 +71,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
     roomKindID = widget.room.RoomKindID ?? '';
     kindRoom = RoomKindModel.getRoomKindName(widget.room.RoomKindID!);
     _price = RoomKindModel.getRoomKindPrice(widget.room.RoomKindID ?? '');
-    initMaxCapacity = widget.room.maxCapacity ?? 0;
-    CounterView.maxCap = initMaxCapacity;
     PrimaryImageUrl = widget.room.PrimaryImage ?? '';
-    SubImageUrls = widget.room.SubImages;
     descriptionController.text = widget.room.Description ?? '';
     SurchargeRatioController.text = widget.room.SubChargeRatio.toString();
-    initNumberOfNoSurcharge = widget.room.NumberGuestNoSubCharge ?? 0;
-    CounterView.numberOfGuestNoSurcharge = initNumberOfNoSurcharge;
-    print(widget.room.SubImages.length);
     _images.add(PrimaryImageUrl);
     for (int i = 0; i < SubImageUrls.length; i++) {
       _images.add(SubImageUrls[i]);
@@ -92,7 +92,8 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
               onHighlightChanged: (param) {},
               splashColor: ColorPalette.primaryColor,
               onTap: () {
-                Navigator.of(context).pop();
+                print(_room.maxCapacity);
+                Navigator.pop(context, _room);
               },
               child: Container(
                 child: Icon(FontAwesomeIcons.arrowLeft),
@@ -250,7 +251,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                     ),
                     Container(
                       child: CounterView(
-                        initNumber: initMaxCapacity,
+                        initNumber: CounterView.maxCap,
                         minNumber: 1,
                         type: 0,
                       ),
@@ -269,7 +270,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                     ),
                     Container(
                       child: CounterView(
-                        initNumber: initNumberOfNoSurcharge,
+                        initNumber: CounterView.numberOfGuestNoSurcharge,
                         minNumber: 1,
                         type: 1,
                       ),
@@ -464,21 +465,22 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Updated Room',
+                task: 'Update Room',
                 error: 'Surcharge Ratio Error',
               );
             });
       } else {
-        if (PrimaryImagePath == '') {
-          PrimaryImageUrl = PrimaryImageUrl;
-          SubImageUrls = SubImageUrls;
+        if (UploadButton.SubImagePath.isEmpty) {
+          PrimaryImageUrl = widget.room.PrimaryImage ?? '';
+          SubImageUrls.clear();
+          SubImageUrls.addAll(BeforeSubImageUrls);
         } else {
           await UploadImages(
               PrimaryImagePath: UploadButton.PrimaryImagePath,
               SubImagePaths: UploadButton.SubImagePath);
         }
 
-        RoomModel _room = await RoomModel(
+        _room = await RoomModel(
             roomID: roomID,
             PrimaryImage: PrimaryImageUrl,
             SubImages: SubImageUrls,
@@ -489,8 +491,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
             SubChargeRatio: double.parse(SubChargeRatio),
             NumberGuestNoSubCharge: NumberGuestNoSubCharge);
         final json = _room.toJson();
+        BeforeSubImageUrls.clear();
+        BeforeSubImageUrls.addAll(_room.SubImages);
         await docUser.set(json);
-        widget.room = _room;
         showDialog(
             context: context,
             builder: (context) {
@@ -501,8 +504,6 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
             });
         setState(() {
           isLoading = false;
-        });
-        setState(() {
           _images.clear();
           UploadButton.ResetUploadButton();
         });
@@ -544,19 +545,5 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       else
         SubImageUrls.add(value.toString());
     });
-  }
-
-  void DeleteRoom(String roomID) async {
-    try {
-      await FirebaseStorage.instance.ref(roomID).listAll().then((value) {
-        value.items.forEach((element) {
-          FirebaseStorage.instance.ref(element.fullPath).delete();
-        });
-      });
-      await FirebaseFirestore.instance.collection('Rooms').doc(roomID).delete();
-      Navigator.of(context).pop();
-    } catch (e) {
-      print(e.toString());
-    }
   }
 }

@@ -47,12 +47,16 @@ class _DetailRoomState extends State<DetailRoom> {
               child: ButtonWidget(
                 label: 'Book Room',
                 color: ColorPalette.primaryColor,
-                onTap: () {
+                onTap: () async {
                   if (widget.room.State == 'Available') {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => RentalForm(room: roomModel)));
+                    final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => RentalForm(room: roomModel)))
+                        as RoomModel;
+                    setState(() {
+                      roomModel = result;
+                    });
                   } else {
                     _globalKey.currentState!.closeEndDrawer();
                     showDialog(
@@ -74,11 +78,16 @@ class _DetailRoomState extends State<DetailRoom> {
               child: ButtonWidget(
                 label: 'Edit Room',
                 color: ColorPalette.primaryColor,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => EditRoomScreen(room: roomModel)));
+                onTap: () async {
+                  final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => EditRoomScreen(room: roomModel)))
+                      as RoomModel;
+                  Navigator.pop(context);
+                  setState(() {
+                    roomModel = result;
+                  });
                 },
                 textColor: ColorPalette.backgroundColor,
               ),
