@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
@@ -235,7 +236,9 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                           Spacer(),
                           Container(
                             child: Text(
-                              receiptModel.total.toString() + ' VND',
+                              NumberFormat.decimalPattern()
+                                      .format(receiptModel.total) +
+                                  ' VND',
                               style: TextStyles.h4.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: ColorPalette.primaryColor,

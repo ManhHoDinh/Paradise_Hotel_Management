@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
@@ -149,9 +150,9 @@ class RentalFormItem extends StatelessWidget {
                                         const EdgeInsets.only(top: kMinPadding),
                                     width: 60,
                                     child: Text(
-                                      rentalFormModel.GuestKindSurcharge(
-                                              renDays)
-                                          .toString(),
+                                      NumberFormat.decimalPattern().format(
+                                          rentalFormModel.GuestKindSurcharge(
+                                              renDays)),
                                       style: TextStyles.h6.copyWith(
                                           color: ColorPalette.rankText),
                                     ),
@@ -161,106 +162,54 @@ class RentalFormItem extends StatelessWidget {
                                     margin: const EdgeInsets.only(
                                         top: kDefaultPadding * 1.4),
                                     child: Text(
-                                      rentalFormModel.ExcessCustomerSurcharge(
-                                              renDays)
-                                          .toString(),
+                                      NumberFormat.decimalPattern().format(
+                                          rentalFormModel
+                                              .ExcessCustomerSurcharge(
+                                                  renDays)),
                                       style: TextStyles.h6.copyWith(
                                           color: ColorPalette.rankText),
                                     ),
                                   ),
                                 ],
                               ),
-                              StreamBuilder<List<RoomModel>>(
-                                  stream: FireBaseDataBase.readRooms(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Center(
-                                        child: Text('Error: ${snapshot.error}'),
-                                      );
-                                    } else if (snapshot.hasData) {
-                                      List<RoomModel> rooms = snapshot.data!;
-                                      room = rooms
-                                          .where((element) =>
-                                              element.roomID ==
-                                              rentalFormModel.RoomID)
-                                          .single;
-
-                                      return StreamBuilder<List<RoomKindModel>>(
-                                          stream:
-                                              FireBaseDataBase.readRoomKinds(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.hasError) {
-                                              return Center(
-                                                child: Text(
-                                                    'Error: ${snapshot.error}'),
-                                              );
-                                            } else if (snapshot.hasData) {
-                                              List<RoomKindModel> roomKinds =
-                                                  snapshot.data!;
-                                              roomKind = roomKinds
-                                                  .where(
-                                                    (element) =>
-                                                        element.RoomKindID ==
-                                                        room.RoomKindID,
-                                                  )
-                                                  .single;
-                                              Price = roomKind!.Price!;
-
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    width: 80,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      top: kDefaultPadding,
-                                                    ),
-                                                    child: Text(
-                                                      Price.toString() + ' x',
-                                                      style: TextStyles.h6
-                                                          .copyWith(
-                                                              color: ColorPalette
-                                                                  .rankText),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      top:
-                                                          kDefaultPadding * 1.4,
-                                                    ),
-                                                    child: Text(
-                                                      ratio.toString() + ' x',
-                                                      style: TextStyles.h6
-                                                          .copyWith(
-                                                              color: ColorPalette
-                                                                  .rankText),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    margin: const EdgeInsets
-                                                            .only(
-                                                        top: kDefaultPadding *
-                                                            1.4),
-                                                    child: Text(
-                                                      '1.25 x',
-                                                      style: TextStyles.h6
-                                                          .copyWith(
-                                                              color: ColorPalette
-                                                                  .rankText),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            } else
-                                              return Container();
-                                          });
-                                    } else
-                                      return Container();
-                                  }),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    width: 80,
+                                    margin: const EdgeInsets.only(
+                                      top: kDefaultPadding,
+                                    ),
+                                    child: Text(
+                                      NumberFormat.decimalPattern().format(
+                                              rentalFormModel.UnitPrice) +
+                                          ' x',
+                                      style: TextStyles.h6.copyWith(
+                                          color: ColorPalette.rankText),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                      top: kDefaultPadding * 1.4,
+                                    ),
+                                    child: Text(
+                                      ratio.toString() + ' x',
+                                      style: TextStyles.h6.copyWith(
+                                          color: ColorPalette.rankText),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: kDefaultPadding * 1.4),
+                                    child: Text(
+                                      '1.25 x',
+                                      style: TextStyles.h6.copyWith(
+                                          color: ColorPalette.rankText),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment:
@@ -279,7 +228,8 @@ class RentalFormItem extends StatelessWidget {
                                         top: kMinPadding * 2),
                                     child: itemsWithType(
                                       image: AssetHelper.icoGuest,
-                                      counter: countForeign(guests),
+                                      counter: rentalFormModel
+                                          .NumberOfHighestGuestKindRatioSurchargeGuest(),
                                       type: rentalFormModel
                                           .HighestGuestKindRatioName,
                                     ),
@@ -290,8 +240,10 @@ class RentalFormItem extends StatelessWidget {
                                     ),
                                     child: itemsWithType(
                                       image: AssetHelper.icoGroup,
-                                      counter: countForeign(guests),
-                                      type: '1',
+                                      counter: rentalFormModel
+                                          .NumberGuestNoSubCharge,
+                                      type: rentalFormModel.GuestIDs.length
+                                          .toString(),
                                     ),
                                   ),
                                 ],
@@ -317,7 +269,7 @@ class RentalFormItem extends StatelessWidget {
                                 margin: const EdgeInsets.only(
                                     top: kMinPadding, bottom: kDefaultPadding),
                                 child: Text(
-                                  '${rentalFormModel.ExcessCustomerSurcharge(renDays) + rentalFormModel.GuestKindSurcharge(renDays)} VND',
+                                  '${NumberFormat.decimalPattern().format(rentalFormModel.ExcessCustomerSurcharge(renDays) + rentalFormModel.GuestKindSurcharge(renDays))} VND',
                                   softWrap: true,
                                   style: TextStyles.h5.copyWith(
                                       fontStyle: FontStyle.italic,
@@ -345,7 +297,7 @@ class RentalFormItem extends StatelessWidget {
                                 margin: const EdgeInsets.only(
                                     bottom: kDefaultPadding),
                                 child: Text(
-                                  '${rentalFormModel.Total(renDays)} VND',
+                                  '${NumberFormat.decimalPattern().format(rentalFormModel.Total(renDays))} VND',
                                   softWrap: true,
                                   style: TextStyles.h5.copyWith(
                                       fontStyle: FontStyle.italic,
@@ -391,20 +343,6 @@ class RentalFormItem extends StatelessWidget {
           } else
             return Container();
         });
-  }
-
-  int countForeign(List<GuestModel>? guests) {
-    int counter = 0;
-
-    for (GuestModel guest in guests!) {
-      final guestKindName =
-          GuestKindModel.getGuestKindNameByGuestID(guest.guestID);
-      if (guestKindName == 'Foreign') {
-        counter++;
-      }
-    }
-
-    return counter;
   }
 
   String monthToString(int monthNumber) {
@@ -485,7 +423,6 @@ class RentalFormItem extends StatelessWidget {
                 type,
                 maxLines: 1,
                 textAlign: TextAlign.center,
-                textDirection: TextDirection.ltr,
                 overflow: TextOverflow.visible,
                 style: TextStyles.h6.copyWith(
                     fontWeight: FontWeight.bold, color: ColorPalette.blackText),

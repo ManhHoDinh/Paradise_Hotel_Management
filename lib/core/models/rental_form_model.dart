@@ -109,6 +109,17 @@ class RentalFormModel {
     return Name;
   }
 
+  NumberOfHighestGuestKindRatioSurchargeGuest() {
+    int count = 0;
+    double Ratio = HighestGuestKindSurchargeRatio;
+    for (String guestID in GuestIDs) {
+      if (GuestKindModel.getGuestKindRatioByGuestID(guestID) == Ratio) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   int GuestKindSurcharge(int days) {
     try {
       if (days < 0) throw Exception();
