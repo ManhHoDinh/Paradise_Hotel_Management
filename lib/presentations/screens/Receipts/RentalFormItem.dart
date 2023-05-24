@@ -27,11 +27,11 @@ class RentalFormItem extends StatelessWidget {
     RoomModel room;
     RoomKindModel? roomKind;
     List<GuestModel>? guests;
-    int Price = 0, total = 0;
+    int Price = 0;
     double ratio = 0;
 
     int renDays = checkOutDate.difference(rentalFormModel.BeginDate).inDays;
-
+    if (renDays == 0) renDays = 1;
     return StreamBuilder<List<GuestModel>>(
         stream: FireBaseDataBase.readGuests(),
         builder: (context, snapshot) {
@@ -60,8 +60,8 @@ class RentalFormItem extends StatelessWidget {
                   } else if (snapshot.hasData) {
                     GuestKindModel.AllGuestKinds = snapshot.data!;
                     for (var element in guests!) {
-                      ratios.add(
-                          GuestKindModel.getGuestKindRatio(element.guestID));
+                      ratios.add(GuestKindModel.getGuestKindRatioByGuestID(
+                          element.guestID));
                     }
                     ratios.sort();
                     ratio = ratios.last;
@@ -111,8 +111,8 @@ class RentalFormItem extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.only(
-                                        top: kDefaultPadding * 3),
+                                    margin:
+                                        const EdgeInsets.only(top: kMinPadding),
                                     child: Text(
                                       'G.K.S',
                                       style: TextStyles.h6.copyWith(
@@ -145,11 +145,13 @@ class RentalFormItem extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
+                                    margin:
+                                        const EdgeInsets.only(top: kMinPadding),
                                     width: 60,
-                                    margin: const EdgeInsets.only(
-                                        top: kDefaultPadding * 3),
                                     child: Text(
-                                      '100000',
+                                      rentalFormModel.GuestKindSurcharge(
+                                              renDays)
+                                          .toString(),
                                       style: TextStyles.h6.copyWith(
                                           color: ColorPalette.rankText),
                                     ),
@@ -159,7 +161,9 @@ class RentalFormItem extends StatelessWidget {
                                     margin: const EdgeInsets.only(
                                         top: kDefaultPadding * 1.4),
                                     child: Text(
-                                      '100000',
+                                      rentalFormModel.ExcessCustomerSurcharge(
+                                              renDays)
+                                          .toString(),
                                       style: TextStyles.h6.copyWith(
                                           color: ColorPalette.rankText),
                                     ),
@@ -201,8 +205,6 @@ class RentalFormItem extends StatelessWidget {
                                                   )
                                                   .single;
                                               Price = roomKind!.Price!;
-                                              total = (ratio * Price * renDays)
-                                                  .ceil();
 
                                               return Column(
                                                 crossAxisAlignment:
@@ -225,26 +227,11 @@ class RentalFormItem extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Container(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    width: 80,
-                                                    margin: const EdgeInsets
-                                                            .only(
-                                                        top: kDefaultPadding *
-                                                            1.4),
-                                                    child: Text(
-                                                      '100000 x',
-                                                      style: TextStyles.h6
-                                                          .copyWith(
-                                                              color: ColorPalette
-                                                                  .rankText),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                      top:
+                                                          kDefaultPadding * 1.4,
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    margin: const EdgeInsets
-                                                            .only(
-                                                        top: kDefaultPadding *
-                                                            1.4),
                                                     child: Text(
                                                       ratio.toString() + ' x',
                                                       style: TextStyles.h6
@@ -290,18 +277,11 @@ class RentalFormItem extends StatelessWidget {
                                   Container(
                                     margin: const EdgeInsets.only(
                                         top: kMinPadding * 2),
-                                    child: itemsWithoutType(
-                                      image: AssetHelper.icoService,
-                                      counter: 1,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        top: kMinPadding * 2),
                                     child: itemsWithType(
                                       image: AssetHelper.icoGuest,
                                       counter: countForeign(guests),
-                                      type: 'A',
+                                      type: rentalFormModel
+                                          .HighestGuestKindRatioName,
                                     ),
                                   ),
                                   Container(
@@ -337,7 +317,7 @@ class RentalFormItem extends StatelessWidget {
                                 margin: const EdgeInsets.only(
                                     top: kMinPadding, bottom: kDefaultPadding),
                                 child: Text(
-                                  '${rentalFormModel.ExcessCustomerSurcharge() + rentalFormModel.GuestKindSurcharge(renDays)} VND',
+                                  '${rentalFormModel.ExcessCustomerSurcharge(renDays) + rentalFormModel.GuestKindSurcharge(renDays)} VND',
                                   softWrap: true,
                                   style: TextStyles.h5.copyWith(
                                       fontStyle: FontStyle.italic,
@@ -417,7 +397,8 @@ class RentalFormItem extends StatelessWidget {
     int counter = 0;
 
     for (GuestModel guest in guests!) {
-      final guestKindName = GuestKindModel.getGuestKindName(guest.guestKindID);
+      final guestKindName =
+          GuestKindModel.getGuestKindNameByGuestID(guest.guestID);
       if (guestKindName == 'Foreign') {
         counter++;
       }
@@ -487,8 +468,9 @@ class RentalFormItem extends StatelessWidget {
     required String type,
   }) {
     return Container(
-      width: 70,
+      width: 100,
       padding: const EdgeInsets.symmetric(vertical: kMinPadding),
+      alignment: Alignment.bottomCenter,
       decoration: BoxDecoration(
           borderRadius: kDefaultBorderRadius,
           border: Border.all(color: ColorPalette.grayText)),
@@ -496,10 +478,19 @@ class RentalFormItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ImageHelper.loadFromAsset(image, height: 15),
-          Text(
-            type,
-            style: TextStyles.h6.copyWith(
-                fontWeight: FontWeight.bold, color: ColorPalette.blackText),
+          Flexible(
+            child: Container(
+              width: 55,
+              child: Text(
+                type,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.ltr,
+                overflow: TextOverflow.visible,
+                style: TextStyles.h6.copyWith(
+                    fontWeight: FontWeight.bold, color: ColorPalette.blackText),
+              ),
+            ),
           ),
           ImageHelper.loadFromAsset(AssetHelper.icoLineVertical, height: 15),
           Text(
