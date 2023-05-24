@@ -111,12 +111,18 @@ class RentalFormModel {
 
   NumberOfHighestGuestKindRatioSurchargeGuest() {
     int count = 0;
-    double Ratio = HighestGuestKindSurchargeRatio;
+    print(RentalID);
     for (String guestID in GuestIDs) {
-      if (GuestKindModel.getGuestKindRatioByGuestID(guestID) == Ratio) {
+      print(guestID);
+      print(GuestKindModel.getGuestKindRatioByGuestID(guestID).toString() +
+          ' ' +
+          HighestGuestKindSurchargeRatio.toString());
+      if (GuestKindModel.getGuestKindRatioByGuestID(guestID) ==
+          HighestGuestKindSurchargeRatio) {
         count++;
       }
     }
+    print(count);
     return count;
   }
 
