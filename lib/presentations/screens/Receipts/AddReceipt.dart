@@ -8,6 +8,7 @@ import 'package:paradise/core/models/guest_kind_model.dart';
 import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+// import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/color_palatte.dart';

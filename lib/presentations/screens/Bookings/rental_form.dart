@@ -234,7 +234,7 @@ class _RentalFormState extends State<RentalForm> {
       setState(() {
         currentIndex = i;
       });
-      listRow[i].children[0] = Container(
+      listRow[i].children![0] = Container(
         alignment: Alignment.center,
         child: Text('${currentIndex}'),
       );
@@ -306,11 +306,11 @@ class _RentalFormState extends State<RentalForm> {
       print(index);
       listRow.removeAt(index);
       for (int i = 1; i < listRow.length; i++) {
-        listRow[i].children[0] = Container(
+        listRow[i].children![0] = Container(
           alignment: Alignment.center,
           child: Text('${i}'),
         );
-        listRow[i].children[5] = GestureDetector(
+        listRow[i].children![5] = GestureDetector(
           child: Container(alignment: Alignment.center, child: Text('X')),
           onTap: () {
             UpdateDeleteRow(i);

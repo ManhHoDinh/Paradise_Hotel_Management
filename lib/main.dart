@@ -6,6 +6,7 @@ import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   await Hive.initFlutter();
