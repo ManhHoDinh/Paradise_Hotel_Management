@@ -8,7 +8,7 @@ class RoomModel {
   String? Description;
   List<String> SubImages = [];
   int? maxCapacity;
-  int? NumberGuestNoSubCharge;
+  int? NumberGuestBeginSubCharge;
   double? SubChargeRatio;
   RoomModel(
       {required this.roomID,
@@ -18,7 +18,7 @@ class RoomModel {
       required this.SubImages,
       required this.Description,
       required this.maxCapacity,
-      required this.NumberGuestNoSubCharge,
+      required this.NumberGuestBeginSubCharge,
       required this.SubChargeRatio});
   Map<String, dynamic> toJson() => {
         'roomID': roomID,
@@ -28,7 +28,7 @@ class RoomModel {
         'SubImages': SubImages,
         'Description': Description,
         'maxCapacity': maxCapacity.toString(),
-        'NumberGuestNoSubCharge': NumberGuestNoSubCharge.toString(),
+        'NumberGuestNoSubCharge': NumberGuestBeginSubCharge.toString(),
         'SubChargeRatio': SubChargeRatio.toString()
       };
   static String CollectionName = 'Rooms';
@@ -43,7 +43,8 @@ class RoomModel {
         SubImages: List.from(json['SubImages']),
         Description: json['Description'],
         maxCapacity: int.parse(json['maxCapacity']),
-        NumberGuestNoSubCharge: int.parse(json['NumberGuestNoSubCharge']),
+        ///Sua thanh NumberGuestBeginSubCharge
+        NumberGuestBeginSubCharge: int.parse(json['NumberGuestBeginSubCharge']),
         SubChargeRatio: double.parse(json['SubChargeRatio']));
   }
 

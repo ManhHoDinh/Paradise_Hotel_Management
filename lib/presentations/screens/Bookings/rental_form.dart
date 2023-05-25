@@ -734,7 +734,7 @@ class _RentalFormState extends State<RentalForm> {
           RentalID: doc.id,
           Status: 'Unpaid',
           SurchargeRatio: 0,
-          NumberGuestNoSubCharge: 0,
+          NumberGuestBeginSubCharge: 0,
           HighestGuestKindRatioName: '',
           UnitPrice: 0,
           HighestGuestKindSurchargeRatio: 0);

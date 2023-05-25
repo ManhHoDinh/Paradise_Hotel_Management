@@ -211,7 +211,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                       ),
                       Container(
                         child: Text(
-                          'Number Guest No SubCharge',
+                          'Number Guest Begin SubCharge',
                           style: TextStyles.h6.copyWith(
                               color: ColorPalette.darkBlueText,
                               fontWeight: FontWeight.w500),
@@ -407,7 +407,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           Description: descriptionController.text,
           maxCapacity: maxCap,
           SubChargeRatio: double.parse(SurchargeRatio),
-          NumberGuestNoSubCharge: numberNoCharge);
+          NumberGuestBeginSubCharge: numberNoCharge);
       final json = _room.toJson();
       await docUser.set(json);
       showDialog(

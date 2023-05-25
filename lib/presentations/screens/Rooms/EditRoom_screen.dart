@@ -62,7 +62,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
     BeforeSubImageUrls.addAll(widget.room.SubImages);
     CounterView.maxCap = widget.room.maxCapacity ?? 0;
     CounterView.numberOfGuestNoSurcharge =
-        widget.room.NumberGuestNoSubCharge ?? 0;
+        widget.room.NumberGuestBeginSubCharge ?? 0;
   }
 
   @override
@@ -261,7 +261,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                     ),
                     Container(
                       child: Text(
-                        'Number Guest No SubCharge',
+                        'Number Guest Begin SubCharge',
                         style: TextStyles.h6.copyWith(
                             color: ColorPalette.darkBlueText,
                             fontWeight: FontWeight.w500),
@@ -489,7 +489,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
             Description: description,
             maxCapacity: maxCapacity,
             SubChargeRatio: double.parse(SubChargeRatio),
-            NumberGuestNoSubCharge: NumberGuestNoSubCharge);
+            NumberGuestBeginSubCharge: NumberGuestNoSubCharge);
         final json = _room.toJson();
         BeforeSubImageUrls.clear();
         BeforeSubImageUrls.addAll(_room.SubImages);

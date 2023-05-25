@@ -14,7 +14,7 @@ class RentalFormModel {
   double HighestGuestKindSurchargeRatio;
   String HighestGuestKindRatioName;
   double SurchargeRatio;
-  int NumberGuestNoSubCharge;
+  int NumberGuestBeginSubCharge;
 
   RentalFormModel(
       {required this.RoomID,
@@ -25,7 +25,7 @@ class RentalFormModel {
       required this.UnitPrice,
       required this.HighestGuestKindRatioName,
       required this.HighestGuestKindSurchargeRatio,
-      required this.NumberGuestNoSubCharge,
+      required this.NumberGuestBeginSubCharge,
       required this.SurchargeRatio});
   Map<String, dynamic> toJson() => {
         'RoomID': RoomID,
@@ -36,7 +36,7 @@ class RentalFormModel {
         'HighestGuestKindRatioName': HighestGuestKindRatioName,
         'HighestGuestKindSurchargeRatio':
             HighestGuestKindSurchargeRatio.toString(),
-        'NumberGuestNoSubCharge': NumberGuestNoSubCharge.toString(),
+        'NumberGuestBeginSubCharge': NumberGuestBeginSubCharge.toString(),
         'SurchargeRatio': SurchargeRatio.toString(),
         'UnitPrice': UnitPrice.toString()
       };
@@ -51,7 +51,7 @@ class RentalFormModel {
         HighestGuestKindRatioName: json['HighestGuestKindRatioName'],
         HighestGuestKindSurchargeRatio:
             double.parse(json['HighestGuestKindSurchargeRatio']),
-        NumberGuestNoSubCharge: int.parse(json['NumberGuestNoSubCharge']),
+        NumberGuestBeginSubCharge: int.parse(json['NumberGuestBeginSubCharge']),
         SurchargeRatio: double.parse(json['SurchargeRatio']));
   }
 
@@ -63,9 +63,14 @@ class RentalFormModel {
   }
 
   int ExcessCustomerSurcharge(int days) {
-    if (GuestIDs.length > NumberGuestNoSubCharge)
-      return (UnitPrice * days * (SurchargeRatio - 1)).toInt();
-    return 0;
+    try {
+      if (SurchargeRatio < 1) return 0;
+      if (GuestIDs.length >= NumberGuestBeginSubCharge)
+        return (UnitPrice * days * (SurchargeRatio - 1)).toInt();
+      return 0;
+    } catch (e) {
+      return 0;
+    }
   }
 
   int Total(int days) {
@@ -84,46 +89,52 @@ class RentalFormModel {
     HighestGuestKindSurchargeRatio = HighestGuestKindRatio();
     RoomModel room = getRoom();
     UnitPrice = room.getPrice();
-    NumberGuestNoSubCharge = room.NumberGuestNoSubCharge ?? 0;
+    NumberGuestBeginSubCharge = room.NumberGuestBeginSubCharge ?? 0;
     SurchargeRatio = room.SubChargeRatio ?? 0;
     HighestGuestKindRatioName = HighestGuestKindRatioSurchargeName();
   }
 
   HighestGuestKindRatio() {
-    double Result = 0;
-    for (String guestID in GuestIDs)
-      if (GuestKindModel.getGuestKindRatioByGuestID(guestID) >= Result)
-        Result = GuestKindModel.getGuestKindRatioByGuestID(guestID);
-    return Result;
+    try {
+      double Result = 0;
+      for (String guestID in GuestIDs)
+        if (GuestKindModel.getGuestKindRatioByGuestID(guestID) >= Result)
+          Result = GuestKindModel.getGuestKindRatioByGuestID(guestID);
+      return Result;
+    } catch (e) {
+      return 0;
+    }
   }
 
   HighestGuestKindRatioSurchargeName() {
-    double Ratio = 0;
-    String Name = '';
-    for (String guestID in GuestIDs) {
-      if (GuestKindModel.getGuestKindRatioByGuestID(guestID) >= Ratio) {
-        Ratio = GuestKindModel.getGuestKindRatioByGuestID(guestID);
-        Name = GuestKindModel.getGuestKindNameByGuestID(guestID);
+    try {
+      double Ratio = 0;
+      String Name = '';
+      for (String guestID in GuestIDs) {
+        if (GuestKindModel.getGuestKindRatioByGuestID(guestID) >= Ratio) {
+          Ratio = GuestKindModel.getGuestKindRatioByGuestID(guestID);
+          Name = GuestKindModel.getGuestKindNameByGuestID(guestID);
+        }
       }
+      return Name;
+    } catch (e) {
+      return '';
     }
-    return Name;
   }
 
   NumberOfHighestGuestKindRatioSurchargeGuest() {
-    int count = 0;
-    print(RentalID);
-    for (String guestID in GuestIDs) {
-      print(guestID);
-      print(GuestKindModel.getGuestKindRatioByGuestID(guestID).toString() +
-          ' ' +
-          HighestGuestKindSurchargeRatio.toString());
-      if (GuestKindModel.getGuestKindRatioByGuestID(guestID) ==
-          HighestGuestKindSurchargeRatio) {
-        count++;
+    try {
+      int count = 0;
+      for (String guestID in GuestIDs) {
+        if (GuestKindModel.getGuestKindRatioByGuestID(guestID) ==
+            HighestGuestKindSurchargeRatio) {
+          count++;
+        }
       }
+      return count;
+    } catch (e) {
+      return 0;
     }
-    print(count);
-    return count;
   }
 
   int GuestKindSurcharge(int days) {

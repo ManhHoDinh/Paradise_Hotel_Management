@@ -183,7 +183,7 @@ class RentalFormItem extends StatelessWidget {
                     ),
                     child: itemsWithType(
                       image: AssetHelper.icoGroup,
-                      counter: rentalFormModel.NumberGuestNoSubCharge,
+                      counter: rentalFormModel.NumberGuestBeginSubCharge,
                       type: rentalFormModel.GuestIDs.length.toString(),
                     ),
                   ),
