@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
@@ -6,18 +5,19 @@ import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/color_palatte.dart';
 import '../../../core/helpers/assets_helper.dart';
 import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
+import '../../../core/models/guest_kind_model.dart';
+import '../../../core/models/guest_model.dart';
 import '../../../core/models/room_model.dart';
-import '../Staffs/staff_detail.dart';
 import '../report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -193,6 +193,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return Container();
                 }),
+            StreamBuilder(
+                stream: FireBaseDataBase.readGuestKinds(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    GuestKindModel.AllGuestKinds = snapshot.data!;
+                  }
+                  return Container();
+                }),
+            StreamBuilder(
+                stream: FireBaseDataBase.readGuests(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    GuestModel.AllGuests = snapshot.data!;
+                  }
+                  return Container();
+                }),
             const SizedBox(height: 36),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),
@@ -202,7 +218,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('Room',
                       style: TextStyles.defaultStyle.primaryTextColor.medium),
                   TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.remove('email');
                         Navigator.of(context)
                             .pushNamed(SeeAllRoomsScreen.routeName);
                       },

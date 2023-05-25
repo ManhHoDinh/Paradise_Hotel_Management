@@ -5,7 +5,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
@@ -16,17 +15,17 @@ import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
-import 'package:paradise/presentations/widgets/check_box.dart';
 import 'package:paradise/presentations/widgets/counter.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
-import 'package:paradise/presentations/widgets/drop_down_widget.dart';
 import 'package:paradise/presentations/widgets/input_default.dart';
 import 'package:paradise/presentations/widgets/upload_button.dart';
 
+import '../../widgets/inputTitleWidget.dart';
+
 class EditRoomScreen extends StatefulWidget {
   static String routeName = 'edit_room';
-  final RoomModel room;
-  const EditRoomScreen({
+  late RoomModel room;
+  EditRoomScreen({
     super.key,
     required this.room,
   });
@@ -42,20 +41,28 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   late int _price;
   late String description;
   late List<String> _images = [];
-  late int maxCapacity;
   bool isLoading = false, isUploaded = false;
   String PrimaryImageUrl = '';
   List<String> SubImageUrls = [];
+  late RoomModel _room;
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController maxCapacityController = new TextEditingController();
+  TextEditingController SurchargeRatioController = new TextEditingController();
   String? dropdownKindValue;
+  List<String> BeforeSubImageUrls = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _room = widget.room;
     UploadButton.ResetUploadButton();
     _images.clear();
+    SubImageUrls.addAll(widget.room.SubImages);
+    BeforeSubImageUrls.addAll(widget.room.SubImages);
+    CounterView.maxCap = widget.room.maxCapacity ?? 0;
+    CounterView.numberOfGuestNoSurcharge =
+        widget.room.NumberGuestBeginSubCharge ?? 0;
   }
 
   @override
@@ -64,11 +71,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
     roomKindID = widget.room.RoomKindID ?? '';
     kindRoom = RoomKindModel.getRoomKindName(widget.room.RoomKindID!);
     _price = RoomKindModel.getRoomKindPrice(widget.room.RoomKindID ?? '');
-    maxCapacity = widget.room.maxCapacity ?? 0;
     PrimaryImageUrl = widget.room.PrimaryImage ?? '';
-    SubImageUrls = widget.room.SubImages;
     descriptionController.text = widget.room.Description ?? '';
-    print(widget.room.SubImages.length);
+    SurchargeRatioController.text = widget.room.SubChargeRatio.toString();
     _images.add(PrimaryImageUrl);
     for (int i = 0; i < SubImageUrls.length; i++) {
       _images.add(SubImageUrls[i]);
@@ -87,7 +92,8 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
               onHighlightChanged: (param) {},
               splashColor: ColorPalette.primaryColor,
               onTap: () {
-                Navigator.of(context).pop();
+                print(_room.maxCapacity);
+                Navigator.pop(context, _room);
               },
               child: Container(
                 child: Icon(FontAwesomeIcons.arrowLeft),
@@ -111,43 +117,6 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
           centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,
         ),
-        // endDrawer: Drawer(
-        //   child: Container(
-        //     margin:
-        //         const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.5),
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Container(
-        //           margin: const EdgeInsets.symmetric(vertical: kMaxPadding),
-        //           child: Text(
-        //             'ROOM OPTIONS',
-        //             style: TextStyles.h2.copyWith(
-        //                 fontWeight: FontWeight.bold,
-        //                 color: ColorPalette.primaryColor),
-        //           ),
-        //         ),
-        //         Container(
-        //             margin:
-        //                 const EdgeInsets.symmetric(vertical: kDefaultPadding),
-        //             child: ButtonDefault(
-        //                 label: 'Book Room',
-        //                 onTap: () {
-        //                   Navigator.of(context).pushNamed(RentalForm.routeName);
-        //                 })),
-        //         Container(
-        //             margin:
-        //                 const EdgeInsets.symmetric(vertical: kDefaultPadding),
-        //             child:
-        //                 ButtonDefault(label: 'Create New Room', onTap: () {})),
-        //         Container(
-        //             margin:
-        //                 const EdgeInsets.symmetric(vertical: kDefaultPadding),
-        //             child: ButtonDefault(label: 'Edit Room', onTap: () {})),
-        //       ],
-        //     ),
-        //   ),
-        // ),
         body: isLoading
             ? Center(
                 child: LoadingAnimationWidget.discreteCircle(
@@ -278,16 +247,41 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                             fontWeight: FontWeight.w500),
                       ),
                       margin: const EdgeInsets.only(
-                          left: kMaxPadding * 1.5, top: kItemPadding),
+                          left: kMaxPadding * 1.5, top: kItemPadding * 3),
                     ),
                     Container(
                       child: CounterView(
-                        initNumber: maxCapacity,
+                        initNumber: CounterView.maxCap,
                         minNumber: 1,
+                        type: 0,
                       ),
                       margin: const EdgeInsets.symmetric(
                           horizontal: kMaxPadding * 1.5,
                           vertical: kItemPadding * 2),
+                    ),
+                    Container(
+                      child: Text(
+                        'Number Guest Begin SubCharge',
+                        style: TextStyles.h6.copyWith(
+                            color: ColorPalette.darkBlueText,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
+                    ),
+                    Container(
+                      child: CounterView(
+                        initNumber: CounterView.numberOfGuestNoSurcharge,
+                        minNumber: 1,
+                        type: 1,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: kMaxPadding * 1.5,
+                          vertical: kItemPadding * 2),
+                    ),
+                    InputTitleWidget(
+                      Title: 'Surcharge Ratio',
+                      controller: SurchargeRatioController,
+                      hintInput: 'Type here',
                     ),
                     Container(
                       child: Text(
@@ -348,15 +342,17 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                         label: 'Save',
                         onTap: () {
                           updateRoom(
-                            description: descriptionController.text,
-                            PrimaryImagePath: UploadButton.PrimaryImagePath,
-                            SubImagePaths: UploadButton.SubImagePath,
-                            roomKindID: roomKindID,
-                            maxCapacity: CounterView.maxCap,
-                            price: _price,
-                            State: 'Available',
-                            RoomID: roomID,
-                          );
+                              description: descriptionController.text,
+                              PrimaryImagePath: UploadButton.PrimaryImagePath,
+                              SubImagePaths: UploadButton.SubImagePath,
+                              roomKindID: roomKindID,
+                              maxCapacity: CounterView.maxCap,
+                              price: _price,
+                              State: 'Available',
+                              RoomID: roomID,
+                              NumberGuestNoSubCharge:
+                                  CounterView.numberOfGuestNoSurcharge,
+                              SubChargeRatio: SurchargeRatioController.text);
                         },
                       ),
                     ),
@@ -443,66 +439,75 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
     );
   }
 
-  void updateRoom({
-    required String PrimaryImagePath,
-    required List<String> SubImagePaths,
-    required String roomKindID,
-    required int maxCapacity,
-    required int price,
-    required String State,
-    required String RoomID,
-    required String description,
-  }) async {
+  void updateRoom(
+      {required String PrimaryImagePath,
+      required List<String> SubImagePaths,
+      required String roomKindID,
+      required int maxCapacity,
+      required int price,
+      required String State,
+      required String RoomID,
+      required String description,
+      required int NumberGuestNoSubCharge,
+      required String SubChargeRatio}) async {
     setState(() {
       isLoading = true;
     });
     PrimaryImageUrl = '';
     SubImageUrls.clear();
-
     final docUser = FirebaseFirestore.instance.collection('Rooms').doc(RoomID);
     bool existId = await checkIfDocExists(RoomID);
 
     if (existId) {
-      if (PrimaryImagePath == '') {
-        PrimaryImageUrl = PrimaryImageUrl;
-        SubImageUrls = SubImageUrls;
+      if (double.tryParse(SubChargeRatio) == null) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return DialogOverlay(
+                isSuccess: false,
+                task: 'Update Room',
+                error: 'Surcharge Ratio Error',
+              );
+            });
       } else {
-        await UploadImages(
-            PrimaryImagePath: UploadButton.PrimaryImagePath,
-            SubImagePaths: UploadButton.SubImagePath);
-      }
+        if (UploadButton.SubImagePath.isEmpty) {
+          PrimaryImageUrl = widget.room.PrimaryImage ?? '';
+          SubImageUrls.clear();
+          SubImageUrls.addAll(BeforeSubImageUrls);
+        } else {
+          await UploadImages(
+              PrimaryImagePath: UploadButton.PrimaryImagePath,
+              SubImagePaths: UploadButton.SubImagePath);
+        }
 
-      print("----------------------" + SubImageUrls.length.toString());
-      RoomModel _room = await RoomModel(
-        roomID: roomID,
-        PrimaryImage: PrimaryImageUrl,
-        SubImages: SubImageUrls,
-        RoomKindID: roomKindID,
-        State: State,
-        Description: description,
-        maxCapacity: maxCapacity,
-      );
-      final json = _room.toJson();
-      await docUser.set(json);
-      showDialog(
-          context: context,
-          builder: (context) {
-            return DialogOverlay(
-              isSuccess: true,
-              task: 'Edit',
-            );
-          });
-      setState(() {
-        isLoading = false;
-      });
-      setState(() {
-        widget.room.Description = _room.Description ?? '';
-        widget.room.PrimaryImage = _room.PrimaryImage;
-        widget.room.SubImages = _room.SubImages;
-        widget.room.maxCapacity = _room.maxCapacity;
-        _images.clear();
-        UploadButton.ResetUploadButton();
-      });
+        _room = await RoomModel(
+            roomID: roomID,
+            PrimaryImage: PrimaryImageUrl,
+            SubImages: SubImageUrls,
+            RoomKindID: roomKindID,
+            State: State,
+            Description: description,
+            maxCapacity: maxCapacity,
+            SubChargeRatio: double.parse(SubChargeRatio),
+            NumberGuestBeginSubCharge: NumberGuestNoSubCharge);
+        final json = _room.toJson();
+        BeforeSubImageUrls.clear();
+        BeforeSubImageUrls.addAll(_room.SubImages);
+        await docUser.set(json);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return DialogOverlay(
+                isSuccess: true,
+                task: 'Edit',
+              );
+            });
+        setState(() {
+          isLoading = false;
+          _images.clear();
+          UploadButton.ResetUploadButton();
+        });
+      }
     } else {
       showDialog(
           context: context,
@@ -540,19 +545,5 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       else
         SubImageUrls.add(value.toString());
     });
-  }
-
-  void DeleteRoom(String roomID) async {
-    try {
-      await FirebaseStorage.instance.ref(roomID).listAll().then((value) {
-        value.items.forEach((element) {
-          FirebaseStorage.instance.ref(element.fullPath).delete();
-        });
-      });
-      await FirebaseFirestore.instance.collection('Rooms').doc(roomID).delete();
-      Navigator.of(context).pop();
-    } catch (e) {
-      print(e.toString());
-    }
   }
 }

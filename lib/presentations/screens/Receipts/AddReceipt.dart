@@ -8,6 +8,7 @@ import 'package:paradise/core/models/guest_kind_model.dart';
 import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+// import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/color_palatte.dart';
@@ -38,6 +39,7 @@ class _AddReceiptState extends State<AddReceipt> {
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   List<String> RentalFormIDs = [];
+  List<String> RoomIDs = [];
   TextEditingController phoneNumberController = TextEditingController();
 
   void updatePrice(int newPrice) {
@@ -83,6 +85,22 @@ class _AddReceiptState extends State<AddReceipt> {
                   if (snapshot.hasData) {
                     RentalFormModel.AllRentalFormModels = snapshot.data!;
                     resetRentalForms();
+                  }
+                  return Container();
+                }),
+            StreamBuilder(
+                stream: FireBaseDataBase.readGuestKinds(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    GuestKindModel.AllGuestKinds = snapshot.data!;
+                  }
+                  return Container();
+                }),
+            StreamBuilder(
+                stream: FireBaseDataBase.readGuests(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    GuestModel.AllGuests = snapshot.data!;
                   }
                   return Container();
                 }),
@@ -170,6 +188,7 @@ class _AddReceiptState extends State<AddReceipt> {
                         widget.TotalPrice = 0;
                         updatePrice(widget.TotalPrice);
                         RentalFormIDs.clear();
+                        RoomIDs.clear();
                       });
                     }
                   },
@@ -325,10 +344,14 @@ class _AddReceiptState extends State<AddReceipt> {
     listRow.add(TitleRow());
     widget.TotalPrice = 0;
     RentalFormIDs.clear();
+    RoomIDs.clear();
     updatePrice(widget.TotalPrice);
     for (RentalFormModel rental
         in RentalFormModel.AllUnpaidRentalFormModels()) {
       int days = _selectedDay?.difference(rental.BeginDate).inDays ?? 0;
+      if (days == 0) {
+        days = 1;
+      }
       bool isChecked = false;
       List<Widget> list = [
         Container(
@@ -360,9 +383,11 @@ class _AddReceiptState extends State<AddReceipt> {
                       if (isChecked) {
                         widget.TotalPrice += rental.Total(days);
                         RentalFormIDs.add(rental.RentalID);
+                        RoomIDs.add(rental.RoomID);
                       } else {
                         widget.TotalPrice -= rental.Total(days);
                         RentalFormIDs.remove(rental.RentalID);
+                        RoomIDs.remove(rental.RoomID);
                       }
                       updatePrice(widget.TotalPrice);
                     }
@@ -477,7 +502,8 @@ class _AddReceiptState extends State<AddReceipt> {
           height: 40,
           alignment: Alignment.center,
           child: Text(
-            NumberFormat.decimalPattern().format(ExcessCustomerSurcharge()),
+            NumberFormat.decimalPattern()
+                .format(rental.ExcessCustomerSurcharge(days)),
             textAlign: TextAlign.center,
             style: TextStyles.defaultStyle.copyWith(
                 color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),
@@ -531,13 +557,32 @@ class _AddReceiptState extends State<AddReceipt> {
     }
   }
 
-  int ExcessCustomerSurcharge() {
-    return 10;
+  void changeStateRoom(String roomID) {
+    try {
+      CollectionReference roomCollection =
+          FirebaseFirestore.instance.collection('Rooms');
+      FirebaseFirestore.instance
+          .collection('Rooms')
+          .where("roomID", isEqualTo: roomID)
+          .get()
+          .then((value) {
+        DocumentReference document = roomCollection.doc(value.docs[0].id);
+        document.update({"State": "Available"});
+      });
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Check out ${roomID}',
+              error: e.toString(),
+            );
+          });
+    }
   }
 
   void createRecept() {
-    print(RentalFormIDs);
-
     if (nameController.text == '') {
       showDialog(
           context: context,
@@ -583,6 +628,8 @@ class _AddReceiptState extends State<AddReceipt> {
             address: addressController.text);
         for (String rentalFormID in RentalFormIDs)
           changeRentalFormState(rentalFormID);
+        for (String roomID in RoomIDs) changeStateRoom(roomID);
+
         doc.set(receipt.toJson()).whenComplete(() {
           showDialog(
               context: context,
@@ -601,6 +648,7 @@ class _AddReceiptState extends State<AddReceipt> {
             widget.TotalPrice = 0;
             updatePrice(widget.TotalPrice);
             RentalFormIDs.clear();
+            RoomIDs.clear();
           });
         });
       } catch (e) {}
@@ -703,7 +751,7 @@ TitleRow() {
       height: 40,
       alignment: Alignment.center,
       child: Text(
-        'Surcharge of foreign guests',
+        'Surcharge of guest kinds',
         textAlign: TextAlign.center,
         style: TextStyles.defaultStyle.copyWith(
             color: ColorPalette.primaryColor, fontWeight: FontWeight.w500),

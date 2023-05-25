@@ -104,7 +104,6 @@ class _DropDownState extends State<DropDown> {
 
 class _RentalFormState extends State<RentalForm> {
   bool isPressed = false;
-  int _gia = 0;
   int currentId = 0;
   DateTime? _selectedDay;
   List<String> list = [];
@@ -153,7 +152,6 @@ class _RentalFormState extends State<RentalForm> {
       AvailableRoomID.add(roomIDSelected);
   }
 
-  int _countGuest = 1;
   String? dropdownKindValue;
   void addGuest() {
     //
@@ -192,10 +190,12 @@ class _RentalFormState extends State<RentalForm> {
         child: TextFormField(
           keyboardType: TextInputType.number,
           validator: (value) {
-            if (value!.isEmpty || !RegExp(r'^[0-9]').hasMatch(value)) {
+            if (!RegExp(r'^[0-9]').hasMatch(value!) ||
+                checkGuestID(value) >= 2) {
               return "Id is invalid!";
-            } else
+            } else {
               return null;
+            }
           },
           controller: _cardIdGuestController,
           decoration: InputDecoration(
@@ -355,24 +355,26 @@ class _RentalFormState extends State<RentalForm> {
 
           child: Column(
             children: [
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuestKinds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestKindModel.AllGuestKinds = snapshot.data!;
+                    }
+                    return Container();
+                  }),
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuests(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestModel.AllGuests = snapshot.data!;
+                    }
+                    return Container();
+                  }),
               Form(
                 key: formKey,
                 child: Column(
                   children: [
-                    StreamBuilder(
-                        stream: FireBaseDataBase.readGuestKinds(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            GuestKindModel.kindItems.clear();
-
-                            GuestKindModel.AllGuestKinds = snapshot.data!;
-                            for (GuestKindModel k
-                                in GuestKindModel.AllGuestKinds) {
-                              GuestKindModel.kindItems.add(k.Name);
-                            }
-                          }
-                          return Container();
-                        }),
                     const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.only(left: 24, right: 24),
@@ -489,7 +491,7 @@ class _RentalFormState extends State<RentalForm> {
                                       return DialogOverlay(
                                         isSuccess: false,
                                         task: 'Add Guests',
-                                        error: 'Chose Room ID!',
+                                        error: 'Chose Room ID, Please!',
                                       );
                                     });
                               } else {
@@ -714,7 +716,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${room!.roomID}',
+              task: 'Book Room ${room!.roomID} Failed',
               error: e.toString(),
             );
           });
@@ -730,7 +732,13 @@ class _RentalFormState extends State<RentalForm> {
           BeginDate: _selectedDay ?? DateTime.now(),
           GuestIDs: list,
           RentalID: doc.id,
-          Status: 'Unpaid');
+          Status: 'Unpaid',
+          SurchargeRatio: 0,
+          NumberGuestBeginSubCharge: 0,
+          HighestGuestKindRatioName: '',
+          UnitPrice: 0,
+          HighestGuestKindSurchargeRatio: 0);
+      ren.UpdateInformation();
       doc.set(ren.toJson());
     } catch (e) {
       showDialog(
@@ -738,7 +746,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${room!.roomID}',
+              task: 'Book Room ${room!.roomID} Failed',
               error: e.toString(),
             );
           });
@@ -747,7 +755,7 @@ class _RentalFormState extends State<RentalForm> {
 
   void addNewGuest() {
     try {
-      for (int i = 1; i < _countGuest; i++) {
+      for (int i = 1; i < listRow.length; i++) {
         Padding padding1 = (listRow[i].children![2]) as Padding;
         Padding padding2 = (listRow[i].children![3]) as Padding;
         Padding padding3 = (listRow[i].children![1]) as Padding;
@@ -756,6 +764,7 @@ class _RentalFormState extends State<RentalForm> {
         TextFormField cartIdGuest = padding2.child as TextFormField;
         TextFormField addressGuest = padding4.child as TextFormField;
         DropDown typeGuest = padding3.child as DropDown;
+
         GuestModel guest = new GuestModel(
             guestID: cartIdGuest.controller!.text,
             name: nameGuest.controller!.text,
@@ -775,7 +784,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${room!.roomID}',
+              task: 'Book Room ${room!.roomID} Failed',
               error: e.toString(),
             );
           });
@@ -783,7 +792,17 @@ class _RentalFormState extends State<RentalForm> {
   }
 
   void bookRoom() {
-    if (formKey.currentState!.validate() && _selectedDay != null) {
+    if (listRow.length == 0) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogOverlay(
+              isSuccess: false,
+              task: 'Book Room ${room!.roomID}',
+              error: 'Guests can not Empty!!!',
+            );
+          });
+    } else if (formKey.currentState!.validate() && _selectedDay != null) {
       addNewGuest();
       addRentalForm();
       changeStateRoom();
@@ -795,10 +814,6 @@ class _RentalFormState extends State<RentalForm> {
               task: 'Book Room ${room!.roomID}',
             );
           }).whenComplete(() {
-        RoomModel room =
-            RoomModel.AllRooms.where((room) => room.roomID! == roomIDSelected)
-                .first;
-        room.State = "Booked";
         return Navigator.of(context).pop();
       });
     } else {
@@ -807,7 +822,7 @@ class _RentalFormState extends State<RentalForm> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Book Room ${room!.roomID}',
+              task: 'Book Room ${room!.roomID} Failed',
               error: 'Check Information, please!!!',
             );
           });
@@ -880,7 +895,16 @@ class _RentalFormState extends State<RentalForm> {
           ),
         ]),
       ];
-      _countGuest = 1;
     });
+  }
+
+  int checkGuestID(String value) {
+    int result = 0;
+    for (int i = 1; i < listRow.length; i++) {
+      Padding padding = (listRow[i].children![3]) as Padding;
+      TextFormField cartIdGuest = padding.child as TextFormField;
+      if (cartIdGuest.controller!.text == value) result++;
+    }
+    return result;
   }
 }

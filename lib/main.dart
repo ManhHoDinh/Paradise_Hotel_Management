@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
@@ -8,12 +7,12 @@ import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   await FireBaseDataBase.initializeDB();
   runApp(
     const MyApp(),
@@ -29,17 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var auth = FirebaseAuth.instance;
-  bool isLogin = true;
-  // checkLogin() async {
-  //   auth.authStateChanges().listen((User? user) {
-  //     if (user != null && mounted) {
-  //       setState(() {
-  //         isLogin = true;
-  //       });
-  //     } else
-  //       isLogin = false;
-  //   });
-  // }
+  bool isLogin = false;
 
   @override
   void initState() {

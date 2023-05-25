@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+import 'package:paradise/api/pdf_report_api.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/rental_form_model.dart';
+import 'package:paradise/core/models/report_item.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+import '../../api/pdf_api.dart';
 import '../../core/constants/color_palatte.dart';
 import '../../core/constants/dimension_constants.dart';
 import '../../core/helpers/text_styles.dart';
@@ -18,6 +21,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path/path.dart' as path;
+
+import '../../core/models/report.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -57,6 +62,19 @@ class _ReportScreenState extends State<ReportScreen> {
     '2022',
     '2023',
   ];
+
+  List<ReportItem> getListReportItem() {
+    List<ReportItem> listReportItem = [];
+    for (int i = 0; i < RoomKindModel.AllRoomKinds.length; i++) {
+      RoomKindModel roomKind = RoomKindModel.AllRoomKinds[i];
+      int revenue = getRevenueOfMonthReport(roomKind);
+      listReportItem.add(ReportItem(
+          roomType: roomKind.Name,
+          revenue: revenue,
+          rate: Rate(revenue, totalMonthPrice)));
+    }
+    return listReportItem;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -373,8 +391,16 @@ class _ReportScreenState extends State<ReportScreen> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
-                  onTap: () {
-                    generatePDF();
+                  onTap: () async {
+                    List<ReportItem> listReportItem = getListReportItem();
+
+                    final report = Report(items: listReportItem);
+                    final pdfFile = await PdfReportApi.generate(
+                        report,
+                        yearOfMonthReportSelected!,
+                        monthSelected!,
+                        totalMonthPrice);
+                    PdfApi.openFile(pdfFile);
                   },
                   child: Container(
                     width: size.width / 2,
@@ -627,6 +653,8 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () {
+                    getListReportItem();
+                    // final report = Report(items: listReportItem);
                     generatePDF();
                   },
                   child: Container(
@@ -704,6 +732,7 @@ class _ReportScreenState extends State<ReportScreen> {
         RentalFormModel rental = RentalFormModel.AllRentalFormModels.where(
             (element) => element.RentalID == rentalFormID).first;
         int days = checkOutDate.difference(rental.BeginDate).inDays;
+        if (days == 0) days = 1;
         RoomModel room = rental.getRoom();
         if (room.RoomKindID == roomKind.RoomKindID)
           result += rental.Total(days);
@@ -743,18 +772,26 @@ class _ReportScreenState extends State<ReportScreen> {
 
   Future<void> generatePDF() async {
     PdfDocument document = PdfDocument();
-    document.pages.add();
+    var page = document.pages.add();
+    page.graphics
+        .drawString('binh đây', PdfStandardFont(PdfFontFamily.helvetica, 30));
+
     List<int> bytes = await document.save();
     document.dispose();
     saveAndLaunchFile(bytes, 'output.pdf');
   }
 
   Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
+    // final path = (await getExternalStorageDirectory())!.path;
+    // final file = File('$path/$fileName');
+    // await file.writeAsBytes(bytes, flush: true);
+    // OpenFile.open('$path/$fileName');
     final result = await FilePicker.platform.getDirectoryPath();
     String? selectedPath;
 
     if (result != null) {
       selectedPath = result;
+
       final file = File(path.join(selectedPath, fileName));
       await file.writeAsBytes(bytes, flush: true);
       await OpenFile.open(file.path);

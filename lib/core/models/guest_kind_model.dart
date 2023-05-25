@@ -27,15 +27,19 @@ class GuestKindModel {
   static List<String> kindItems = [];
   static List<GuestKindModel> AllGuestKinds = [];
 
-  static String getGuestKindName(String id) {
+  static String getGuestKindNameByGuestID(String GuestID) {
     try {
+      GuestModel guest =
+          GuestModel.AllGuests.where((guest) => guest.guestID == GuestID).first;
       GuestKindModel kindSelected = GuestKindModel.AllGuestKinds.where(
-          (guestKind) => guestKind.GuestKindID == id).first;
-      return kindSelected.Name ;
+          (guestKind) => guestKind.GuestKindID == guest.guestKindID).first;
+      return kindSelected.Name;
     } catch (e) {
       return '';
     }
-  }static String getGuestKindID(String name) {
+  }
+
+  static String getGuestKindID(String name) {
     try {
       GuestKindModel kindSelected = GuestKindModel.AllGuestKinds.where(
           (guestKind) => guestKind.Name == name).first;
@@ -45,7 +49,7 @@ class GuestKindModel {
     }
   }
 
-  static double getGuestKindRatio(String GuestID) {
+  static double getGuestKindRatioByGuestID(String GuestID) {
     try {
       GuestModel guest =
           GuestModel.AllGuests.where((guest) => guest.guestID == GuestID).first;
@@ -56,5 +60,4 @@ class GuestKindModel {
       return 0;
     }
   }
-
 }
