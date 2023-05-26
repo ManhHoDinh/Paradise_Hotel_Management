@@ -359,7 +359,12 @@ class _RentalFormState extends State<RentalForm> {
                   stream: FireBaseDataBase.readGuestKinds(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      GuestKindModel.kindItems.clear();
+
                       GuestKindModel.AllGuestKinds = snapshot.data!;
+                      for (GuestKindModel k in GuestKindModel.AllGuestKinds) {
+                        GuestKindModel.kindItems.add(k.Name);
+                      }
                     }
                     return Container();
                   }),
