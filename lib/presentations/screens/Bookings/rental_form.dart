@@ -355,14 +355,20 @@ class _RentalFormState extends State<RentalForm> {
 
           child: Column(
             children: [
-              StreamBuilder(
-                  stream: FireBaseDataBase.readGuestKinds(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      GuestKindModel.AllGuestKinds = snapshot.data!;
-                    }
-                    return Container();
-                  }),
+                 StreamBuilder(
+                        stream: FireBaseDataBase.readGuestKinds(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            GuestKindModel.kindItems.clear();
+
+                            GuestKindModel.AllGuestKinds = snapshot.data!;
+                            for (GuestKindModel k
+                                in GuestKindModel.AllGuestKinds) {
+                              GuestKindModel.kindItems.add(k.Name);
+                            }
+                          }
+                          return Container();
+                        }),
               StreamBuilder(
                   stream: FireBaseDataBase.readGuests(),
                   builder: (context, snapshot) {
