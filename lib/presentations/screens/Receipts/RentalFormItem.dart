@@ -22,8 +22,8 @@ class RentalFormItem extends StatelessWidget {
     int renDays = checkOutDate.difference(rentalFormModel.BeginDate).inDays;
     if (renDays == 0) renDays = 1;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      margin: const EdgeInsets.symmetric(vertical: kItemPadding),
+      padding: const EdgeInsets.symmetric(horizontal: kItemPadding),
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: kDefaultBorderRadius,
@@ -85,7 +85,8 @@ class RentalFormItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 60,
+                    alignment: Alignment.center,
+                    width: 70,
                     margin: const EdgeInsets.symmetric(
                       vertical: kDefaultPadding,
                     ),
@@ -96,8 +97,9 @@ class RentalFormItem extends StatelessWidget {
                     ),
                   ),
                   Container(
+                    alignment: Alignment.center,
                     margin: const EdgeInsets.only(top: kMinPadding),
-                    width: 60,
+                    width: 70,
                     child: Text(
                       NumberFormat.decimalPattern()
                           .format(rentalFormModel.GuestKindSurcharge(renDays)),
@@ -106,7 +108,8 @@ class RentalFormItem extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: 60,
+                    alignment: Alignment.center,
+                    width: 70,
                     margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
                     child: Text(
                       NumberFormat.decimalPattern().format(

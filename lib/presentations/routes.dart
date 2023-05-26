@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/AddGuestKindScreen.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
@@ -8,6 +9,7 @@ import 'package:paradise/presentations/screens/Onboardings/otp_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_form_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
+import 'package:paradise/presentations/screens/Receipts/%20PrintReceipt.dart';
 import 'package:paradise/presentations/screens/Receipts/AddReceipt.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';

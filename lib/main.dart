@@ -4,6 +4,8 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
+import 'package:paradise/presentations/screens/Receipts/ReceiptDetailScreen.dart';
+import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
@@ -44,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: SeeAllReceipts(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
