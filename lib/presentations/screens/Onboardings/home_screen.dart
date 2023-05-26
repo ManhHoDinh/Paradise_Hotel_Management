@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(
-                child: Image.asset(AssetHelper.avatar),
-              ),
+                  child: ImageHelper.loadFromAsset(AssetHelper.avatar,
+                      width: 110, height: 110)),
               Container(
                   margin: EdgeInsets.only(
                     top: 30,

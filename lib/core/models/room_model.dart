@@ -28,7 +28,7 @@ class RoomModel {
         'SubImages': SubImages,
         'Description': Description,
         'maxCapacity': maxCapacity.toString(),
-        'NumberGuestNoSubCharge': NumberGuestBeginSubCharge.toString(),
+        'NumberGuestBeginSubCharge': NumberGuestBeginSubCharge.toString(),
         'SubChargeRatio': SubChargeRatio.toString()
       };
   static String CollectionName = 'Rooms';

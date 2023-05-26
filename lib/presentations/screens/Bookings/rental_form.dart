@@ -792,7 +792,8 @@ class _RentalFormState extends State<RentalForm> {
   }
 
   void bookRoom() {
-    if (listRow.length == 0) {
+    print(listRow.length);
+    if (listRow.length == 1) {
       showDialog(
           context: context,
           builder: (context) {
