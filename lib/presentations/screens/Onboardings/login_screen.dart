@@ -87,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       isPassword: true,
                       labelText: 'Password',
                       icon: AssetHelper.icoLock,
+                      suffixIcon: AssetHelper.icoLock,
                       validator: (input) {
                         if (input != null && input.length <= 6) {
                           return "Password is too short!";

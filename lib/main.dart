@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SeeAllReceipts(),
+      home: SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
