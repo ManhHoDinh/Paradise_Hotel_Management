@@ -8,6 +8,7 @@ import 'package:paradise/presentations/screens/Onboardings/AuthFunctions.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_form_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
+import 'package:paradise/presentations/widgets/input_password.dart';
 import 'package:paradise/presentations/widgets/input_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/dialog.dart';
@@ -74,7 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           final bool emailValid = RegExp(
                                   r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                               .hasMatch(input!);
-                          if (!emailValid) {
+                          if (input.isEmpty) {
+                            return "Please enter username";
+                          }
+                          else if (!emailValid) {
                             return "Email is not Invalid";
                           }
                         }),
@@ -82,14 +86,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: kMaxPadding, vertical: kItemPadding),
-                    child: InputWidget(
+                    child: InputPassword(
                       controller: _passwordController,
                       isPassword: true,
                       labelText: 'Password',
                       icon: AssetHelper.icoLock,
                       suffixIcon: AssetHelper.icoLock,
                       validator: (input) {
-                        if (input != null && input.length <= 6) {
+                        if (input!.isEmpty) {
+                          return "Please enter password";
+                        }
+                        else if (input.length <= 6) {
                           return "Password is too short!";
                         } else
                           return null;
