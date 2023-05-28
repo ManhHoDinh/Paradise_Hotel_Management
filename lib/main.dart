@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
+import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
@@ -42,9 +44,49 @@ class _MyAppState extends State<MyApp> {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: AuthenticationWrapper(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
+  }
+}
+
+class AuthenticationWrapper extends StatefulWidget {
+  @override
+  _AuthenticationWrapperState createState() => _AuthenticationWrapperState();
+}
+
+class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
+  bool _showSplash = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Wait for 5 seconds and then hide the splash screen
+    Future.delayed(Duration(seconds: 5), () {
+      setState(() {
+        _showSplash = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _showSplash
+        ? SplashScreen()
+        : StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SplashScreen();
+              } else {
+                if (snapshot.hasData) {
+                  return MainScreen();
+                } else {
+                  return LoginScreen();
+                }
+              }
+            },
+          );
   }
 }

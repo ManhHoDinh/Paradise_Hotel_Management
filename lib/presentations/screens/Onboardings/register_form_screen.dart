@@ -8,7 +8,7 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/presentations/screens/Onboardings/AuthFunctions.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
 
 import '../../widgets/button_widget.dart';
@@ -160,7 +160,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                       size: 20,
                     ),
                     fillColor: ColorPalette.bgTextFieldColor,
-                    labelText: 'birthday',
+                    labelText: 'Birthday',
                     labelStyle:
                         TextStyle(color: ColorPalette.grayText, fontSize: 12),
                     focusedBorder: OutlineInputBorder(
