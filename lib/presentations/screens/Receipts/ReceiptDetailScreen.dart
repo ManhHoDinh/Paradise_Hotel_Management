@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:open_file_plus/open_file_plus.dart';
+import 'package:paradise/api/pdf_api.dart';
+import 'package:paradise/api/pdf_receipt_api.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
@@ -271,14 +273,15 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                           ),
                           child: ButtonDefault(
                             label: 'Print Receipt',
-                            onTap: () {
-                              isLoading = true;
-                              generatePDF();
-                              isLoading = false;
+                            onTap: () async {
+                              final pdfFile = await PdfReceiptApi.generate(receiptModel);
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder:(context) => PrintReceipt(receiptModel: widget.Receipt),));
+                              
+                              PdfApi.openFile(pdfFile);
                             },
                           ),
                         ),
