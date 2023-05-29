@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/presentations/routes.dart';
+import 'package:paradise/presentations/screens/Onboardings/notification_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: SplashScreen(),
+      home: NotificationScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

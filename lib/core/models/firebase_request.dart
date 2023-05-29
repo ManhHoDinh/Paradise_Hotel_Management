@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
 import 'package:paradise/core/models/guest_model.dart';
+import 'package:paradise/core/models/notification_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
 import 'package:paradise/firebase_options.dart';
 import 'package:paradise/core/models/rental_form_model.dart';
+
 class FireBaseDataBase {
   static CollectionReference? referenceRooms;
   static Stream<List<RoomModel>> readRooms() => FirebaseFirestore.instance
@@ -47,10 +49,16 @@ class FireBaseDataBase {
       .map((snapshot) => snapshot.docs
           .map((doc) => ReceiptModel.fromJson(doc.data()))
           .toList());
-static Stream<List<GuestModel>> readGuests() => FirebaseFirestore.instance
+  static Stream<List<GuestModel>> readGuests() => FirebaseFirestore.instance
       .collection(GuestModel.CollectionName)
       .snapshots()
-      .map((snapshot) => snapshot.docs
-          .map((doc) => GuestModel.fromJson(doc.data()))
-          .toList());
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => GuestModel.fromJson(doc.data())).toList());
+  static Stream<List<NotificationModel>> readNotification() =>
+      FirebaseFirestore.instance
+          .collection(NotificationModel.CollectionName)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => NotificationModel.fromJson(doc.data()))
+              .toList());
 }

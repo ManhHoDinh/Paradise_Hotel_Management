@@ -204,7 +204,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 16,
     color: ColorPalette.greenText,
-    letterSpacing: 0.8,
+    letterSpacing: 1.08,
   );
   static const TextStyle timenotifi = TextStyle(
     fontFamily: AppFonts.inter,
