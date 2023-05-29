@@ -188,8 +188,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               ),
               TextFormField(
                 validator: (value) {
-                  if (value!.isEmpty ||
-                      !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                  if (value!.isEmpty || RegExp(r'^[1 9]+$').hasMatch(value)) {
                     return "Name is invalid!";
                   } else
                     return null;
