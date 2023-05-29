@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
@@ -24,16 +25,19 @@ class _GuestKindViewState extends State<GuestKindView> {
         toolbarHeight: kToolbarHeight * 1.5,
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorPalette.primaryColor,
-        child: Text(
-          '+',
-          style: TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddGuestKindScreen.routeName);
-        },
-      ),
+      floatingActionButton: AuthServices.CurrentUserIsManager()
+          ? FloatingActionButton(
+              backgroundColor: ColorPalette.primaryColor,
+              child: Text(
+                '+',
+                style:
+                    TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddGuestKindScreen.routeName);
+              },
+            )
+          : Container(),
       body: Column(
         children: [
           Expanded(

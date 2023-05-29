@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/core/helpers/image_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
@@ -34,69 +35,8 @@ class _DetailRoomState extends State<DetailRoom> {
     int _currenImage = 0;
     Size size = MediaQuery.of(context).size;
     RoomModel roomModel = widget.room;
-    final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
     return KeyboardDismisser(
       child: Scaffold(
-        key: _globalKey,
-        endDrawer: Drawer(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Book Room',
-                color: ColorPalette.primaryColor,
-                onTap: () async {
-                  if (widget.room.State == 'Available') {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => RentalForm(room: roomModel)));
-                  } else {
-                    _globalKey.currentState!.closeEndDrawer();
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return DialogOverlay(
-                            isSuccess: false,
-                            task: 'Book room ${roomModel.roomID}',
-                            error: 'Room ${roomModel.RoomKindID} is booked!!!',
-                          );
-                        });
-                  }
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Edit Room',
-                color: ColorPalette.primaryColor,
-                onTap: () async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => EditRoomScreen(room: roomModel)));
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-              child: ButtonWidget(
-                label: 'Delete',
-                color: ColorPalette.primaryColor,
-                onTap: () {
-                  if (widget.room.State == 'Available') {
-                    DeleteRoom(widget.room.roomID ?? '');
-                  }
-                },
-                textColor: ColorPalette.backgroundColor,
-              ),
-            ),
-          ]),
-        ),
-        //           }),
         body: SingleChildScrollView(
             child: StreamBuilder(
                 stream: FireBaseDataBase.readRooms(),
@@ -155,8 +95,6 @@ class _DetailRoomState extends State<DetailRoom> {
                                   padding: EdgeInsets.only(
                                       left: 42, right: 42, top: 50),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       InkWell(
                                         onTap: () {
@@ -169,25 +107,18 @@ class _DetailRoomState extends State<DetailRoom> {
                                               : ColorPalette.backgroundColor,
                                         ),
                                       ),
-                                      Text(roomModel.roomID ?? '',
-                                          style: TextStyles.h9.copyWith(
-                                            letterSpacing: 3.05,
-                                            color: ColorPalette.backgroundColor,
-                                            fontSize: 32,
-                                            fontWeight: FontWeight.w700,
-                                          )),
-                                      InkWell(
-                                        onTap: () {
-                                          _globalKey.currentState!
-                                              .openEndDrawer();
-                                        },
-                                        child: Icon(
-                                          FontAwesomeIcons.list,
-                                          color: isPressed
-                                              ? ColorPalette.primaryColor
-                                              : ColorPalette.backgroundColor,
+                                      Expanded(
+                                        child: Center(
+                                          child: Text(roomModel.roomID ?? '',
+                                              style: TextStyles.h9.copyWith(
+                                                letterSpacing: 3.05,
+                                                color: ColorPalette
+                                                    .backgroundColor,
+                                                fontSize: 32,
+                                                fontWeight: FontWeight.w700,
+                                              )),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -597,6 +528,93 @@ class _DetailRoomState extends State<DetailRoom> {
                             )
                           ],
                         ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 30),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(right: 10),
+                                child: ButtonWidget(
+                                  label: 'Book',
+                                  color: ColorPalette.primaryColor,
+                                  onTap: () async {
+                                    if (roomModel.State == 'Available') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  RentalForm(room: roomModel)));
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return DialogOverlay(
+                                              isSuccess: false,
+                                              task:
+                                                  'Book room ${roomModel.roomID}',
+                                              error:
+                                                  'Room ${roomModel.RoomKindID} is booked!!!',
+                                            );
+                                          });
+                                    }
+                                  },
+                                  textColor: ColorPalette.backgroundColor,
+                                ),
+                              ),
+                            ),
+                            AuthServices.CurrentUserIsManager()
+                                ? Expanded(
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
+                                      child: ButtonWidget(
+                                        label: 'Edit',
+                                        color: ColorPalette.primaryColor,
+                                        onTap: () {
+                                          if (roomModel.State == 'Available')
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        EditRoomScreen(
+                                                            room: roomModel)));
+                                          else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return DialogOverlay(
+                                                    isSuccess: false,
+                                                    task: 'Edit Room',
+                                                    error:
+                                                        'Room ${roomModel.roomID} have booked!',
+                                                  );
+                                                });
+                                          }
+                                        },
+                                        textColor: ColorPalette.backgroundColor,
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                            AuthServices.CurrentUserIsManager()
+                                ? Expanded(
+                                    child: Container(
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 10),
+                                    child: ButtonWidget(
+                                      label: 'Delete',
+                                      color: Colors.redAccent,
+                                      onTap: () {
+                                        DeleteRoom(roomModel);
+                                      },
+                                      textColor: ColorPalette.backgroundColor,
+                                    ),
+                                  ))
+                                : Container(),
+                          ],
+                        ),
                       )
                     ],
                   );
@@ -617,7 +635,7 @@ class _DetailRoomState extends State<DetailRoom> {
     );
   }
 
-  void DeleteRoom(String roomID) async {
+  void DeleteRoom(RoomModel roomModel) async {
     try {
       showDialog(
           context: context,
@@ -626,7 +644,7 @@ class _DetailRoomState extends State<DetailRoom> {
               task: 'Delete Room Kind',
               icon: FontAwesomeIcons.solidTrashCan,
               yesOnTap: () async {
-                if (widget.room.State != 'Available') {
+                if (roomModel.State != 'Available') {
                   Navigator.pop(_context);
                   showDialog(
                       context: _context,
@@ -639,7 +657,7 @@ class _DetailRoomState extends State<DetailRoom> {
                       });
                 } else {
                   await FirebaseStorage.instance
-                      .ref(roomID)
+                      .ref(roomModel.roomID)
                       .listAll()
                       .then((value) {
                     value.items.forEach((element) {
@@ -648,11 +666,10 @@ class _DetailRoomState extends State<DetailRoom> {
                   });
                   await FirebaseFirestore.instance
                       .collection('Rooms')
-                      .doc(roomID)
+                      .doc(roomModel.roomID)
                       .delete();
 
                   Navigator.pop(_context);
-                  Navigator.of(context).pop();
                   showDialog(
                       context: _context,
                       builder: (context) {

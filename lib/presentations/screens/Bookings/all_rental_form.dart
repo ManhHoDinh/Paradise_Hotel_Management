@@ -368,43 +368,6 @@ class _AllRentalFormState extends State<AllRentalForm> {
             ],
           ),
         ),
-        bottomNavigationBar: SalomonBottomBar(
-            currentIndex: currentId,
-            onTap: (id) {
-              setState(() {
-                currentId = id;
-              });
-            },
-            items: [
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.house,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Home')),
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.gear,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Setting')),
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.bell,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Notification')),
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.user,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Account')),
-            ]),
       ),
     );
   }

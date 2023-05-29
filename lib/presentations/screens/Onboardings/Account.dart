@@ -49,7 +49,7 @@ class _AccountScreenState extends State<AccountScreen> {
             Container(
                 margin: EdgeInsets.only(top: 15),
                 child: Text(
-                  'Official Staff',
+                  'Official ${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.Position}',
                   style: TextStyles.h5.copyWith(
                       color: ColorPalette.grayText,
                       fontWeight: FontWeight.w400),
@@ -91,8 +91,20 @@ class _AccountScreenState extends State<AccountScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
+                        width: 150,
                         child: Text(
-                          '${user?.uid}',
+                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.ID}',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyles.h6
+                              .copyWith(color: ColorPalette.blackText),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 30),
+                        child: Text(
+                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.PhoneNumber}',
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.visible,
@@ -102,18 +114,13 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 30),
-                        child: Icon(
-                          FontAwesomeIcons.phone,
-                          size: 15,
-                          color: ColorPalette.primaryColor,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 30),
-                        child: Icon(
-                          FontAwesomeIcons.solidEnvelope,
-                          size: 15,
-                          color: ColorPalette.primaryColor,
+                        child: Text(
+                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.Email}',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.visible,
+                          style: TextStyles.h6
+                              .copyWith(color: ColorPalette.blackText),
                         ),
                       ),
                     ],
@@ -129,6 +136,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 color: Colors.redAccent,
                 onTap: () {
                   FirebaseAuth.instance.signOut();
+                  AuthServices.CurrentUser = null;
                   Navigator.pushReplacementNamed(
                       context, LoginScreen.routeName);
                 },

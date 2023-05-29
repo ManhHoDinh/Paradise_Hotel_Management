@@ -728,7 +728,7 @@ class _RentalFormState extends State<RentalForm> {
     }
   }
 
-  void addRentalForm() {
+  void addRentalForm() async {
     try {
       DocumentReference doc =
           FirebaseFirestore.instance.collection('RentalForm').doc();
@@ -743,7 +743,7 @@ class _RentalFormState extends State<RentalForm> {
           HighestGuestKindRatioName: '',
           UnitPrice: 0,
           HighestGuestKindSurchargeRatio: 0);
-      ren.UpdateInformation();
+      await ren.UpdateInformation();
       doc.set(ren.toJson());
     } catch (e) {
       showDialog(
@@ -758,7 +758,7 @@ class _RentalFormState extends State<RentalForm> {
     }
   }
 
-  void addNewGuest() {
+  Future addNewGuest() async {
     try {
       for (int i = 1; i < listRow.length; i++) {
         Padding padding1 = (listRow[i].children[2]) as Padding;
@@ -777,12 +777,13 @@ class _RentalFormState extends State<RentalForm> {
                 GuestKindModel.getGuestKindID(typeGuest.selectedValue()),
             address: addressGuest.controller!.text);
         final Json = guest.toJson();
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection(GuestModel.CollectionName)
             .doc(cartIdGuest.controller!.text)
             .set(Json);
         list.add(cartIdGuest.controller!.text);
       }
+      return 1;
     } catch (e) {
       showDialog(
           context: context,
@@ -793,10 +794,11 @@ class _RentalFormState extends State<RentalForm> {
               error: e.toString(),
             );
           });
+      return 0;
     }
   }
 
-  void bookRoom() {
+  void bookRoom() async {
     print(listRow.length);
     if (listRow.length == 1) {
       showDialog(
@@ -809,7 +811,7 @@ class _RentalFormState extends State<RentalForm> {
             );
           });
     } else if (formKey.currentState!.validate() && _selectedDay != null) {
-      addNewGuest();
+      await addNewGuest();
       addRentalForm();
       changeStateRoom();
       showDialog(

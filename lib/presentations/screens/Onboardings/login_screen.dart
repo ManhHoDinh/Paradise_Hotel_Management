@@ -137,18 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (isChecked) {
                             pref.setString('email', _emailController.text);
                           }
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return DialogOverlay(
-                                  isSuccess: true,
-                                  task: 'login',
-                                );
-                              });
-
                           AuthServices.signinUser(_emailController.text,
                               _passwordController.text, context);
-                          Navigator.of(context).pushNamed(HomeScreen.routeName);
                         }
                       },
                     ),

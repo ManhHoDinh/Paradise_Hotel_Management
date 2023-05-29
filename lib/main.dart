@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
@@ -81,6 +82,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
                 return SplashScreen();
               } else {
                 if (snapshot.hasData) {
+                  AuthServices.UpdateCurrentUser();
                   return MainScreen();
                 } else {
                   return LoginScreen();

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:paradise/core/models/user_model.dart';
 import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 
+import '../../presentations/widgets/dialog.dart';
+
 class AuthServices {
   static UserModel? CurrentUser;
   static signUpUser(String email, String password, String name, String phoneNo,
@@ -40,20 +42,18 @@ class AuthServices {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      FirebaseFirestore.instance
-          .collection('Users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get()
-          .then((value) {
-        AuthServices.CurrentUser = UserModel(
-          ID: value['ID'],
-          Name: value['Name'],
-          PhoneNumber: value['PhoneNumber'],
-          Email: value['Email'],
-          Position: value['Position'],
-        );
+      UpdateCurrentUser();
+      if (AuthServices.CurrentUser != null) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return DialogOverlay(
+                isSuccess: true,
+                task: 'login',
+              );
+            });
         Navigator.of(context).pushNamed(MainScreen.routeName);
-      });
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -63,5 +63,27 @@ class AuthServices {
             .showSnackBar(SnackBar(content: Text('Password did not match')));
       }
     }
+  }
+
+  static bool CurrentUserIsManager() {
+    bool result = false;
+    if (AuthServices.CurrentUser!.Position == 'Manager') result = true;
+    return result;
+  }
+
+  static UpdateCurrentUser() {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      AuthServices.CurrentUser = UserModel(
+        ID: value['ID'],
+        Name: value['Name'],
+        PhoneNumber: value['PhoneNumber'],
+        Email: value['Email'],
+        Position: value['Position'],
+      );
+    });
   }
 }
