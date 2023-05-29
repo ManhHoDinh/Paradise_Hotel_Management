@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
@@ -23,14 +24,28 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   int currentId = 2;
+  bool _head = false;
+  bool _des = false;
   bool manager = true;
   bool staff = false;
   String? _heading;
   String? _description;
+  TextEditingController controlhead = TextEditingController();
+  TextEditingController controldes = TextEditingController();
   late List<NotificationModel> listNotification;
   @override
   Widget build(BuildContext context) {
+    CollectionReference Notification =
+        FirebaseFirestore.instance.collection('Notification');
     Size size = MediaQuery.of(context).size;
+    Future<void> addNotification() {
+      return Notification.add({
+        'heading': _heading,
+        'description': _description,
+      }).then((value) => print("New Notification Posted")).catchError(
+          (error) => print("Failed to add new notification: $error"));
+    }
+
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
@@ -108,6 +123,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 height: 42,
                                 width: double.infinity,
                                 child: TextField(
+                                  controller: controlhead,
                                   onChanged: (value) {
                                     setState(() {
                                       _heading = value;
@@ -143,6 +159,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ),
                             ),
                           ),
+                          Visibility(
+                            visible: _head,
+                            child: Text(
+                              "This box cannot be empty!",
+                              style: TextStyles.descriptionRoom.copyWith(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
                           SizedBox(height: 20),
                           Container(
                             child: Container(
@@ -150,6 +175,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 height: 42,
                                 width: double.infinity,
                                 child: TextField(
+                                  controller: controldes,
                                   onChanged: (value) {
                                     setState(() {
                                       _description = value;
@@ -185,12 +211,41 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ),
                             ),
                           ),
+                          Visibility(
+                            visible: _des,
+                            child: Text(
+                              "This box cannot be empty!",
+                              style: TextStyles.descriptionRoom.copyWith(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
                           SizedBox(height: 22),
                           Container(
                             width: double.infinity,
                             alignment: Alignment.centerRight,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                setState(() {
+                                  if (_heading != null &&
+                                      _description != null) {
+                                    _head = false;
+                                    _des = false;
+                                    addNotification();
+                                    controlhead.text = "";
+                                    controldes.text = "";
+                                    _heading = null;
+                                    _description = null;
+                                  } else {
+                                    if (_heading == null) {
+                                      _head = true;
+                                    }
+                                    if (_description == null) {
+                                      _des = true;
+                                    }
+                                  }
+                                });
+                              },
                               child: Container(
                                 alignment: Alignment.center,
                                 width: 85,
