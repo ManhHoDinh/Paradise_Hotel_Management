@@ -732,6 +732,7 @@ class _ReportScreenState extends State<ReportScreen> {
         RentalFormModel rental = RentalFormModel.AllRentalFormModels.where(
             (element) => element.RentalID == rentalFormID).first;
         int days = checkOutDate.difference(rental.BeginDate).inDays;
+        if (days == 0) days = 1;
         RoomModel room = rental.getRoom();
         if (room.RoomKindID == roomKind.RoomKindID)
           result += rental.Total(days);

@@ -9,6 +9,7 @@ import 'package:paradise/presentations/screens/Onboardings/register_form_screen.
 import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
 import 'package:paradise/presentations/screens/forgot_password_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
+import 'package:paradise/presentations/widgets/input_password.dart';
 import 'package:paradise/presentations/widgets/input_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/dialog.dart';
@@ -76,10 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           final bool emailValid = RegExp(
                                   r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                               .hasMatch(input!);
-                          if (input == "") {
-                            return "Please enter your email!";
+                          if (input.isEmpty) {
+                            return "Please enter username";
                           } else if (!emailValid) {
-                            return "Email is invalid";
+                            return "Email is not Invalid";
                           }
                         }),
                   ),

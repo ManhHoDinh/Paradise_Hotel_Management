@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '501893544696',
     projectId: 'paradise-bac82',
     authDomain: 'paradise-bac82.firebaseapp.com',
-    databaseURL: 'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'paradise-bac82.appspot.com',
     measurementId: 'G-53F9EN91S7',
   );
@@ -59,7 +60,8 @@ class DefaultFirebaseOptions {
     appId: '1:501893544696:android:cb93f6cbec5d49adc3d90d',
     messagingSenderId: '501893544696',
     projectId: 'paradise-bac82',
-    databaseURL: 'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'paradise-bac82.appspot.com',
   );
 
@@ -68,9 +70,11 @@ class DefaultFirebaseOptions {
     appId: '1:501893544696:ios:f9d39fc53a1bc3a8c3d90d',
     messagingSenderId: '501893544696',
     projectId: 'paradise-bac82',
-    databaseURL: 'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'paradise-bac82.appspot.com',
-    iosClientId: '501893544696-dvlsbs7duhne135l7l93j7h3mnrb5l9u.apps.googleusercontent.com',
+    iosClientId:
+        '501893544696-dvlsbs7duhne135l7l93j7h3mnrb5l9u.apps.googleusercontent.com',
     iosBundleId: 'com.example.paradise',
   );
 
@@ -79,9 +83,11 @@ class DefaultFirebaseOptions {
     appId: '1:501893544696:ios:f9d39fc53a1bc3a8c3d90d',
     messagingSenderId: '501893544696',
     projectId: 'paradise-bac82',
-    databaseURL: 'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://paradise-bac82-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'paradise-bac82.appspot.com',
-    iosClientId: '501893544696-dvlsbs7duhne135l7l93j7h3mnrb5l9u.apps.googleusercontent.com',
+    iosClientId:
+        '501893544696-dvlsbs7duhne135l7l93j7h3mnrb5l9u.apps.googleusercontent.com',
     iosBundleId: 'com.example.paradise',
   );
 }
