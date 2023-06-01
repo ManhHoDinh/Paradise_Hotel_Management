@@ -86,31 +86,60 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               SizedBox(
                 height: kMediumPadding,
               ),
-              IntlPhoneField(
+              TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty ||
+                      !RegExp(r'^[0-9]+$').hasMatch(value) ||
+                      value.length < 10) {
+                    return "Phone number is invalid!";
+                  } else
+                    return null;
+                },
                 controller: _phoneNoController,
                 decoration: InputDecoration(
-                  isDense: true,
-                  labelText: 'Phone Number',
-                  labelStyle:
-                      TextStyle(fontSize: 12, color: ColorPalette.grayText),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: ColorPalette.primaryColor, width: 2),
-                    borderRadius: BorderRadius.circular(kMediumPadding),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(kMediumPadding),
-                  ),
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (phone) {
-                  print(phone.completeNumber);
-                },
-                onCountryChanged: (country) {
-                  print('Country changed to: ' + country.name);
-                },
+                    isDense: true,
+                    filled: true,
+                    fillColor: ColorPalette.bgTextFieldColor,
+                    labelText: 'Phone number',
+                    labelStyle:
+                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ColorPalette.primaryColor, width: 2),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(kMediumPadding))),
               ),
+              // IntlPhoneField(
+              //   controller: _phoneNoController,
+              //   decoration: InputDecoration(
+              //     isDense: true,
+              //     labelText: 'Phone Number',
+              //     labelStyle:
+              //         TextStyle(fontSize: 12, color: ColorPalette.grayText),
+              //     focusedBorder: OutlineInputBorder(
+              //       borderSide:
+              //           BorderSide(color: ColorPalette.primaryColor, width: 2),
+              //       borderRadius: BorderRadius.circular(kMediumPadding),
+              //     ),
+              //     border: OutlineInputBorder(
+              //       borderSide: BorderSide(color: Colors.transparent),
+              //       borderRadius: BorderRadius.circular(kMediumPadding),
+              //     ),
+              //   ),
+              //   keyboardType: TextInputType.number,
+              //   onChanged: (phone) {
+              //     print(phone.completeNumber);
+              //   },
+              //   onCountryChanged: (country) {
+              //     print('Country changed to: ' + country.name);
+              //   },
+              // ),
+
               SizedBox(
                 height: kMediumPadding,
               ),
@@ -155,7 +184,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 decoration: InputDecoration(
                     isDense: true,
                     filled: true,
-                    suffix: Icon(
+                    suffixIcon: Icon(
                       Icons.calendar_today,
                       size: 20,
                     ),
