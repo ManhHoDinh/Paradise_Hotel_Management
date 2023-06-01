@@ -41,6 +41,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  barcode:
+    dependency: transitive
+    description:
+      name: barcode
+      sha256: "789f898eef0bd88312470bdb2cc996f895ad7dd5f89e9adde84b204546a90b45"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.4"
+  bidi:
+    dependency: transitive
+    description:
+      name: bidi
+      sha256: dc00274c7edabae2ab30c676e736ea1eb0b1b7a1b436cb5fe372e431ccb39ab0
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -392,6 +408,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  image:
+    dependency: transitive
+    description:
+      name: image
+      sha256: a72242c9a0ffb65d03de1b7113bc4e189686fc07c7147b8b41811d0dd0e0d9bf
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.17"
   image_picker:
     dependency: "direct main"
     description:
@@ -592,6 +616,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.6"
+  pdf:
+    dependency: "direct main"
+    description:
+      name: pdf
+      sha256: "586d3debf5432e5377044754032cfa53ab45e9abf371d4865e9ad5019570e246"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.10.1"
   petitparser:
     dependency: transitive
     description:
@@ -648,6 +680,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   salomon_bottom_bar:
     dependency: "direct main"
     description:
