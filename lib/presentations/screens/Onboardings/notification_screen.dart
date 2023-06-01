@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/notification_model.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
@@ -34,14 +35,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
   TextEditingController controldes = TextEditingController();
   late List<NotificationModel> listNotification;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    manager = AuthServices.CurrentUserIsManager();
+    staff = !manager;
+  }
+
+  @override
   Widget build(BuildContext context) {
     CollectionReference Notification =
         FirebaseFirestore.instance.collection('Notification');
     Size size = MediaQuery.of(context).size;
     Future<void> addNotification() {
       return Notification.add({
-        'heading': _heading,
-        'description': _description,
+        'heading': controlhead.text,
+        'description': controldes.text,
+        'postTime': DateTime.now(),
+        'postAuthor': AuthServices.CurrentUser!.Name
       }).then((value) => print("New Notification Posted")).catchError(
           (error) => print("Failed to add new notification: $error"));
     }
@@ -52,7 +63,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
           elevation: 0,
           backgroundColor: ColorPalette.backgroundColor,
           title: Padding(
-            padding: const EdgeInsets.only(left: 100),
+            padding: const EdgeInsets.only(
+                left: 100, right: 10, top: 25, bottom: 20),
             child: Container(
               child: Column(
                 children: [
@@ -73,11 +85,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ],
                       ),
                       const SizedBox(width: 24),
-                      InkWell(
-                        onTap: () {},
-                        child: ImageHelper.loadFromAsset(AssetHelper.avatar,
-                            height: 40),
-                      )
+                      ImageHelper.loadFromAsset(AssetHelper.avatar, height: 40)
                     ],
                   )
                 ],
@@ -86,6 +94,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
         ),
         body: Container(
+          margin: EdgeInsets.only(top: 20),
           padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,11 +133,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 width: double.infinity,
                                 child: TextField(
                                   controller: controlhead,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _heading = value;
-                                    });
-                                  },
                                   decoration: InputDecoration(
                                       contentPadding: const EdgeInsets.only(
                                           top: 4, left: 20),
@@ -161,10 +165,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ),
                           Visibility(
                             visible: _head,
-                            child: Text(
-                              "This box cannot be empty!",
-                              style: TextStyles.descriptionRoom.copyWith(
-                                color: Colors.red,
+                            child: Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Text(
+                                "This box cannot be empty!",
+                                style: TextStyles.descriptionRoom.copyWith(
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
                           ),
@@ -176,11 +183,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 width: double.infinity,
                                 child: TextField(
                                   controller: controldes,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _description = value;
-                                    });
-                                  },
                                   decoration: InputDecoration(
                                       contentPadding: const EdgeInsets.only(
                                           top: 4, left: 20),
@@ -213,29 +215,30 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ),
                           Visibility(
                             visible: _des,
-                            child: Text(
-                              "This box cannot be empty!",
-                              style: TextStyles.descriptionRoom.copyWith(
-                                color: Colors.red,
+                            child: Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Text(
+                                "This box cannot be empty!",
+                                style: TextStyles.descriptionRoom.copyWith(
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(height: 22),
                           Container(
+                            margin: EdgeInsets.only(top: 20),
                             width: double.infinity,
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: () {
                                 setState(() {
-                                  if (_heading != null &&
-                                      _description != null) {
+                                  if (controlhead.text != "" &&
+                                      controldes.text != "") {
                                     _head = false;
                                     _des = false;
                                     addNotification();
                                     controlhead.text = "";
                                     controldes.text = "";
-                                    _heading = null;
-                                    _description = null;
                                   } else {
                                     if (_heading == null) {
                                       _head = true;
@@ -310,10 +313,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         listNotification = snapshot.data!;
                         NotificationModel.AllNotificationModels =
                             snapshot.data!;
+                        listNotification
+                            .sort((a, b) => b.postTime.compareTo(a.postTime));
                         return GridView.count(
                             crossAxisCount: 1,
                             mainAxisSpacing: 32,
-                            childAspectRatio: 3.8,
+                            childAspectRatio: 3.15,
                             children: listNotification
                                 .map((e) => NotifiItem(
                                       notification: e,

@@ -14,6 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/color_palatte.dart';
+import '../../../core/helpers/AuthFunctions.dart';
 import '../../../core/helpers/assets_helper.dart';
 import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
@@ -115,17 +116,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   textColor: ColorPalette.backgroundColor,
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                child: ButtonWidget(
-                  label: 'Report',
-                  color: ColorPalette.primaryColor,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(ReportScreen.routeName);
-                  },
-                  textColor: ColorPalette.backgroundColor,
-                ),
-              ),
+              AuthServices.CurrentUserIsManager()
+                  ? Container(
+                      padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                      child: ButtonWidget(
+                        label: 'Report',
+                        color: ColorPalette.primaryColor,
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(ReportScreen.routeName);
+                        },
+                        textColor: ColorPalette.backgroundColor,
+                      ),
+                    )
+                  : Container(),
+              AuthServices.CurrentUserIsManager()
+                  ? Container(
+                      padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                      child: ButtonWidget(
+                        label: 'Users Management',
+                        color: ColorPalette.primaryColor,
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(ReportScreen.routeName);
+                        },
+                        textColor: ColorPalette.backgroundColor,
+                      ),
+                    )
+                  : Container(),
             ]),
           ),
         ),
