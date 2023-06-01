@@ -66,6 +66,9 @@ dependencies:
   flutter_animated_button: ^2.0.0
   google_fonts: ^2.1.0
   pdf: ^3.10.1
+  fl_country_code_picker: ^0.0.4
+ 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

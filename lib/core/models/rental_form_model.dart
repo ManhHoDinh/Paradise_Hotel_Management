@@ -29,7 +29,7 @@ class RentalFormModel {
       required this.SurchargeRatio});
   Map<String, dynamic> toJson() => {
         'RoomID': RoomID,
-        'BeginDate': Timestamp.fromDate(BeginDate),
+        'BeginDate': Timestamp.fromDate(BeginDate!),
         'GuestIDs': GuestIDs,
         'RentalID': RentalID,
         'Status': Status,

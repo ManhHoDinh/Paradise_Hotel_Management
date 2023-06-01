@@ -760,7 +760,7 @@ class _RentalFormState extends State<RentalForm> {
 
   Future addNewGuest() async {
     try {
-      for (int i = 1; i < _countGuest; i++) {
+      for (int i = 1; i < listRow.length; i++) {
         Padding padding1 = (listRow[i].children![2]) as Padding;
         Padding padding2 = (listRow[i].children![3]) as Padding;
         Padding padding3 = (listRow[i].children![1]) as Padding;
@@ -909,7 +909,7 @@ class _RentalFormState extends State<RentalForm> {
   int checkGuestID(String value) {
     int result = 0;
     for (int i = 1; i < listRow.length; i++) {
-      Padding padding = (listRow[i].children[3]) as Padding;
+      Padding padding = (listRow[i].children![3]) as Padding;
       TextFormField cartIdGuest = padding.child as TextFormField;
       if (cartIdGuest.controller!.text == value) result++;
     }

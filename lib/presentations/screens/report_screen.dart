@@ -69,7 +69,7 @@ class _ReportScreenState extends State<ReportScreen> {
       RoomKindModel roomKind = RoomKindModel.AllRoomKinds[i];
       int revenue = getRevenueOfMonthReport(roomKind);
       listReportItem.add(ReportItem(
-          roomType: roomKind.Name,
+          roomType: roomKind.Name!,
           revenue: revenue,
           rate: Rate(revenue, totalMonthPrice)));
     }

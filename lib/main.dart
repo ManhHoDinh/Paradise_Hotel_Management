@@ -6,6 +6,8 @@ import 'package:paradise/presentations/routes.dart';
 import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
+import 'package:paradise/presentations/screens/Receipts/ReceiptDetailScreen.dart';
+import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
