@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: ColorPalette.primaryColor,
         scaffoldBackgroundColor: ColorPalette.backgroundColor,
       ),
-      home: NotificationScreen(),
+      home: SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
