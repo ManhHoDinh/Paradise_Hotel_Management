@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/local_storage_helper.dart';
@@ -33,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await (Future.delayed(Duration(seconds: 3)));
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? email = pref.getString('email');
+
     if (email == null) {
       Navigator.of(context).pushNamed(LoginScreen.routeName);
     } else

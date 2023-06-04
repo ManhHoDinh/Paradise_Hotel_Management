@@ -276,6 +276,7 @@ class RentalFormItem extends StatelessWidget {
         ],
       ),
     );
+  
   }
 
   String monthToString(int monthNumber) {

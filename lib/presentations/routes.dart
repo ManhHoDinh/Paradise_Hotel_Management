@@ -17,6 +17,8 @@ import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
 import 'package:paradise/presentations/screens/RoomKinds/AddRoomKindScreen.dart';
 import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
+import 'package:paradise/presentations/screens/Staffs/staff_detail.dart';
+import 'package:paradise/presentations/screens/Staffs/staff_screen.dart';
 import 'package:paradise/presentations/screens/forgot_password_screen.dart';
 import 'package:paradise/presentations/screens/report_screen.dart';
 
@@ -39,4 +41,5 @@ final Map<String, WidgetBuilder> routes = {
   RegisterFormScreen.routeName: (context) => RegisterFormScreen(),
   MainScreen.routeName: (context) => MainScreen(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
+  StaffScreen.routeName: (context) => StaffScreen()
 };

@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
+import 'package:paradise/core/models/user_model.dart';
 import 'package:paradise/presentations/screens/Bookings/all_rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
+import 'package:paradise/presentations/screens/Staffs/staff_detail.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
@@ -20,6 +23,7 @@ import '../../../core/models/firebase_request.dart';
 import '../../../core/models/guest_kind_model.dart';
 import '../../../core/models/guest_model.dart';
 import '../../../core/models/room_model.dart';
+import '../Staffs/staff_screen.dart';
 import '../report_screen.dart';
 import 'login_screen.dart';
 
@@ -34,10 +38,24 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = false;
   int currentId = 0;
   int currentRoomId = 0;
+  String? currentUserID;
   late List<RoomModel> listRoom;
+  @override
+  void initState() {
+    setCurrentUserId();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void setCurrentUserId() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    currentUserID = pref.getString('currentUser');
+  }
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+    String position = '';
 
     return Scaffold(
       key: _globalKey,
@@ -126,6 +144,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   textColor: ColorPalette.backgroundColor,
                 ),
               ),
+              StreamBuilder(
+                  stream: FireBaseDataBase.readUsers(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      UserModel currentUser = UserModel(
+                          name: '', phoneNumber: '', position: '', email: '');
+                      List<UserModel> listUser = snapshot.data!;
+                      for (var user in listUser) {
+                        if (user.id == currentUserID) {
+                          UserModel.currentUser = user;
+                        }
+                      }
+                    }
+
+                    if (UserModel.currentUser.position! == "Manager") {
+                      return Container(
+                        padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                        child: ButtonWidget(
+                          label: 'Staff',
+                          color: ColorPalette.primaryColor,
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(StaffScreen.routeName);
+                          },
+                          textColor: ColorPalette.backgroundColor,
+                        ),
+                      );
+                    } else
+                      return Container();
+                  }),
             ]),
           ),
         ),
@@ -212,6 +260,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return Container();
                 }),
+            InkWell(
+              child: Text('f'),
+              onTap: () {
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //     SnackBar(content: Text(UserModel.currentUser.getUserId())));
+                FirebaseAuth.instance.signOut();
+
+                Navigator.of(context).pushNamed(LoginScreen.routeName);
+              },
+            ),
             const SizedBox(height: 36),
             Container(
               // padding: const EdgeInsets.only(bottom: 10),

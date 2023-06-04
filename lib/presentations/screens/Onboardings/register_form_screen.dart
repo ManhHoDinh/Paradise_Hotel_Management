@@ -25,15 +25,13 @@ class RegisterFormScreen extends StatefulWidget {
 }
 
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
-  final countryPicker = const FlCountryCodePicker();
-  CountryCode? countryCode;
-
   final formRegisterKey = GlobalKey<FormState>();
   TextEditingController _birthdayController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneNoController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _cccdControler = TextEditingController();
   bool isAccept = false;
   bool _passwordVisible = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -100,8 +98,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 validator: (value) {
                   if (value == null) {
                     return "Please enter your phone number!";
-                  } else if (countryCode == null ||
-                      !RegExp(r'^[0-9]+$').hasMatch(value) ||
+                  } else if (!RegExp(r'^[0-9]+$').hasMatch(value) ||
                       value.length < 10) {
                     return "Phone number is invalid!";
                   } else
@@ -111,35 +108,6 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                    prefixIcon: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: GestureDetector(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(right: 4),
-                              child: countryCode != null
-                                  ? countryCode!.flagImage
-                                  : null,
-                            ),
-                            Text(
-                              countryCode != null
-                                  ? countryCode!.dialCode
-                                  : '+1',
-                              style: TextStyle(fontSize: 16),
-                            )
-                          ],
-                        ),
-                        onTap: () async {
-                          final code =
-                              await countryPicker.showPicker(context: context);
-                          setState(() {
-                            countryCode = code;
-                          });
-                        },
-                      ),
-                    ),
                     isDense: true,
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
@@ -157,6 +125,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         borderSide: BorderSide(color: Colors.transparent),
                         borderRadius: BorderRadius.circular(kMediumPadding))),
               ),
+
               // IntlPhoneField(
               //   controller: _phoneNoController,
               //   decoration: InputDecoration(
@@ -183,6 +152,37 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               //   },
               // ),
 
+              SizedBox(
+                height: kMediumPadding,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value == null) {
+                    return "Identification number is invalid!";
+                  } else
+                    return null;
+                },
+                controller: _cccdControler,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    fillColor: ColorPalette.bgTextFieldColor,
+                    labelText: 'Identification Numnber',
+                    labelStyle:
+                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ColorPalette.primaryColor, width: 2),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(kMediumPadding))),
+              ),
               SizedBox(
                 height: kMediumPadding,
               ),
@@ -354,7 +354,9 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             _emailController.text,
                             _passwordController.text,
                             _nameController.text,
-                            countryCode!.dialCode + _phoneNoController.text,
+                            _phoneNoController.text,
+                            _birthdayController.text,
+                            _cccdControler.text,
                             context);
                         showDialog(
                             context: context,
