@@ -67,7 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ButtonWidget(
                   label: 'Hotel Information',
                   color: ColorPalette.primaryColor,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(HomeScreen.routeName);
+                  },
                   textColor: ColorPalette.backgroundColor,
                 ),
               ),

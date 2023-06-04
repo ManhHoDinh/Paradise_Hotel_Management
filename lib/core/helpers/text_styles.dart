@@ -213,6 +213,12 @@ class TextStyles {
     color: ColorPalette.detailBorder,
     letterSpacing: 0.8,
   );
+  static const TextStyle titlehotelinfor = TextStyle(
+    fontFamily: AppFonts.poppins,
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    color: ColorPalette.primaryColor,
+  );
 }
 
 // How to use?

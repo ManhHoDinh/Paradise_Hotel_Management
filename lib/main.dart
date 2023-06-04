@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/presentations/routes.dart';
+import 'package:paradise/presentations/screens/Onboardings/hotel_information_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
