@@ -3,7 +3,7 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 
-class InputWidget extends StatefulWidget {
+class InputPassword extends StatefulWidget {
   final String labelText;
   final String icon;
   final String? suffixIcon;
@@ -11,7 +11,7 @@ class InputWidget extends StatefulWidget {
   final TextInputType? type;
   final TextEditingController? controller;
   final String? Function(String? input)? validator;
-  const InputWidget(
+  const InputPassword(
       {super.key,
       required this.labelText,
       required this.icon,
@@ -22,11 +22,11 @@ class InputWidget extends StatefulWidget {
       this.type});
 
   @override
-  State<InputWidget> createState() => _InputWidgetState();
+  State<InputPassword> createState() => _InputPasswordState();
 }
 
-class _InputWidgetState extends State<InputWidget> {
-  bool isObscure = false;
+class _InputPasswordState extends State<InputPassword> {
+  bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {

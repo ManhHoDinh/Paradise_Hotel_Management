@@ -6,6 +6,7 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 
+import '../../core/helpers/AuthFunctions.dart';
 import '../screens/RoomKinds/EditRoomKindScreen.dart';
 
 class RoomKindWidget extends StatelessWidget {
@@ -30,21 +31,23 @@ class RoomKindWidget extends StatelessWidget {
                 style: TextStyles.h3.copyWith(color: ColorPalette.primaryColor),
               ),
               Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => EditRoomKindScreen(
-                                roomKindModel: roomKind,
-                              )));
-                },
-                child: Icon(
-                  FontAwesomeIcons.pen,
-                  color: ColorPalette.primaryColor,
-                  size: 15,
-                ),
-              )
+              AuthServices.CurrentUserIsManager()
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => EditRoomKindScreen(
+                                      roomKindModel: roomKind,
+                                    )));
+                      },
+                      child: Icon(
+                        FontAwesomeIcons.pen,
+                        color: ColorPalette.primaryColor,
+                        size: 15,
+                      ),
+                    )
+                  : Container()
             ],
           ),
         ),

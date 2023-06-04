@@ -8,6 +8,7 @@ import 'package:paradise/core/models/guest_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/rental_form_model.dart';
 import 'package:paradise/presentations/screens/Receipts/AddReceipt.dart';
+import 'package:paradise/presentations/widgets/fetchDataWidget.dart';
 import 'package:paradise/presentations/widgets/receipt_item.dart';
 
 import '../../../core/constants/color_palatte.dart';
@@ -125,199 +126,178 @@ class _SeeAllReceiptsState extends State<SeeAllReceipts> {
             padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
             color: ColorPalette.backgroundColor,
             // child: RoomItem(AssetHelper.room1, "room1", "family", 1200),
-            child: Column(children: [
-              StreamBuilder(
-                  stream: FireBaseDataBase.readRentalForms(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      RentalFormModel.AllRentalFormModels = snapshot.data!;
-                    }
-                    return Container();
-                  }),
-              StreamBuilder(
-                  stream: FireBaseDataBase.readGuestKinds(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      GuestKindModel.AllGuestKinds = snapshot.data!;
-                    }
-                    return Container();
-                  }),
-              StreamBuilder(
-                  stream: FireBaseDataBase.readGuests(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      GuestModel.AllGuests = snapshot.data!;
-                    }
-                    return Container();
-                  }),
-              const SizedBox(height: 36),
-              Container(
-                child: Container(
-                  child: SizedBox(
-                    height: 42,
-                    width: double.infinity,
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          valueSearch = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(top: 4),
-                          prefixIcon: InkWell(
-                            customBorder: CircleBorder(),
-                            onTap: () {},
-                            child: Icon(
-                              FontAwesomeIcons.magnifyingGlass,
-                              size: 16,
-                              color: ColorPalette.greenText,
-                            ),
-                          ),
-                          suffixIcon: InkWell(
+            child: FetchAllData(
+              child: Column(children: [
+                const SizedBox(height: 36),
+                Container(
+                  child: Container(
+                    child: SizedBox(
+                      height: 42,
+                      width: double.infinity,
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            valueSearch = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.only(top: 4),
+                            prefixIcon: InkWell(
                               customBorder: CircleBorder(),
-                              onTap: () {
-                                setState(() {
-                                  isVisibleFilter = !isVisibleFilter;
-                                });
-                              },
-                              child: Image.asset(AssetHelper.iconFilter)),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                            fontSize: 14,
-                            color: ColorPalette.grayText,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorPalette.primaryColor, width: 2))),
+                              onTap: () {},
+                              child: Icon(
+                                FontAwesomeIcons.magnifyingGlass,
+                                size: 16,
+                                color: ColorPalette.greenText,
+                              ),
+                            ),
+                            suffixIcon: InkWell(
+                                customBorder: CircleBorder(),
+                                onTap: () {
+                                  setState(() {
+                                    isVisibleFilter = !isVisibleFilter;
+                                  });
+                                },
+                                child: Image.asset(AssetHelper.iconFilter)),
+                            hintText: 'Search',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: ColorPalette.grayText,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.primaryColor,
+                                    width: 2))),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              Container(
-                  alignment: Alignment.centerLeft,
-                  child: Visibility(
-                      visible: isVisibleFilter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FilterContainerWidget(
-                            name: 'Price',
-                            icon1: Icon(
-                              FontAwesomeIcons.arrowDown,
-                              size: 12,
-                              color: priceDecrease
-                                  ? ColorPalette.primaryColor
-                                  : ColorPalette.blackText,
+                const SizedBox(height: 24),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Visibility(
+                        visible: isVisibleFilter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FilterContainerWidget(
+                              name: 'Price',
+                              icon1: Icon(
+                                FontAwesomeIcons.arrowDown,
+                                size: 12,
+                                color: priceDecrease
+                                    ? ColorPalette.primaryColor
+                                    : ColorPalette.blackText,
+                              ),
+                              icon2: Icon(
+                                FontAwesomeIcons.arrowUp,
+                                size: 12,
+                                color: priceDecrease
+                                    ? ColorPalette.blackText
+                                    : ColorPalette.primaryColor,
+                              ),
+                              onTapIconDown: () {
+                                setState(() {
+                                  priceDecrease = true;
+                                });
+                              },
+                              onTapIconUp: () {
+                                setState(() {
+                                  priceDecrease = false;
+                                });
+                              },
                             ),
-                            icon2: Icon(
-                              FontAwesomeIcons.arrowUp,
-                              size: 12,
-                              color: priceDecrease
-                                  ? ColorPalette.blackText
-                                  : ColorPalette.primaryColor,
-                            ),
-                            onTapIconDown: () {
-                              setState(() {
-                                priceDecrease = true;
-                              });
-                            },
-                            onTapIconUp: () {
-                              setState(() {
-                                priceDecrease = false;
-                              });
-                            },
-                          ),
-                          Container(
-                              height: 28,
-                              width: 140,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorPalette.grayText),
-                                  borderRadius:
-                                      BorderRadius.circular(kMediumPadding)),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton2(
-                                  alignment: Alignment.centerLeft,
-                                  iconStyleData: IconStyleData(
-                                      iconEnabledColor:
-                                          ColorPalette.primaryColor),
-                                  dropdownStyleData: DropdownStyleData(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              kMinPadding))),
-                                  hint: Text(
-                                    'Kind',
-                                    style: TextStyles.defaultStyle.grayText,
+                            Container(
+                                height: 28,
+                                width: 140,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: ColorPalette.grayText),
+                                    borderRadius:
+                                        BorderRadius.circular(kMediumPadding)),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton2(
+                                    alignment: Alignment.centerLeft,
+                                    iconStyleData: IconStyleData(
+                                        iconEnabledColor:
+                                            ColorPalette.primaryColor),
+                                    dropdownStyleData: DropdownStyleData(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                kMinPadding))),
+                                    hint: Text(
+                                      'Kind',
+                                      style: TextStyles.defaultStyle.grayText,
+                                    ),
+                                    items: kindItems
+                                        .map((e) => DropdownMenuItem<String>(
+                                            value: e,
+                                            onTap: () {
+                                              setState(() {
+                                                kindRoom = e;
+                                              });
+                                            },
+                                            child: Text(
+                                              e,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyles
+                                                  .defaultStyle.grayText
+                                                  .copyWith(fontSize: 13),
+                                            )))
+                                        .toList(),
+                                    buttonStyleData: const ButtonStyleData(
+                                      padding: const EdgeInsets.only(left: 12),
+                                      height: 28,
+                                      width: 10,
+                                    ),
+                                    menuItemStyleData: const MenuItemStyleData(
+                                      height: 28,
+                                    ),
+                                    value: dropdownKindValue,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        dropdownKindValue = value;
+                                      });
+                                    },
                                   ),
-                                  items: kindItems
-                                      .map((e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          onTap: () {
-                                            setState(() {
-                                              kindRoom = e;
-                                            });
-                                          },
-                                          child: Text(
-                                            e,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyles
-                                                .defaultStyle.grayText
-                                                .copyWith(fontSize: 13),
-                                          )))
-                                      .toList(),
-                                  buttonStyleData: const ButtonStyleData(
-                                    padding: const EdgeInsets.only(left: 12),
-                                    height: 28,
-                                    width: 10,
-                                  ),
-                                  menuItemStyleData: const MenuItemStyleData(
-                                    height: 28,
-                                  ),
-                                  value: dropdownKindValue,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      dropdownKindValue = value;
-                                    });
-                                  },
-                                ),
-                              ))
-                        ],
-                      ))),
-              Expanded(
-                  child: Container(
-                margin: EdgeInsets.only(top: 30),
-                child: StreamBuilder<List<ReceiptModel>>(
-                    stream: FireBaseDataBase.readReceipts(),
-                    builder: (context, snapshot) {
-                      print(snapshot.data);
-                      if (snapshot.hasError) {
-                        return Center(
-                          child:
-                              Text('Something went wrong! ${snapshot.error}'),
-                        );
-                      } else if (snapshot.hasData) {
-                        Receipts = snapshot.data!;
-                        ReceiptModel.AllReceipts = snapshot.data!;
-                        return GridView.count(
-                            padding:
-                                const EdgeInsets.only(bottom: kMediumPadding),
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 24,
-                            crossAxisSpacing: 24,
-                            childAspectRatio: 0.8,
-                            children: loadReceipts(Receipts)
-                                .map((e) => ReceiptItem(
-                                      Receipt: e,
-                                    ))
-                                .toList());
-                      } else
-                        return Container();
-                    }),
-              )),
-            ])));
+                                ))
+                          ],
+                        ))),
+                Expanded(
+                    child: Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: StreamBuilder<List<ReceiptModel>>(
+                      stream: FireBaseDataBase.readReceipts(),
+                      builder: (context, snapshot) {
+                        print(snapshot.data);
+                        if (snapshot.hasError) {
+                          return Center(
+                            child:
+                                Text('Something went wrong! ${snapshot.error}'),
+                          );
+                        } else if (snapshot.hasData) {
+                          Receipts = snapshot.data!;
+                          ReceiptModel.AllReceipts = snapshot.data!;
+                          return GridView.count(
+                              padding:
+                                  const EdgeInsets.only(bottom: kMediumPadding),
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 24,
+                              crossAxisSpacing: 24,
+                              childAspectRatio: 0.8,
+                              children: loadReceipts(Receipts)
+                                  .map((e) => ReceiptItem(
+                                        Receipt: e,
+                                      ))
+                                  .toList());
+                        } else
+                          return Container();
+                      }),
+                )),
+              ]),
+            )));
   }
 }

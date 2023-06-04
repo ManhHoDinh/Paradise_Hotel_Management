@@ -24,7 +24,6 @@ class _NotifiItemState extends State<NotifiItem> {
   Widget build(BuildContext context) {
     NotificationModel notifiModel = widget.notification;
     return Container(
-      height: 100,
       padding: EdgeInsets.only(left: 19, top: 8, bottom: 8),
       decoration: BoxDecoration(
         border: Border(
@@ -35,14 +34,28 @@ class _NotifiItemState extends State<NotifiItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            notifiModel.heading,
-            style: TextStyles.titlenotifi,
+          Row(
+            children: [
+              Text(
+                notifiModel.heading,
+                style: TextStyles.titlenotifi,
+              ),
+              Spacer(),
+              Text(
+                '${notifiModel.postTime.hour}:${notifiModel.postTime.minute} - ${notifiModel.postTime.day}/${notifiModel.postTime.month}/${notifiModel.postTime.year}',
+                style: TextStyles.titlenotifi,
+              ),
+            ],
           ),
           SizedBox(height: 15),
           Text(
             notifiModel.description,
             style: TextStyles.timenotifi,
+          ),
+          SizedBox(height: 15),
+          Text(
+            'By : ${notifiModel.postAuthor}',
+            style: TextStyles.timenotifi.copyWith(fontSize: 10),
           )
         ],
       ),

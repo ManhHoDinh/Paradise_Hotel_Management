@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +10,9 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/presentations/screens/Onboardings/AuthFunctions.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
-
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import '../../widgets/button_widget.dart';
 import '../../widgets/dialog.dart';
 
@@ -23,6 +25,9 @@ class RegisterFormScreen extends StatefulWidget {
 }
 
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
+  final countryPicker = const FlCountryCodePicker();
+  CountryCode? countryCode;
+
   final formRegisterKey = GlobalKey<FormState>();
   TextEditingController _birthdayController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
@@ -30,6 +35,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   bool isAccept = false;
+  bool _passwordVisible = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -46,7 +52,9 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 children: [
                   InkWell(
                     child: Icon(Icons.arrow_back),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                   Text('Complete your profile')
                 ],
@@ -60,7 +68,9 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                   final bool emailValid = RegExp(
                           r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                       .hasMatch(input!);
-                  if (!emailValid) {
+                  if (input == "") {
+                    return "Please enter your email!";
+                  } else if (!emailValid) {
                     return "Email is not Invalid";
                   }
                 },
@@ -86,38 +96,99 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               SizedBox(
                 height: kMediumPadding,
               ),
-              IntlPhoneField(
+              TextFormField(
+                validator: (value) {
+                  if (value == null) {
+                    return "Please enter your phone number!";
+                  } else if (countryCode == null ||
+                      !RegExp(r'^[0-9]+$').hasMatch(value) ||
+                      value.length < 10) {
+                    return "Phone number is invalid!";
+                  } else
+                    return null;
+                },
                 controller: _phoneNoController,
-                decoration: InputDecoration(
-                  isDense: true,
-                  labelText: 'Phone Number',
-                  labelStyle:
-                      TextStyle(fontSize: 12, color: ColorPalette.grayText),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: ColorPalette.primaryColor, width: 2),
-                    borderRadius: BorderRadius.circular(kMediumPadding),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(kMediumPadding),
-                  ),
-                ),
                 keyboardType: TextInputType.number,
-                onChanged: (phone) {
-                  print(phone.completeNumber);
-                },
-                onCountryChanged: (country) {
-                  print('Country changed to: ' + country.name);
-                },
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                    prefixIcon: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: countryCode != null
+                                  ? countryCode!.flagImage
+                                  : null,
+                            ),
+                            Text(
+                              countryCode != null
+                                  ? countryCode!.dialCode
+                                  : '+1',
+                              style: TextStyle(fontSize: 16),
+                            )
+                          ],
+                        ),
+                        onTap: () async {
+                          final code =
+                              await countryPicker.showPicker(context: context);
+                          setState(() {
+                            countryCode = code;
+                          });
+                        },
+                      ),
+                    ),
+                    isDense: true,
+                    filled: true,
+                    fillColor: ColorPalette.bgTextFieldColor,
+                    labelText: 'Phone number',
+                    labelStyle:
+                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ColorPalette.primaryColor, width: 2),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(kMediumPadding))),
               ),
+              // IntlPhoneField(
+              //   controller: _phoneNoController,
+              //   decoration: InputDecoration(
+              //     isDense: true,
+              //     labelText: 'Phone Number',
+              //     labelStyle:
+              //         TextStyle(fontSize: 12, color: ColorPalette.grayText),
+              //     focusedBorder: OutlineInputBorder(
+              //       borderSide:
+              //           BorderSide(color: ColorPalette.primaryColor, width: 2),
+              //       borderRadius: BorderRadius.circular(kMediumPadding),
+              //     ),
+              //     border: OutlineInputBorder(
+              //       borderSide: BorderSide(color: Colors.transparent),
+              //       borderRadius: BorderRadius.circular(kMediumPadding),
+              //     ),
+              //   ),
+              //   keyboardType: TextInputType.number,
+              //   onChanged: (phone) {
+              //     print(phone.completeNumber);
+              //   },
+              //   onCountryChanged: (country) {
+              //     print('Country changed to: ' + country.name);
+              //   },
+              // ),
+
               SizedBox(
                 height: kMediumPadding,
               ),
               TextFormField(
                 validator: (value) {
-                  if (value!.isEmpty ||
-                      !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                  if (value!.isEmpty || RegExp(r'^[1 9]+$').hasMatch(value)) {
                     return "Name is invalid!";
                   } else
                     return null;
@@ -155,12 +226,12 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 decoration: InputDecoration(
                     isDense: true,
                     filled: true,
-                    suffix: Icon(
+                    suffixIcon: Icon(
                       Icons.calendar_today,
                       size: 20,
                     ),
                     fillColor: ColorPalette.bgTextFieldColor,
-                    labelText: 'birthday',
+                    labelText: 'Birthday',
                     labelStyle:
                         TextStyle(color: ColorPalette.grayText, fontSize: 12),
                     focusedBorder: OutlineInputBorder(
@@ -214,8 +285,21 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     return null;
                 },
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: !_passwordVisible,
                 decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                     isDense: true,
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
@@ -270,14 +354,14 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             _emailController.text,
                             _passwordController.text,
                             _nameController.text,
-                            _phoneNoController.text,
+                            countryCode!.dialCode + _phoneNoController.text,
                             context);
                         showDialog(
                             context: context,
                             builder: (context) {
                               return DialogOverlay(
                                 isSuccess: true,
-                                task: ' register',
+                                task: ' Register',
                               );
                             });
 

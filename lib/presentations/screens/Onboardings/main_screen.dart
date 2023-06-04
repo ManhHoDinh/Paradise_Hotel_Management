@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:paradise/presentations/screens/Onboardings/Account.dart';
 import 'package:paradise/presentations/screens/Onboardings/notification_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/setting_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -25,9 +26,7 @@ class _MainScreenState extends State<MainScreen> {
           HomeScreen(),
           SettingScreen(),
           NotificationScreen(),
-          Container(
-            color: Colors.green,
-          ),
+          AccountScreen(),
         ],
       ),
       // ignore: prefer_const_literals_to_create_immutables, prefer_const_constructors

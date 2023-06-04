@@ -14,6 +14,7 @@ import 'package:paradise/presentations/screens/Rooms/CreateRoom_screen.dart';
 import 'package:paradise/presentations/widgets/filter_containter_widget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import '../../../core/helpers/AuthFunctions.dart';
 import '../../../core/helpers/assets_helper.dart';
 import '../../../core/helpers/image_helper.dart';
 import '../../widgets/button_default.dart';
@@ -102,16 +103,19 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
     kindItems = ['All'];
     kindItems.addAll(RoomKindModel.kindItems);
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: ColorPalette.primaryColor,
-          child: Text(
-            '+',
-            style: TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
-          ),
-          onPressed: () {
-            Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
-          },
-        ),
+        floatingActionButton: AuthServices.CurrentUserIsManager()
+            ? FloatingActionButton(
+                backgroundColor: ColorPalette.primaryColor,
+                child: Text(
+                  '+',
+                  style: TextStyles.h1
+                      .copyWith(color: ColorPalette.backgroundColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CreateRoomScreen.routeName);
+                },
+              )
+            : Container(),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: ColorPalette.primaryColor,
