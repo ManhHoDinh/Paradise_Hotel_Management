@@ -66,9 +66,13 @@ class AuthServices {
   }
 
   static bool CurrentUserIsManager() {
-    bool result = false;
-    if (AuthServices.CurrentUser!.Position == 'Manager') result = true;
-    return result;
+    try {
+      bool result = false;
+      if (AuthServices.CurrentUser!.Position == 'Manager') result = true;
+      return result;
+    } catch (e) {
+      return false;
+    }
   }
 
   static UpdateCurrentUser() {
