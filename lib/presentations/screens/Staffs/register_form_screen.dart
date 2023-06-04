@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
@@ -25,22 +27,54 @@ class RegisterFormScreen extends StatefulWidget {
 }
 
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
-  final countryPicker = const FlCountryCodePicker();
-  CountryCode? countryCode;
-
   final formRegisterKey = GlobalKey<FormState>();
   TextEditingController _birthdayController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneNoController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _cccdControler = TextEditingController();
   bool isAccept = false;
   bool _passwordVisible = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<String> kindItems = ['Manager', 'Staff'];
+  String dropdownKindValue = 'Manager';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: ColorPalette.primaryColor,
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
+            customBorder: CircleBorder(),
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              child: Icon(FontAwesomeIcons.arrowLeft),
+            ),
+          ),
+        ),
+        title: Container(
+            child: Text('CREATE USER',
+                style: TextStyles.slo.bold.copyWith(
+                  shadows: [
+                    Shadow(
+                      color: Colors.black12,
+                      offset: Offset(3, 6),
+                      blurRadius: 6,
+                    )
+                  ],
+                ))),
+        centerTitle: true,
+        toolbarHeight: kToolbarHeight * 1.5,
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.only(top: 60),
@@ -48,20 +82,6 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
           child: Form(
             key: formRegisterKey,
             child: Column(children: [
-              Row(
-                children: [
-                  InkWell(
-                    child: Icon(Icons.arrow_back),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  Text('Complete your profile')
-                ],
-              ),
-              SizedBox(
-                height: 40,
-              ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 validator: (input) {
@@ -81,7 +101,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'E-mail',
                     labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
                     errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                         borderRadius: BorderRadius.circular(kMediumPadding)),
@@ -100,8 +120,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 validator: (value) {
                   if (value == null) {
                     return "Please enter your phone number!";
-                  } else if (countryCode == null ||
-                      !RegExp(r'^[0-9]+$').hasMatch(value) ||
+                  } else if (!RegExp(r'^[0-9]+$').hasMatch(value) ||
                       value.length < 10) {
                     return "Phone number is invalid!";
                   } else
@@ -111,41 +130,12 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                    prefixIcon: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: GestureDetector(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(right: 4),
-                              child: countryCode != null
-                                  ? countryCode!.flagImage
-                                  : null,
-                            ),
-                            Text(
-                              countryCode != null
-                                  ? countryCode!.dialCode
-                                  : '+1',
-                              style: TextStyle(fontSize: 16),
-                            )
-                          ],
-                        ),
-                        onTap: () async {
-                          final code =
-                              await countryPicker.showPicker(context: context);
-                          setState(() {
-                            countryCode = code;
-                          });
-                        },
-                      ),
-                    ),
                     isDense: true,
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Phone number',
                     labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -157,13 +147,14 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         borderSide: BorderSide(color: Colors.transparent),
                         borderRadius: BorderRadius.circular(kMediumPadding))),
               ),
+
               // IntlPhoneField(
               //   controller: _phoneNoController,
               //   decoration: InputDecoration(
               //     isDense: true,
               //     labelText: 'Phone Number',
               //     labelStyle:
-              //         TextStyle(fontSize: 12, color: ColorPalette.grayText),
+              //         TextStyle(fontSize: 14, color: ColorPalette.grayText),
               //     focusedBorder: OutlineInputBorder(
               //       borderSide:
               //           BorderSide(color: ColorPalette.primaryColor, width: 2),
@@ -188,6 +179,37 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               ),
               TextFormField(
                 validator: (value) {
+                  if (value == null) {
+                    return "Identification number is invalid!";
+                  } else
+                    return null;
+                },
+                controller: _cccdControler,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    fillColor: ColorPalette.bgTextFieldColor,
+                    labelText: 'Identification Numnber',
+                    labelStyle:
+                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ColorPalette.primaryColor, width: 2),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(kMediumPadding)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(kMediumPadding))),
+              ),
+              SizedBox(
+                height: kMediumPadding,
+              ),
+              TextFormField(
+                validator: (value) {
                   if (value!.isEmpty || RegExp(r'^[1 9]+$').hasMatch(value)) {
                     return "Name is invalid!";
                   } else
@@ -200,7 +222,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Full Name',
                     labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -233,7 +255,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Birthday',
                     labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -305,7 +327,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Account password',
                     labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
                     errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                         borderRadius: BorderRadius.circular(kMediumPadding)),
@@ -317,29 +339,62 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         borderSide: BorderSide(color: Colors.transparent),
                         borderRadius: BorderRadius.circular(kMediumPadding))),
               ),
-              SizedBox(
-                height: kMediumPadding,
+              Container(
+                height: 50,
+                margin: EdgeInsets.only(top: 20),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    border: Border.all(color: ColorPalette.grayText),
+                    borderRadius: BorderRadius.circular(kMediumPadding)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    alignment: Alignment.center,
+                    iconStyleData: IconStyleData(
+                        iconEnabledColor: ColorPalette.primaryColor),
+                    dropdownStyleData: DropdownStyleData(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kMinPadding))),
+                    hint: Center(
+                      child: Text(
+                        'Position',
+                        style: TextStyles.defaultStyle.grayText,
+                      ),
+                    ),
+                    items: kindItems
+                        .map((e) => DropdownMenuItem<String>(
+                            value: e,
+                            onTap: () {
+                              setState(() {
+                                dropdownKindValue = e;
+                              });
+                            },
+                            child: Text(
+                              e,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyles.defaultStyle.grayText
+                                  .copyWith(fontSize: 13),
+                            )))
+                        .toList(),
+                    buttonStyleData: const ButtonStyleData(
+                      padding: const EdgeInsets.only(left: 12),
+                      height: 28,
+                      width: 10,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 28,
+                    ),
+                    value: dropdownKindValue,
+                    onChanged: (value) {
+                      setState(() {
+                        dropdownKindValue = value!;
+                      });
+                    },
+                  ),
+                ),
               ),
-              // Row(
-              //   children: [
-              //     Checkbox(
-              //         value: isAccept,
-              //         onChanged: (isChecked) {
-              //           setState(() {
-              //             isAccept = isChecked!;
-              //           });
-              //           ;
-              //         }),
-              //     Expanded(
-              //       child: Text(
-              //         'I agree to Hotel Management of Service, Payments Terms of Service.',
-              //         style: TextStyles.defaultMonth.DarkPrimaryTextColor,
-              //         maxLines: 2,
-              //         overflow: TextOverflow.clip,
-              //       ),
-              //     )
-              //   ],
-              // ),
+              SizedBox(
+                height: kMediumPadding + 15,
+              ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 40),
                 child: Material(
@@ -354,16 +409,11 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             _emailController.text,
                             _passwordController.text,
                             _nameController.text,
-                            countryCode!.dialCode + _phoneNoController.text,
+                            _phoneNoController.text,
+                            _birthdayController.text,
+                            _cccdControler.text,
+                            dropdownKindValue,
                             context);
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return DialogOverlay(
-                                isSuccess: true,
-                                task: ' Register',
-                              );
-                            });
 
                         // FirebaseAuth.instance
                         //     .createUserWithEmailAndPassword(
@@ -377,13 +427,13 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                       }
                     },
                     child: Container(
-                      height: 40,
+                      height: 50,
                       alignment: Alignment.center,
                       child: Text(
-                        'Done',
+                        'Create',
                         style: TextStyles.h8.copyWith(
                             color: ColorPalette.backgroundColor,
-                            fontSize: 12,
+                            fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
                     ),

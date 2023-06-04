@@ -6,6 +6,7 @@ import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';
 import 'package:paradise/presentations/screens/Rooms/seeAll_screen.dart';
+import 'package:paradise/presentations/screens/Staffs/staff_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
@@ -138,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: ColorPalette.primaryColor,
                         onTap: () {
                           Navigator.of(context)
-                              .pushNamed(ReportScreen.routeName);
+                              .pushNamed(StaffScreen.routeName);
                         },
                         textColor: ColorPalette.backgroundColor,
                       ),

@@ -8,25 +8,40 @@ import '../../presentations/widgets/dialog.dart';
 
 class AuthServices {
   static UserModel? CurrentUser;
-  static signUpUser(String email, String password, String name, String phoneNo,
+  static signUpUser(
+      String email,
+      String password,
+      String name,
+      String phoneNo,
+      String birthday,
+      String CMND,
+      String Position,
       BuildContext buildContext) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-
-      await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
-      await FirebaseAuth.instance.currentUser!.updateEmail(email);
-      String uid = FirebaseAuth.instance.currentUser!.uid;
+      String uid = userCredential.user!.uid;
       UserModel user = UserModel(
           ID: uid,
           Name: name,
           PhoneNumber: phoneNo,
           Email: email,
-          Position: 'Manager');
+          birthday: birthday,
+          identification: CMND,
+          Position: Position);
       DocumentReference doc =
           FirebaseFirestore.instance.collection("Users").doc(uid);
-      doc.set(user.toJson());
-      Navigator.of(buildContext).pushNamed(MainScreen.routeName);
+      await doc
+          .set(user.toJson())
+          .whenComplete(() => showDialog(
+              context: buildContext,
+              builder: (context) {
+                return DialogOverlay(
+                  isSuccess: true,
+                  task: 'Create User',
+                );
+              }))
+          .whenComplete(() => Navigator.of(buildContext).pop());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(buildContext).showSnackBar(
