@@ -4,7 +4,7 @@ import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/presentations/screens/Onboardings/AuthFunctions.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_form_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/register_screen.dart';
 import 'package:paradise/presentations/screens/forgot_password_screen.dart';
@@ -184,7 +184,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (isChecked) {
                             pref.setString('email', _emailController.text);
                           }
-
                           AuthServices.signinUser(_emailController.text,
                               _passwordController.text, context);
                         }

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
-import 'package:paradise/presentations/widgets/appBar_widget.dart';
 
+import '../../../core/helpers/AuthFunctions.dart';
 import '../../widgets/room_kind_widget.dart';
 import 'AddRoomKindScreen.dart';
 
@@ -24,19 +23,22 @@ class _RoomKindViewState extends State<RoomKindView> {
       appBar: AppBar(
         backgroundColor: ColorPalette.primaryColor,
         title: Text('ROOM TYPE'),
-         toolbarHeight: kToolbarHeight * 1.5,
-         centerTitle: true,
+        toolbarHeight: kToolbarHeight * 1.5,
+        centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorPalette.primaryColor,
-        child: Text(
-          '+',
-          style: TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddRoomKindScreen.routeName);
-        },
-      ),
+      floatingActionButton: AuthServices.CurrentUserIsManager()
+          ? FloatingActionButton(
+              backgroundColor: ColorPalette.primaryColor,
+              child: Text(
+                '+',
+                style:
+                    TextStyles.h1.copyWith(color: ColorPalette.backgroundColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddRoomKindScreen.routeName);
+              },
+            )
+          : Container(),
       body: Column(
         children: [
           Expanded(

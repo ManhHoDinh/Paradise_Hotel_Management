@@ -773,9 +773,7 @@ class _ReportScreenState extends State<ReportScreen> {
   Future<void> generatePDF() async {
     PdfDocument document = PdfDocument();
     var page = document.pages.add();
-    page.graphics
-        .drawString('binh đây', PdfStandardFont(PdfFontFamily.helvetica, 30));
-
+    
     List<int> bytes = await document.save();
     document.dispose();
     saveAndLaunchFile(bytes, 'output.pdf');

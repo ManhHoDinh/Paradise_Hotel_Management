@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
@@ -48,6 +50,7 @@ class _ReceiptItemState extends State<ReceiptItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              width: 150,
               margin: const EdgeInsets.symmetric(
                 horizontal: kDefaultPadding,
                 vertical: kDefaultPadding,
@@ -55,6 +58,7 @@ class _ReceiptItemState extends State<ReceiptItem> {
               child: Text(
                 receiptModel.guestName!,
                 textAlign: TextAlign.center,
+                overflow: TextOverflow.visible,
                 style: TextStyles.h6.copyWith(
                     fontWeight: FontWeight.bold,
                     color: ColorPalette.darkBlueText),
@@ -71,13 +75,15 @@ class _ReceiptItemState extends State<ReceiptItem> {
                   child: Image.asset(AssetHelper.icoLocation),
                 ),
                 Container(
+                  width: 100,
                   margin: const EdgeInsets.only(
                     left: kDefaultPadding,
-                    right: kDefaultPadding,
                     bottom: kDefaultPadding,
                   ),
                   child: Text(
                     receiptModel.address!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyles.h6.copyWith(
                       color: ColorPalette.rankText,
                     ),

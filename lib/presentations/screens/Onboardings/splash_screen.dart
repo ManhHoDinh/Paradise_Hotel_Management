@@ -1,17 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
-import 'package:paradise/core/helpers/local_storage_helper.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
-import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
-import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/models/firebase_request.dart';
 import '../../../core/models/rental_form_model.dart';
 import '../../../core/models/room_kind_model.dart';
-import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -26,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    NextIntroScreen();
   }
 
   // ignore: non_constant_identifier_names

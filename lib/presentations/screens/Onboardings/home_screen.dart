@@ -17,6 +17,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/color_palatte.dart';
+import '../../../core/helpers/AuthFunctions.dart';
 import '../../../core/helpers/assets_helper.dart';
 import '../../../core/helpers/image_helper.dart';
 import '../../../core/models/firebase_request.dart';
@@ -65,8 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(
-                child: Image.asset(AssetHelper.avatar),
-              ),
+                  child: ImageHelper.loadFromAsset(AssetHelper.avatar,
+                      width: 110, height: 110)),
               Container(
                   margin: EdgeInsets.only(
                     top: 30,
@@ -133,47 +134,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   textColor: ColorPalette.backgroundColor,
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                child: ButtonWidget(
-                  label: 'Report',
-                  color: ColorPalette.primaryColor,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(ReportScreen.routeName);
-                  },
-                  textColor: ColorPalette.backgroundColor,
-                ),
-              ),
-              StreamBuilder(
-                  stream: FireBaseDataBase.readUsers(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      UserModel currentUser = UserModel(
-                          name: '', phoneNumber: '', position: '', email: '');
-                      List<UserModel> listUser = snapshot.data!;
-                      for (var user in listUser) {
-                        if (user.id == currentUserID) {
-                          UserModel.currentUser = user;
-                        }
-                      }
-                    }
-
-                    if (UserModel.currentUser.position! == "Manager") {
-                      return Container(
-                        padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                        child: ButtonWidget(
-                          label: 'Staff',
-                          color: ColorPalette.primaryColor,
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(StaffScreen.routeName);
-                          },
-                          textColor: ColorPalette.backgroundColor,
-                        ),
-                      );
-                    } else
-                      return Container();
-                  }),
+              AuthServices.CurrentUserIsManager()
+                  ? Container(
+                      padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                      child: ButtonWidget(
+                        label: 'Report',
+                        color: ColorPalette.primaryColor,
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(ReportScreen.routeName);
+                        },
+                        textColor: ColorPalette.backgroundColor,
+                      ),
+                    )
+                  : Container(),
+              AuthServices.CurrentUserIsManager()
+                  ? Container(
+                      padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                      child: ButtonWidget(
+                        label: 'Users Management',
+                        color: ColorPalette.primaryColor,
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(ReportScreen.routeName);
+                        },
+                        textColor: ColorPalette.backgroundColor,
+                      ),
+                    )
+                  : Container(),
             ]),
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
 import 'package:paradise/core/models/guest_model.dart';
+import 'package:paradise/core/models/notification_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
@@ -59,4 +60,11 @@ class FireBaseDataBase {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => GuestModel.fromJson(doc.data())).toList());
+  static Stream<List<NotificationModel>> readNotification() =>
+      FirebaseFirestore.instance
+          .collection(NotificationModel.CollectionName)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => NotificationModel.fromJson(doc.data()))
+              .toList());
 }

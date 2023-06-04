@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/guest_kind_model.dart';
 
@@ -28,21 +29,23 @@ class GuestKindWidget extends StatelessWidget {
                 style: TextStyles.h3.copyWith(color: ColorPalette.primaryColor),
               ),
               Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => EditGuestKindScreen(
-                                guestKind: GuestKind,
-                              )));
-                },
-                child: Icon(
-                  FontAwesomeIcons.pen,
-                  color: ColorPalette.primaryColor,
-                  size: 15,
-                ),
-              )
+              AuthServices.CurrentUserIsManager()
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => EditGuestKindScreen(
+                                      guestKind: GuestKind,
+                                    )));
+                      },
+                      child: Icon(
+                        FontAwesomeIcons.pen,
+                        color: ColorPalette.primaryColor,
+                        size: 15,
+                      ),
+                    )
+                  : Container()
             ],
           ),
         ),

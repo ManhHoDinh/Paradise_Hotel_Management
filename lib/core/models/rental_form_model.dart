@@ -29,7 +29,7 @@ class RentalFormModel {
       required this.SurchargeRatio});
   Map<String, dynamic> toJson() => {
         'RoomID': RoomID,
-        'BeginDate': Timestamp.fromDate(BeginDate),
+        'BeginDate': Timestamp.fromDate(BeginDate!),
         'GuestIDs': GuestIDs,
         'RentalID': RentalID,
         'Status': Status,
@@ -85,13 +85,13 @@ class RentalFormModel {
     }
   }
 
-  void UpdateInformation() {
-    HighestGuestKindSurchargeRatio = HighestGuestKindRatio();
+  Future<void> UpdateInformation() async {
+    HighestGuestKindSurchargeRatio = await HighestGuestKindRatio();
     RoomModel room = getRoom();
     UnitPrice = room.getPrice();
     NumberGuestBeginSubCharge = room.NumberGuestBeginSubCharge ?? 0;
     SurchargeRatio = room.SubChargeRatio ?? 0;
-    HighestGuestKindRatioName = HighestGuestKindRatioSurchargeName();
+    HighestGuestKindRatioName = await HighestGuestKindRatioSurchargeName();
   }
 
   HighestGuestKindRatio() {
