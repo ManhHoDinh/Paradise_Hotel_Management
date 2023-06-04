@@ -184,6 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (isChecked) {
                             pref.setString('email', _emailController.text);
                           }
+
                           AuthServices.signinUser(_emailController.text,
                               _passwordController.text, context);
                         }

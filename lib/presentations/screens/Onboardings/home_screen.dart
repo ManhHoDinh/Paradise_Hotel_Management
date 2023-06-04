@@ -162,6 +162,33 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     )
                   : Container(),
+              // StreamBuilder(
+              //     stream: FireBaseDataBase.readUsers(),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.hasData) {
+              //         List<UserModel> listUser = snapshot.data!;
+              //         for (UserModel user in listUser) {
+              //           if (user.id == currentUserID) {
+              //             UserModel.currentUser = user;
+              //           }
+              //         }
+              //       }
+              //       if (UserModel.currentUser.position == "Manager") {
+              //         return Container(
+              //           padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+              //           child: ButtonWidget(
+              //             label: 'Staff',
+              //             color: ColorPalette.primaryColor,
+              //             onTap: () {
+              //               Navigator.of(context)
+              //                   .pushNamed(StaffScreen.routeName);
+              //             },
+              //             textColor: ColorPalette.backgroundColor,
+              //           ),
+              //         );
+              //       } else
+              //         return Container();
+              //     }),
             ]),
           ),
         ),
@@ -253,9 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 // ScaffoldMessenger.of(context).showSnackBar(
                 //     SnackBar(content: Text(UserModel.currentUser.getUserId())));
-                FirebaseAuth.instance.signOut();
 
-                Navigator.of(context).pushNamed(LoginScreen.routeName);
+                FirebaseAuth.instance.signOut();
               },
             ),
             const SizedBox(height: 36),

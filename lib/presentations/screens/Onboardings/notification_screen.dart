@@ -52,7 +52,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         'heading': controlhead.text,
         'description': controldes.text,
         'postTime': DateTime.now(),
-        'postAuthor': AuthServices.CurrentUser!.Name
+        'postAuthor': AuthServices.CurrentUser!.name
       }).then((value) => print("New Notification Posted")).catchError(
           (error) => print("Failed to add new notification: $error"));
     }
