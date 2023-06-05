@@ -4,6 +4,7 @@ import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:paradise/presentations/screens/GuestKinds/AddGuestKindScreen.dart';
 import 'package:paradise/presentations/screens/GuestKinds/GuestKindView.dart';
 import 'package:paradise/presentations/screens/Onboardings/home_screen.dart';
+import 'package:paradise/presentations/screens/Onboardings/hotel_information_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/otp_screen.dart';
 import 'package:paradise/presentations/screens/Staffs/register_form_screen.dart';
@@ -19,6 +20,7 @@ import 'package:paradise/presentations/screens/Onboardings/main_screen.dart';
 import 'package:paradise/presentations/screens/Staffs/staff_screen.dart';
 import 'package:paradise/presentations/screens/forgot_password_screen.dart';
 import 'package:paradise/presentations/screens/report_screen.dart';
+import 'package:path/path.dart';
 
 final Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => SplashScreen(),
@@ -39,4 +41,5 @@ final Map<String, WidgetBuilder> routes = {
   MainScreen.routeName: (context) => MainScreen(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
   StaffScreen.routeName: (context) => StaffScreen(),
+  HotelInforScreen.routeName: (context) => HotelInforScreen()
 };

@@ -34,7 +34,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // checkLogin();
     super.initState();
   }
 
@@ -80,7 +79,6 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                AuthServices.UpdateCurrentUser();
                 return SplashScreen();
               } else {
                 if (snapshot.hasData) {
