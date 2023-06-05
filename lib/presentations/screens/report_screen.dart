@@ -63,7 +63,7 @@ class _ReportScreenState extends State<ReportScreen> {
     '2023',
   ];
 
-  List<ReportItem> getListReportItem() {
+  List<ReportItem> getListMonthReportItem() {
     List<ReportItem> listReportItem = [];
     for (int i = 0; i < RoomKindModel.AllRoomKinds.length; i++) {
       RoomKindModel roomKind = RoomKindModel.AllRoomKinds[i];
@@ -72,6 +72,19 @@ class _ReportScreenState extends State<ReportScreen> {
           roomType: roomKind.Name!,
           revenue: revenue,
           rate: Rate(revenue, totalMonthPrice)));
+    }
+    return listReportItem;
+  }
+
+  List<ReportItem> getListYearReportItem() {
+    List<ReportItem> listReportItem = [];
+    for (int i = 0; i < RoomKindModel.AllRoomKinds.length; i++) {
+      RoomKindModel roomKind = RoomKindModel.AllRoomKinds[i];
+      int revenue = getRevenueOfYearReport(roomKind);
+      listReportItem.add(ReportItem(
+          roomType: roomKind.Name!,
+          revenue: revenue,
+          rate: Rate(revenue, totalYearPrice)));
     }
     return listReportItem;
   }
@@ -392,14 +405,14 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () async {
-                    List<ReportItem> listReportItem = getListReportItem();
+                    List<ReportItem> listReportItem = getListMonthReportItem();
 
                     final report = Report(items: listReportItem);
                     final pdfFile = await PdfReportApi.generate(
-                        report,
-                        yearOfMonthReportSelected!,
-                        monthSelected!,
-                        totalMonthPrice);
+                        report: report,
+                        year: yearOfMonthReportSelected!,
+                        month: monthSelected!,
+                        total: totalMonthPrice);
                     PdfApi.openFile(pdfFile);
                   },
                   child: Container(
@@ -652,10 +665,15 @@ class _ReportScreenState extends State<ReportScreen> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
-                  onTap: () {
-                    getListReportItem();
-                    // final report = Report(items: listReportItem);
-                    generatePDF();
+                  onTap: () async {
+                    List<ReportItem> listReportItem = getListYearReportItem();
+
+                    final report = Report(items: listReportItem);
+                    final pdfFile = await PdfReportApi.generate(
+                        report: report,
+                        year: yearSelected!,
+                        total: totalYearPrice);
+                    PdfApi.openFile(pdfFile);
                   },
                   child: Container(
                     width: size.width / 2,
@@ -773,7 +791,7 @@ class _ReportScreenState extends State<ReportScreen> {
   Future<void> generatePDF() async {
     PdfDocument document = PdfDocument();
     var page = document.pages.add();
-    
+
     List<int> bytes = await document.save();
     document.dispose();
     saveAndLaunchFile(bytes, 'output.pdf');

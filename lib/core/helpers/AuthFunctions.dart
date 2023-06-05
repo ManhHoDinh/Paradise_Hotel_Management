@@ -113,5 +113,4 @@ class AuthServices {
 
   static StreamController<bool> CurrentUserIsManagerStream =
       StreamController<bool>();
-
 }

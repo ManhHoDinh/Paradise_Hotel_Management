@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/constants/color_palatte.dart';
@@ -182,8 +183,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (isChecked) {
                             pref.setString('email', _emailController.text);
                           }
-                          AuthServices.signinUser(_emailController.text,
-                              _passwordController.text, context);
+                          FirebaseFirestore.instance
+                              .collection("Users")
+                              .get()
+                              .then((value) {
+                            int check = 0;
+                            for (var doc in value.docs) {
+                              if (doc.get("Email") == _emailController.text) {
+                                check++;
+                              }
+                            }
+                            if (check > 0) {
+                              AuthServices.signinUser(_emailController.text,
+                                  _passwordController.text, context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          'No user Found with this Email')));
+                            }
+                          });
                         }
                       },
                     ),

@@ -12,20 +12,28 @@ import 'package:pdf/widgets.dart';
 
 class PdfReportApi {
   static Future<File> generate(
-      Report report, String year, String month, int total) async {
+      {required Report report,
+      required String year,
+      String? month,
+      required int total}) async {
     final pdf = Document();
     pdf.addPage(MultiPage(build: (context) {
       return [
-        buildTile(year, month),
+        month == null
+            ? buildTile(year: year)
+            : buildTile(year: year, month: month),
         buildTableReport(report),
         SizedBox(height: kMaxPadding),
         buildToTalPrice(total)
       ];
     }));
+    if (month == null) {
+      return PdfApi.saveDocument(name: '${year}_reportt.pdf', pdf: pdf);
+    }
     return PdfApi.saveDocument(name: '${month}_${year}_report.pdf', pdf: pdf);
   }
 
-  static Widget buildTile(String year, String month) {
+  static Widget buildTile({required String year, String? month}) {
     return Column(children: [
       Text('REPORT',
           style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
@@ -37,7 +45,8 @@ class PdfReportApi {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(width: 1, style: BorderStyle.solid)),
-          child: Text('$month, $year', style: TextStyle(fontSize: 20))),
+          child: Text(month == null ? '$year' : '$month, $year',
+              style: TextStyle(fontSize: 20))),
       SizedBox(height: kMaxPadding)
     ]);
   }
