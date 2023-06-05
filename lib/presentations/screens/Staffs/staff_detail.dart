@@ -10,6 +10,8 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 
+import '../../../core/constants/dimension_constants.dart';
+
 class StaffDetail extends StatefulWidget {
   static final String routeName = 'staff_detail';
   final UserModel userModel;
@@ -66,50 +68,36 @@ class _StaffDetailState extends State<StaffDetail> {
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
-          elevation: 5,
+          elevation: 0,
           backgroundColor: ColorPalette.primaryColor,
-          leading: InkWell(
-            customBorder: CircleBorder(),
-            onHighlightChanged: (param) {
-              setState(() {
-                isPressed = param;
-              });
-            },
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              child: Icon(
-                FontAwesomeIcons.arrowLeft,
-                color: isPressed
-                    ? ColorPalette.primaryColor
-                    : ColorPalette.backgroundColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
               ),
             ),
           ),
           title: Container(
-            child: Row(
-              children: [
-                Expanded(
-                    flex: 5,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text('DETAIL',
-                          style: TextStyles.h9.copyWith(
-                            letterSpacing: 2,
-                            color: ColorPalette.backgroundColor,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w700,
-                          )),
-                    )),
-                Expanded(
-                    child: InkWell(
-                  onTap: () {},
-                  child: Image.asset(AssetHelper.iconMenu),
-                ))
-              ],
-            ),
-          ),
+              child: Text('USER DETAIL',
+                  style: TextStyles.slo.bold.copyWith(
+                    shadows: [
+                      Shadow(
+                        color: Colors.black12,
+                        offset: Offset(3, 6),
+                        blurRadius: 6,
+                      )
+                    ],
+                  ))),
+          centerTitle: true,
+          toolbarHeight: kToolbarHeight * 1.5,
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 26),
@@ -142,7 +130,7 @@ class _StaffDetailState extends State<StaffDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.userModel.name!,
+                            widget.userModel.Name!,
                             style: TextStyles.h8.copyWith(
                               color: ColorPalette.darkBlueText,
                               fontSize: 20,
@@ -151,7 +139,7 @@ class _StaffDetailState extends State<StaffDetail> {
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
-                              widget.userModel.position!,
+                              widget.userModel.Position!,
                               style: TextStyles.staffInforDetail.copyWith(
                                 fontWeight: FontWeight.w400,
                               ),
@@ -224,7 +212,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
-                              widget.userModel.identification!,
+                              widget.userModel.identification ?? '',
                               style: TextStyles.staffInforDetail,
                             ),
                           ),
@@ -232,7 +220,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
-                              widget.userModel.email!,
+                              widget.userModel.Email!,
                               style: TextStyles.staffInforDetail,
                             ),
                           ),
@@ -240,7 +228,7 @@ class _StaffDetailState extends State<StaffDetail> {
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(bottom: 6),
                             child: Text(
-                              widget.userModel.phoneNumber!,
+                              widget.userModel.PhoneNumber!,
                               style: TextStyles.staffInforDetail,
                             ),
                           ),
@@ -256,43 +244,6 @@ class _StaffDetailState extends State<StaffDetail> {
             ],
           ),
         ),
-        bottomNavigationBar: SalomonBottomBar(
-            currentIndex: currentId,
-            onTap: (id) {
-              setState(() {
-                currentId = id;
-              });
-            },
-            items: [
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.house,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Home')),
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.gear,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Setting')),
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.bell,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Notification')),
-              SalomonBottomBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.user,
-                    color: ColorPalette.primaryColor,
-                    size: 20,
-                  ),
-                  title: Text('Account')),
-            ]),
       ),
     );
   }

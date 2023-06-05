@@ -41,7 +41,7 @@ class _AccountScreenState extends State<AccountScreen> {
             Container(
                 margin: EdgeInsets.only(top: 30),
                 child: Text(
-                  '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.name}',
+                  '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.Name}',
                   style: TextStyles.h4.copyWith(
                       color: ColorPalette.primaryColor,
                       fontWeight: FontWeight.w500),
@@ -49,7 +49,7 @@ class _AccountScreenState extends State<AccountScreen> {
             Container(
                 margin: EdgeInsets.only(top: 15),
                 child: Text(
-                  'Official ${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.position}',
+                  'Official ${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.Position}',
                   style: TextStyles.h5.copyWith(
                       color: ColorPalette.grayText,
                       fontWeight: FontWeight.w400),
@@ -93,7 +93,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Container(
                         width: 150,
                         child: Text(
-                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.id}',
+                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.ID}',
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
@@ -104,7 +104,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 30),
                         child: Text(
-                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.phoneNumber}',
+                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.PhoneNumber}',
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.visible,
@@ -115,7 +115,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 30),
                         child: Text(
-                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.email}',
+                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.Email}',
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.visible,

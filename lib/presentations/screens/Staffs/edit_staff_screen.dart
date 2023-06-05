@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
+import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/core/models/user_model.dart';
 
 import '../../../core/constants/color_palatte.dart';
@@ -34,20 +35,46 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    nameController.text = widget.userModel.name ?? '';
-    phoneController.text = widget.userModel.phoneNumber ?? '';
-    positionController.text = widget.userModel.position ?? '';
-    emailController.text = widget.userModel.email ?? '';
+    nameController.text = widget.userModel.Name;
+    phoneController.text = widget.userModel.PhoneNumber;
+    positionController.text = widget.userModel.Position;
+    emailController.text = widget.userModel.Email;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: ColorPalette.primaryColor,
-        title: Text('EDIT STAFF'),
-        toolbarHeight: kToolbarHeight * 1.5,
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
+            customBorder: CircleBorder(),
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              child: Icon(FontAwesomeIcons.arrowLeft),
+            ),
+          ),
+        ),
+        title: Container(
+            child: Text('EDIT USER',
+                style: TextStyles.slo.bold.copyWith(
+                  shadows: [
+                    Shadow(
+                      color: Colors.black12,
+                      offset: Offset(3, 6),
+                      blurRadius: 6,
+                    )
+                  ],
+                ))),
         centerTitle: true,
+        toolbarHeight: kToolbarHeight * 1.5,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -272,7 +299,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
               yesOnTap: () async {
                 final doc = await FirebaseFirestore.instance
                     .collection('Users')
-                    .doc(widget.userModel.id);
+                    .doc(widget.userModel.ID);
                 await doc.delete();
                 Navigator.pop(context);
                 await showDialog(
@@ -352,13 +379,13 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
       } else {
         final doc = await FirebaseFirestore.instance
             .collection('Users')
-            .doc(widget.userModel.id);
+            .doc(widget.userModel.ID);
         UserModel user = new UserModel(
-          id: widget.userModel.id,
-          name: name,
-          email: email,
-          phoneNumber: phoneNumber,
-          position: position,
+          ID: widget.userModel.ID,
+          Name: name,
+          Email: email,
+          PhoneNumber: phoneNumber,
+          Position: position,
         );
         final json = user.toJson();
         await doc.update(json);

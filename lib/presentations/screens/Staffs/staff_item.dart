@@ -49,11 +49,12 @@ class _StaffItemState extends State<StaffItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.userModel.name!,
+                      widget.userModel.Name,
                       textAlign: TextAlign.center,
                       style: TextStyles.h6.copyWith(
                           fontWeight: FontWeight.bold,
                           color: ColorPalette.darkBlueText),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -75,6 +76,35 @@ class _StaffItemState extends State<StaffItem> {
             Row(
               children: [
                 Container(
+                  margin: const EdgeInsets.only(
+                    left: kDefaultPadding,
+                    // right: kDefaultPadding,
+                    bottom: 12,
+                  ),
+                  child: Icon(
+                    FontAwesomeIcons.idCard,
+                    color: ColorPalette.primaryColor,
+                    size: 13,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: kDefaultPadding - 5,
+                    right: kDefaultPadding,
+                    bottom: 12,
+                  ),
+                  child: Text(
+                    widget.userModel.identification ?? '',
+                    style: TextStyles.h6.copyWith(
+                      color: ColorPalette.rankText,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Container(
                   height: 20,
                   margin: const EdgeInsets.only(
                     left: kDefaultPadding,
@@ -89,14 +119,19 @@ class _StaffItemState extends State<StaffItem> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(
-                    left: kDefaultPadding - 12,
+                    left: kDefaultPadding - 5,
                     right: kDefaultPadding,
                     bottom: kDefaultPadding,
                   ),
-                  child: Text(
-                    widget.userModel.phoneNumber!,
-                    style: TextStyles.h6.copyWith(
-                      color: ColorPalette.rankText,
+                  child: Container(
+                    width: 100,
+                    child: Text(
+                      widget.userModel.PhoneNumber,
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                      style: TextStyles.h6.copyWith(
+                        color: ColorPalette.rankText,
+                      ),
                     ),
                   ),
                 ),
@@ -105,23 +140,25 @@ class _StaffItemState extends State<StaffItem> {
             Row(
               children: [
                 Container(
-                    margin: const EdgeInsets.only(
-                      left: kDefaultPadding,
-                      // right: kDefaultPadding,
-                      bottom: 12,
-                    ),
-                    child: Text(
-                      'DOB',
-                      style: TextStyle(color: ColorPalette.primaryColor),
-                    )),
+                  margin: const EdgeInsets.only(
+                    left: kDefaultPadding,
+                    // right: kDefaultPadding,
+                    bottom: 12,
+                  ),
+                  child: Icon(
+                    FontAwesomeIcons.cakeCandles,
+                    color: ColorPalette.primaryColor,
+                    size: 13,
+                  ),
+                ),
                 Container(
                   margin: const EdgeInsets.only(
-                    left: kDefaultPadding - 12,
+                    left: kDefaultPadding - 5,
                     right: kDefaultPadding,
                     bottom: 12,
                   ),
                   child: Text(
-                    widget.userModel.birthday!,
+                    widget.userModel.birthday ?? '',
                     style: TextStyles.h6.copyWith(
                       color: ColorPalette.rankText,
                     ),

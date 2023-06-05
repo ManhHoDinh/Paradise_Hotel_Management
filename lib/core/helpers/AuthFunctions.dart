@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/models/user_model.dart';
@@ -10,26 +13,40 @@ import '../../presentations/widgets/dialog.dart';
 
 class AuthServices {
   static UserModel? CurrentUser;
-  static signUpUser(String email, String password, String name, String phoneNo,
-      String birthday, String cccd, BuildContext buildContext) async {
+  static signUpUser(
+      String email,
+      String password,
+      String name,
+      String phoneNo,
+      String birthday,
+      String CMND,
+      String Position,
+      BuildContext buildContext) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-
-      // await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
-      // await FirebaseAuth.instance.currentUser!.updateEmail(email);
-      String uid = FirebaseAuth.instance.currentUser!.uid;
+      String uid = userCredential.user!.uid;
       UserModel user = UserModel(
-          id: uid,
-          name: name,
-          phoneNumber: phoneNo,
-          email: email,
+          ID: uid,
+          Name: name,
+          PhoneNumber: phoneNo,
+          Email: email,
           birthday: birthday,
-          position: 'Staff');
+          identification: CMND,
+          Position: Position);
       DocumentReference doc =
           FirebaseFirestore.instance.collection("Users").doc(uid);
-      doc.set(user.toJson());
-      Navigator.of(buildContext).pushNamed(MainScreen.routeName);
+      await doc
+          .set(user.toJson())
+          .whenComplete(() => showDialog(
+              context: buildContext,
+              builder: (context) {
+                return DialogOverlay(
+                  isSuccess: true,
+                  task: 'Create User',
+                );
+              }))
+          .whenComplete(() => Navigator.of(buildContext).pop());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(buildContext).showSnackBar(
@@ -73,9 +90,13 @@ class AuthServices {
   }
 
   static bool CurrentUserIsManager() {
-    bool result = false;
-    if (AuthServices.CurrentUser!.position == 'Manager') result = true;
-    return result;
+    try {
+      bool result = false;
+      if (AuthServices.CurrentUser!.Position == 'Manager') result = true;
+      return result;
+    } catch (e) {
+      return false;
+    }
   }
 
   static UpdateCurrentUser() {
@@ -85,12 +106,18 @@ class AuthServices {
         .get()
         .then((value) {
       AuthServices.CurrentUser = UserModel(
-          id: value['ID'],
-          name: value['Name'],
-          phoneNumber: value['PhoneNumber'],
-          email: value['Email'],
-          position: value['Position'],
-          birthday: value['BirthDay']);
+        ID: value['ID'],
+        Name: value['Name'],
+        PhoneNumber: value['PhoneNumber'],
+        Email: value['Email'],
+        Position: value['Position'],
+      );
+      CurrentUserIsManagerStream = new StreamController<bool>();
+      CurrentUserIsManagerStream.sink.add(CurrentUserIsManager());
     });
   }
+
+  static StreamController<bool> CurrentUserIsManagerStream =
+      StreamController<bool>();
+
 }

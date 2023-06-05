@@ -24,10 +24,6 @@ class FireBaseDataBase {
     referenceRooms = await FirebaseFirestore.instance.collection('Rooms');
   }
 
-  static Stream<List<UserModel>> readUsers() =>
-      FirebaseFirestore.instance.collection('Users').snapshots().map((event) =>
-          event.docs.map((e) => UserModel.fromJson(e.data())).toList());
-
   static Stream<List<RoomKindModel>> readRoomKinds() =>
       FirebaseFirestore.instance
           .collection(RoomKindModel.CollectionName)
@@ -67,4 +63,7 @@ class FireBaseDataBase {
           .map((snapshot) => snapshot.docs
               .map((doc) => NotificationModel.fromJson(doc.data()))
               .toList());
+  static Stream<List<UserModel>> readUsers() =>
+      FirebaseFirestore.instance.collection('Users').snapshots().map((event) =>
+          event.docs.map((e) => UserModel.fromJson(e.data())).toList());
 }

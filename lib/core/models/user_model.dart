@@ -3,63 +3,38 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  String? id;
-  String? name;
-  String? email;
-  String? phoneNumber;
-  String? position;
+  String ID;
+  String Name;
+  String PhoneNumber;
+  String Email;
+  String Position;
   String? identification;
   String? birthday;
+
   UserModel(
-      {this.id = '',
-      this.name,
-      this.phoneNumber,
-      this.position,
-      this.email,
+      {required this.ID,
+      required this.Name,
+      required this.PhoneNumber,
+      required this.Email,
+      required this.Position,
       this.birthday,
       this.identification});
 
   Map<String, dynamic> toJson() => {
-        'Email': email,
-        'ID': id,
-        'Name': name,
-        'PhoneNumber': phoneNumber,
-        'Position': position,
+        'ID': ID,
+        'Name': Name,
+        'PhoneNumber': PhoneNumber,
+        'Email': Email,
+        'Position': Position,
         'Identification': identification,
         'BirthDay': birthday,
       };
   static UserModel fromJson(Map<String, dynamic> json) => UserModel(
-      id: json['ID'],
-      name: json['Name'],
-      phoneNumber: json['PhoneNumber'],
-      position: json['Position'],
-      email: json['Email'],
+      ID: json['ID'],
+      Name: json['Name'],
+      PhoneNumber: json['PhoneNumber'],
+      Email: json['Email'],
+      Position: json['Position'],
       birthday: json['BirthDay'],
       identification: json['Identification']);
-  static UserModel currentUser = UserModel(
-      name: '',
-      email: '',
-      position: '',
-      phoneNumber: '',
-      birthday: '',
-      identification: '');
-  String getUserId() {
-    return id!;
-  }
-
-  String getPosition() {
-    return position!;
-  }
-
-  String getName() {
-    return name!;
-  }
-
-  String getPhoneNumber() {
-    return phoneNumber!;
-  }
-
-  String getEmail() {
-    return email!;
-  }
 }

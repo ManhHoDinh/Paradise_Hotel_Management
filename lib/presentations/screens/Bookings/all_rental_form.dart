@@ -13,6 +13,8 @@ import 'package:paradise/presentations/widgets/form_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../../../core/helpers/assets_helper.dart';
+import '../../../core/models/guest_kind_model.dart';
+import '../../../core/models/guest_model.dart';
 
 class AllRentalForm extends StatefulWidget {
   static final String routeName = 'all_rental_form';
@@ -133,6 +135,27 @@ class _AllRentalFormState extends State<AllRentalForm> {
           color: ColorPalette.backgroundColor,
           child: Column(
             children: [
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuestKinds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestKindModel.kindItems.clear();
+
+                      GuestKindModel.AllGuestKinds = snapshot.data!;
+                      for (GuestKindModel k in GuestKindModel.AllGuestKinds) {
+                        GuestKindModel.kindItems.add(k.Name);
+                      }
+                    }
+                    return Container();
+                  }),
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuests(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestModel.AllGuests = snapshot.data!;
+                    }
+                    return Container();
+                  }),
               StreamBuilder(
                   stream: FireBaseDataBase.readRooms(),
                   builder: (context, snapshot) {
