@@ -100,8 +100,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     isDense: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'E-mail',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 14),
                     errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                         borderRadius: BorderRadius.circular(kMediumPadding)),
@@ -134,8 +134,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Phone number',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 14),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -154,7 +154,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               //     isDense: true,
               //     labelText: 'Phone Number',
               //     labelStyle:
-              //         TextStyle(fontSize: 14, color: ColorPalette.grayText),
+              //         TextStyle(fontSize: 14, color: ColorPalette.primaryColor),
               //     focusedBorder: OutlineInputBorder(
               //       borderSide:
               //           BorderSide(color: ColorPalette.primaryColor, width: 2),
@@ -192,8 +192,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Identification Numnber',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 14),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -221,8 +221,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Full Name',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 14),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -254,8 +254,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     ),
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Birthday',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 14),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -326,8 +326,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Account password',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 14),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 14),
                     errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                         borderRadius: BorderRadius.circular(kMediumPadding)),
@@ -344,7 +344,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 margin: EdgeInsets.only(top: 20),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    border: Border.all(color: ColorPalette.grayText),
+                    border: Border.all(color: ColorPalette.primaryColor),
                     borderRadius: BorderRadius.circular(kMediumPadding)),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2(
@@ -371,8 +371,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             child: Text(
                               e,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyles.defaultStyle.grayText
-                                  .copyWith(fontSize: 13),
+                              style: TextStyles.defaultStyle.primaryTextColor
+                                  .copyWith(fontSize: 14),
                             )))
                         .toList(),
                     buttonStyleData: const ButtonStyleData(

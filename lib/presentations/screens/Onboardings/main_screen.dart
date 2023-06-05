@@ -20,8 +20,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    WidgetsFlutterBinding.ensureInitialized();
     super.initState();
-    AuthServices.UpdateCurrentUser();
   }
 
   @override

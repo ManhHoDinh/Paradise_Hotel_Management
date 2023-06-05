@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/models/user_model.dart';
@@ -103,6 +106,12 @@ class AuthServices {
         Email: value['Email'],
         Position: value['Position'],
       );
+      CurrentUserIsManagerStream = new StreamController<bool>();
+      CurrentUserIsManagerStream.sink.add(CurrentUserIsManager());
     });
   }
+
+  static StreamController<bool> CurrentUserIsManagerStream =
+      StreamController<bool>();
+
 }

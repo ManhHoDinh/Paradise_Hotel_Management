@@ -67,6 +67,7 @@ dependencies:
   google_fonts: ^2.1.0
   pdf: ^3.10.1
   fl_country_code_picker: ^0.0.4
+  cloud_functions: ^4.3.2
  
   
 dev_dependencies:
