@@ -77,9 +77,9 @@
 <p>The application is developed using the following technologies:</p>
 
 <ul>
-    <li>API System: WPF - MVVM model</li>
+    <li>Language: Flutter</li>
     <li>IDE: Visual Studio 2022 (C#/.Net)</li>
-    <li>Database: SQL Server</li>
+    <li>Database: FireBase</li>
     <li>Management tools: Git, GitHub</li>
 </ul>
 
@@ -133,6 +133,14 @@ Customer Management
 Rental Vouchers and Invoices Management 
 * Users can input and edit information related to rental vouchers and invoices.
 * Users can perform lookup of rental vouchers and invoices.
+    
+Staff Management
+* Manager can create, delete and edit staff including salary, loan,...
+* Users can perform lookup of staff.
+    
+Report
+* This application will automatically create month and year report base on type of room.
+
 </div>
 </div>
 <div id="caiDat">
