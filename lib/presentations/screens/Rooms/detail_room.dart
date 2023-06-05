@@ -30,9 +30,10 @@ class DetailRoom extends StatefulWidget {
 class _DetailRoomState extends State<DetailRoom> {
   bool isPressed = false;
   PageController _pageController = new PageController();
+  int _currenImage = 0;
+
   @override
   Widget build(BuildContext context) {
-    int _currenImage = 0;
     Size size = MediaQuery.of(context).size;
     RoomModel roomModel = widget.room;
     return KeyboardDismisser(
@@ -58,15 +59,13 @@ class _DetailRoomState extends State<DetailRoom> {
                           children: [
                             PageView.builder(
                               controller: _pageController,
-                              reverse: true,
-                              onPageChanged: (value) {
+                              onPageChanged: (index) {
                                 setState(() {
-                                  _currenImage = value;
+                                  _currenImage = index;
                                 });
                               },
                               itemCount: (roomModel.SubImages.length + 1),
                               itemBuilder: (context, index) {
-                                _currenImage = index;
                                 return Container(
                                   height: 250,
                                   alignment: Alignment.bottomCenter,
@@ -78,7 +77,7 @@ class _DetailRoomState extends State<DetailRoom> {
                                           height: 250,
                                           width: size.width,
                                         )
-                                      : Image.network(
+                                      : ImageHelper.loadFromNetwork(
                                           roomModel.SubImages[index - 1],
                                           fit: BoxFit.fill,
                                           height: 250,
@@ -133,9 +132,9 @@ class _DetailRoomState extends State<DetailRoom> {
                                           width: 21 *
                                               (roomModel.SubImages.length + 1),
                                           child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
+                                            scrollDirection: Axis.horizontal,
                                             itemCount:
                                                 (roomModel.SubImages.length +
                                                     1),

@@ -5,10 +5,7 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/notification_model.dart';
-import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/notifi_item.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
 import '../../../core/constants/color_palatte.dart';
 import '../../../core/constants/dimension_constants.dart';
 import '../../../core/helpers/assets_helper.dart';

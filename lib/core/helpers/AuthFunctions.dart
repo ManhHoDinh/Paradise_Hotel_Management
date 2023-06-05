@@ -60,7 +60,7 @@ class AuthServices {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      UpdateCurrentUser();
+      await UpdateCurrentUser();
       if (AuthServices.CurrentUser != null) {
         showDialog(
             context: context,
@@ -106,12 +106,12 @@ class AuthServices {
         Email: value['Email'],
         Position: value['Position'],
       );
+      
       CurrentUserIsManagerStream = new StreamController<bool>();
       CurrentUserIsManagerStream.sink.add(CurrentUserIsManager());
-    });
+      });
   }
 
   static StreamController<bool> CurrentUserIsManagerStream =
       StreamController<bool>();
-
 }

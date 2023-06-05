@@ -10,7 +10,6 @@ import 'core/constants/color_palatte.dart';
 import 'core/helpers/local_storage_helper.dart';
 import 'core/models/firebase_request.dart';
 
-
 Future main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
