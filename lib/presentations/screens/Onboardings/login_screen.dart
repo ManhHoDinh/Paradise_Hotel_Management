@@ -40,7 +40,21 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   final formSignInKey = GlobalKey<FormState>();
+  late SharedPreferences pref;
+
   bool _passwordVisible = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Pref();
+  }
+
+  void Pref() async {
+    pref = await SharedPreferences.getInstance();
+    _emailController.text = pref.getString("email").toString();
+    _passwordController.text = pref.getString("password").toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                         labelText: 'Enter your password',
-                        labelStyle: TextStyle(
-                            color: ColorPalette.grayText, fontSize: 12),
+                        labelStyle:
+                            TextStyles.h6.setColor(ColorPalette.grayText),
                         contentPadding: const EdgeInsets.only(bottom: 14),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         prefixIcon: Container(
@@ -178,60 +192,38 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: ColorPalette.primaryColor,
                       onTap: () async {
                         if (formSignInKey.currentState!.validate()) {
-                          SharedPreferences pref =
-                              await SharedPreferences.getInstance();
                           if (isChecked) {
                             pref.setString('email', _emailController.text);
+                            pref.setString(
+                                "password", _passwordController.text);
+                          } else {
+                            pref.setString('email', "");
+                            pref.setString("password", "");
                           }
-                          FirebaseFirestore.instance
-                              .collection("Users")
-                              .get()
-                              .then((value) {
-                            int check = 0;
-                            for (var doc in value.docs) {
-                              if (doc.get("Email") == _emailController.text) {
-                                check++;
-                              }
-                            }
-                            if (check > 0) {
-                              AuthServices.signinUser(_emailController.text,
-                                  _passwordController.text, context);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          'No user Found with this Email')));
-                            }
-                          });
+                          await AuthServices.signinUser(_emailController.text,
+                              _passwordController.text, context);
+
+                          // await FirebaseFirestore.instance
+                          //     .collection("Users")
+                          //     .get()
+                          //     .then((value) {
+                          //   int check = 0;
+                          //   for (var doc in value.docs) {
+                          //     if (doc.get("Email") == _emailController.text) {
+                          //       check++;
+                          //     }
+                          //   }
+                          //   if (check > 0) {
+                          //   } else {
+                          //     ScaffoldMessenger.of(context).showSnackBar(
+                          //         SnackBar(
+                          //             content: Text(
+                          //                 'No user Found with this Email')));
+                          //   }
+                          // });
                         }
                       },
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          'Don' "'" 't have account?',
-                          style: TextStyles.h6,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: TextButton(
-                          child: Text(
-                            'Register',
-                            style: TextStyles.h6.bold
-                                .setColor(ColorPalette.greenText),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(RegisterFormScreen.routeName);
-                          },
-                        ),
-                      ),
-                    ],
                   ),
                   TextButton(
                     onPressed: () {

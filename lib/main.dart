@@ -81,8 +81,19 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
                 return SplashScreen();
               } else {
                 if (snapshot.hasData) {
-                  AuthServices.UpdateCurrentUser();
-                  return MainScreen();
+                  return FutureBuilder(
+                    future: AuthServices.UpdateCurrentUser(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Show a loading indicator if necessary
+                        return SplashScreen();
+                      } else {
+                        // If the update is complete, navigate to the MainScreen
+                        return MainScreen();
+                      }
+                    },
+                  );
                 } else {
                   return LoginScreen();
                 }
