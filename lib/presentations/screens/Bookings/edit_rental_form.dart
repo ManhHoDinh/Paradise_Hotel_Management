@@ -238,7 +238,7 @@ class _EditFormState extends State<EditForm> {
       setState(() {
         currentIndex = i;
       });
-      listRow[i].children[0] = Container(
+      listRow[i].children![0] = Container(
         alignment: Alignment.center,
         child: Text('${currentIndex}'),
       );
@@ -336,7 +336,7 @@ class _EditFormState extends State<EditForm> {
       setState(() {
         currentIndex = i;
       });
-      listRow[i].children[0] = Container(
+      listRow[i].children![0] = Container(
         alignment: Alignment.center,
         child: Text('${currentIndex}'),
       );
@@ -383,7 +383,7 @@ class _EditFormState extends State<EditForm> {
       setState(() {
         currentIndex = i;
       });
-      listRow[i].children[0] = Container(
+      listRow[i].children![0] = Container(
         alignment: Alignment.center,
         child: Text('${currentIndex}'),
       );
@@ -455,11 +455,11 @@ class _EditFormState extends State<EditForm> {
       print(index);
       listRow.removeAt(index);
       for (int i = 1; i < listRow.length; i++) {
-        listRow[i].children[0] = Container(
+        listRow[i].children![0] = Container(
           alignment: Alignment.center,
           child: Text('${i}'),
         );
-        listRow[i].children[5] = GestureDetector(
+        listRow[i].children![5] = GestureDetector(
           child: Container(alignment: Alignment.center, child: Text('X')),
           onTap: () {
             UpdateDeleteRow(i);
@@ -915,10 +915,10 @@ class _EditFormState extends State<EditForm> {
   Future addNewGuest() async {
     try {
       for (int i = 1; i < listRow.length; i++) {
-        Padding padding1 = (listRow[i].children[2]) as Padding;
-        Padding padding2 = (listRow[i].children[3]) as Padding;
-        Padding padding3 = (listRow[i].children[1]) as Padding;
-        Padding padding4 = (listRow[i].children[4]) as Padding;
+        Padding padding1 = (listRow[i].children![2]) as Padding;
+        Padding padding2 = (listRow[i].children![3]) as Padding;
+        Padding padding3 = (listRow[i].children![1]) as Padding;
+        Padding padding4 = (listRow[i].children![4]) as Padding;
         TextFormField nameGuest = padding1.child as TextFormField;
         TextFormField cartIdGuest = padding2.child as TextFormField;
         TextFormField addressGuest = padding4.child as TextFormField;
@@ -1062,7 +1062,7 @@ class _EditFormState extends State<EditForm> {
   int checkGuestID(String value) {
     int result = 0;
     for (int i = 1; i < listRow.length; i++) {
-      Padding padding = (listRow[i].children[3]) as Padding;
+      Padding padding = (listRow[i].children![3]) as Padding;
       TextFormField cartIdGuest = padding.child as TextFormField;
       if (cartIdGuest.controller!.text == value) result++;
     }

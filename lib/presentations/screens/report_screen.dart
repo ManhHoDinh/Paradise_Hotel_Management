@@ -23,6 +23,7 @@ import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path/path.dart' as path;
 
 import '../../core/models/report.dart';
+import '../widgets/dialog.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -63,7 +64,7 @@ class _ReportScreenState extends State<ReportScreen> {
     '2023',
   ];
 
-  List<ReportItem> getListReportItem() {
+  List<ReportItem> getListMonthReportItem() {
     List<ReportItem> listReportItem = [];
     for (int i = 0; i < RoomKindModel.AllRoomKinds.length; i++) {
       RoomKindModel roomKind = RoomKindModel.AllRoomKinds[i];
@@ -72,6 +73,19 @@ class _ReportScreenState extends State<ReportScreen> {
           roomType: roomKind.Name!,
           revenue: revenue,
           rate: Rate(revenue, totalMonthPrice)));
+    }
+    return listReportItem;
+  }
+
+  List<ReportItem> getListYearReportItem() {
+    List<ReportItem> listReportItem = [];
+    for (int i = 0; i < RoomKindModel.AllRoomKinds.length; i++) {
+      RoomKindModel roomKind = RoomKindModel.AllRoomKinds[i];
+      int revenue = getRevenueOfYearReport(roomKind);
+      listReportItem.add(ReportItem(
+          roomType: roomKind.Name!,
+          revenue: revenue,
+          rate: Rate(revenue, totalYearPrice)));
     }
     return listReportItem;
   }
@@ -392,15 +406,29 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () async {
-                    List<ReportItem> listReportItem = getListReportItem();
-
-                    final report = Report(items: listReportItem);
-                    final pdfFile = await PdfReportApi.generate(
-                        report,
-                        yearOfMonthReportSelected!,
-                        monthSelected!,
-                        totalMonthPrice);
-                    PdfApi.openFile(pdfFile);
+                    if (yearOfMonthReportSelected != null &&
+                        monthSelected != null) {
+                      List<ReportItem> listReportItem =
+                          getListMonthReportItem();
+                      final report = Report(items: listReportItem);
+                      final pdfFile = await PdfReportApi.generate(
+                          report: report,
+                          year: yearOfMonthReportSelected!,
+                          month: monthSelected!,
+                          total: totalMonthPrice);
+                      PdfApi.openFile(pdfFile);
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DialogOverlay(
+                              task: 'Month Report',
+                              isSuccess: false,
+                              error:
+                                  'Chose month report or year of month report, please!!!',
+                            );
+                          });
+                    }
                   },
                   child: Container(
                     width: size.width / 2,
@@ -652,10 +680,27 @@ class _ReportScreenState extends State<ReportScreen> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
-                  onTap: () {
-                    getListReportItem();
-                    // final report = Report(items: listReportItem);
-                    generatePDF();
+                  onTap: () async {
+                    if (yearSelected != null) {
+                      List<ReportItem> listReportItem = getListYearReportItem();
+
+                      final report = Report(items: listReportItem);
+                      final pdfFile = await PdfReportApi.generate(
+                          report: report,
+                          year: yearSelected!,
+                          total: totalYearPrice);
+                      PdfApi.openFile(pdfFile);
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DialogOverlay(
+                              task: 'Year Report',
+                              isSuccess: false,
+                              error: 'Chose year report, please!!!',
+                            );
+                          });
+                    }
                   },
                   child: Container(
                     width: size.width / 2,
@@ -773,7 +818,7 @@ class _ReportScreenState extends State<ReportScreen> {
   Future<void> generatePDF() async {
     PdfDocument document = PdfDocument();
     var page = document.pages.add();
-    
+
     List<int> bytes = await document.save();
     document.dispose();
     saveAndLaunchFile(bytes, 'output.pdf');

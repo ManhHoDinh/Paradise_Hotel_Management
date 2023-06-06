@@ -86,40 +86,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
               SizedBox(
                 height: 40,
               ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                validator: (input) {
-                  final bool emailValid = RegExp(
-                          r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                      .hasMatch(input!);
-                  if (input == "") {
-                    return "Please enter your email!";
-                  } else if (!emailValid) {
-                    return "Email is not Invalid";
-                  }
-                },
-                controller: emailController,
-                decoration: InputDecoration(
-                    filled: true,
-                    isDense: true,
-                    fillColor: ColorPalette.bgTextFieldColor,
-                    labelText: 'E-mail',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
-                    errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(kMediumPadding)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: ColorPalette.primaryColor, width: 2),
-                        borderRadius: BorderRadius.circular(kMediumPadding)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(kMediumPadding))),
-              ),
-              SizedBox(
-                height: kMediumPadding,
-              ),
+
               TextFormField(
                 validator: (value) {
                   if (value == null) {
@@ -151,32 +118,6 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
                         borderSide: BorderSide(color: Colors.transparent),
                         borderRadius: BorderRadius.circular(kMediumPadding))),
               ),
-
-              // IntlPhoneField(
-              //   controller: _phoneNoController,
-              //   decoration: InputDecoration(
-              //     isDense: true,
-              //     labelText: 'Phone Number',
-              //     labelStyle:
-              //         TextStyle(fontSize: 12, color: ColorPalette.grayText),
-              //     focusedBorder: OutlineInputBorder(
-              //       borderSide:
-              //           BorderSide(color: ColorPalette.primaryColor, width: 2),
-              //       borderRadius: BorderRadius.circular(kMediumPadding),
-              //     ),
-              //     border: OutlineInputBorder(
-              //       borderSide: BorderSide(color: Colors.transparent),
-              //       borderRadius: BorderRadius.circular(kMediumPadding),
-              //     ),
-              //   ),
-              //   keyboardType: TextInputType.number,
-              //   onChanged: (phone) {
-              //     print(phone.completeNumber);
-              //   },
-              //   onCountryChanged: (country) {
-              //     print('Country changed to: ' + country.name);
-              //   },
-              // ),
 
               SizedBox(
                 height: kMediumPadding,
@@ -294,13 +235,14 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
           context: context,
           builder: (_context) {
             return QuestionYesNoDialog(
-              task: 'Delete Room Kind',
+              task: 'Delete Staff',
               icon: FontAwesomeIcons.solidTrashCan,
               yesOnTap: () async {
                 final doc = await FirebaseFirestore.instance
                     .collection('Users')
                     .doc(widget.userModel.ID);
                 await doc.delete();
+
                 Navigator.pop(context);
                 await showDialog(
                     context: _context,
@@ -323,7 +265,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Delete Room Kind',
+              task: 'Delete Staff',
               error: e.toString(),
             );
           });
@@ -366,29 +308,15 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
                 error: "Input Type Phone Number, please!!!",
               );
             });
-      } else if (email == '') {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return DialogOverlay(
-                isSuccess: false,
-                task: 'Edit Staff',
-                error: "Input Type Email, please!!!",
-              );
-            });
       } else {
         final doc = await FirebaseFirestore.instance
             .collection('Users')
             .doc(widget.userModel.ID);
-        UserModel user = new UserModel(
-          ID: widget.userModel.ID,
-          Name: name,
-          Email: email,
-          PhoneNumber: phoneNumber,
-          Position: position,
-        );
-        final json = user.toJson();
-        await doc.update(json);
+        await doc.update({
+          'Name': name,
+          'PhoneNumber': phoneNumber,
+          'Position': position,
+        });
 
         showDialog(
             context: context,
