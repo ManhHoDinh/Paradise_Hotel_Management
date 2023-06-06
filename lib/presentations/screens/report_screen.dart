@@ -23,6 +23,7 @@ import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path/path.dart' as path;
 
 import '../../core/models/report.dart';
+import '../widgets/dialog.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -405,15 +406,29 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () async {
-                    List<ReportItem> listReportItem = getListMonthReportItem();
-
-                    final report = Report(items: listReportItem);
-                    final pdfFile = await PdfReportApi.generate(
-                        report: report,
-                        year: yearOfMonthReportSelected!,
-                        month: monthSelected!,
-                        total: totalMonthPrice);
-                    PdfApi.openFile(pdfFile);
+                    if (yearOfMonthReportSelected != null &&
+                        monthSelected != null) {
+                      List<ReportItem> listReportItem =
+                          getListMonthReportItem();
+                      final report = Report(items: listReportItem);
+                      final pdfFile = await PdfReportApi.generate(
+                          report: report,
+                          year: yearOfMonthReportSelected!,
+                          month: monthSelected!,
+                          total: totalMonthPrice);
+                      PdfApi.openFile(pdfFile);
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DialogOverlay(
+                              task: 'Month Report',
+                              isSuccess: false,
+                              error:
+                                  'Chose month report or year of month report, please!!!',
+                            );
+                          });
+                    }
                   },
                   child: Container(
                     width: size.width / 2,
@@ -666,14 +681,26 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(20),
                   splashColor: Colors.black38,
                   onTap: () async {
-                    List<ReportItem> listReportItem = getListYearReportItem();
+                    if (yearSelected != null) {
+                      List<ReportItem> listReportItem = getListYearReportItem();
 
-                    final report = Report(items: listReportItem);
-                    final pdfFile = await PdfReportApi.generate(
-                        report: report,
-                        year: yearSelected!,
-                        total: totalYearPrice);
-                    PdfApi.openFile(pdfFile);
+                      final report = Report(items: listReportItem);
+                      final pdfFile = await PdfReportApi.generate(
+                          report: report,
+                          year: yearSelected!,
+                          total: totalYearPrice);
+                      PdfApi.openFile(pdfFile);
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DialogOverlay(
+                              task: 'Year Report',
+                              isSuccess: false,
+                              error: 'Chose year report, please!!!',
+                            );
+                          });
+                    }
                   },
                   child: Container(
                     width: size.width / 2,
