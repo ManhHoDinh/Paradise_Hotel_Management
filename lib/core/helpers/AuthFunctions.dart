@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/models/user_model.dart';
@@ -52,6 +51,9 @@ class AuthServices {
       } else if (e.code == 'email-already-in-use') {
         ScaffoldMessenger.of(buildContext).showSnackBar(
             SnackBar(content: Text('Email Provided already Exists')));
+      } else {
+        ScaffoldMessenger.of(buildContext)
+            .showSnackBar(SnackBar(content: Text(e.message.toString())));
       }
     }
   }
@@ -62,15 +64,17 @@ class AuthServices {
           .signInWithEmailAndPassword(email: email, password: password);
       await UpdateCurrentUser();
       if (FirebaseAuth.instance.currentUser != null) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return DialogOverlay(
-                isSuccess: true,
-                task: 'login',
-              );
-            });
-        Navigator.of(context).pushNamed(MainScreen.routeName);
+        await UpdateCurrentUser();
+        await showDialog(
+                context: context,
+                builder: (context) {
+                  return DialogOverlay(
+                    isSuccess: true,
+                    task: 'login',
+                  );
+                })
+            .whenComplete(
+                () => Navigator.of(context).pushNamed(MainScreen.routeName));
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -79,6 +83,9 @@ class AuthServices {
       } else if (e.code == 'wrong-password') {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Password did not match')));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message.toString())));
       }
     }
   }
@@ -93,8 +100,8 @@ class AuthServices {
     }
   }
 
-  static UpdateCurrentUser() {
-    FirebaseFirestore.instance
+  static Future UpdateCurrentUser() async {
+    await FirebaseFirestore.instance
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
@@ -106,13 +113,6 @@ class AuthServices {
         Email: value['Email'],
         Position: value['Position'],
       );
-
-      CurrentUserIsManagerStream = new StreamController<bool>();
-      CurrentUserIsManagerStream.sink.add(CurrentUserIsManager());
-      print('Position ${AuthServices.CurrentUser!.Position}');
     });
   }
-
-  static StreamController<bool> CurrentUserIsManagerStream =
-      StreamController<bool>();
 }

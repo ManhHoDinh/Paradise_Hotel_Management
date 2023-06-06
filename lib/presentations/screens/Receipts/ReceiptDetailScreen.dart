@@ -278,13 +278,6 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
                               final pdfFile = await PdfReceiptApi.generate(
                                   receiptModel, forms);
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PrintReceipt(
-                                        receiptModel: widget.Receipt),
-                                  ));
-
                               PdfApi.openFile(pdfFile);
                             },
                           ),

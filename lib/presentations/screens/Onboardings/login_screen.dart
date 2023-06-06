@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return ColorPalette.primaryColor;
   }
 
-  bool isChecked = false;
+  bool isChecked = true;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   final formSignInKey = GlobalKey<FormState>();

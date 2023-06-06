@@ -597,7 +597,7 @@ class _AddReceiptState extends State<AddReceipt> {
             guestName: nameController.text,
             rentalFormIDs: RentalFormIDs,
             phoneNumber: phoneNumberController.text,
-            checkOutDate: _selectedDay,
+            checkOutDate: _selectedDay ?? DateTime.now(),
             total: widget.TotalPrice,
             address: addressController.text);
         for (String rentalFormID in RentalFormIDs)

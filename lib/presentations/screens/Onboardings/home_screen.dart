@@ -38,23 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentId = 0;
   int currentRoomId = 0;
   late List<RoomModel> listRoom;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    
-    super.initState();
-    print('Manager : ${AuthServices.CurrentUserIsManager()}');
-    Future.delayed(Duration.zero, () {
-      AuthServices.UpdateCurrentUser();
-      print('Manager: ${AuthServices.CurrentUserIsManager()}');
-      // Perform any UI-related actions after updating the user
-      setState(() {
-        // Update state variables if necessary
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _globalKey = GlobalKey();

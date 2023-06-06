@@ -60,8 +60,11 @@ class _ReportScreenState extends State<ReportScreen> {
     'DECEMBER'
   ];
   List<String> yearItems = [
+    '2021',
     '2022',
     '2023',
+    '2024',
+    '2025',
   ];
 
   List<ReportItem> getListMonthReportItem() {
