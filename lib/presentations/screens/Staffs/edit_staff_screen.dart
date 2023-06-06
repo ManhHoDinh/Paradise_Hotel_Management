@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -27,9 +29,10 @@ class EditStaffScreen extends StatefulWidget {
 class _EditStaffScreenState extends State<EditStaffScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController positionController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   final formRegisterKey = GlobalKey<FormState>();
+  List<String> kindItems = ['Manager', 'Staff'];
+  String dropdownKindValue = 'Manager';
 
   @override
   void initState() {
@@ -37,8 +40,8 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
     super.initState();
     nameController.text = widget.userModel.Name;
     phoneController.text = widget.userModel.PhoneNumber;
-    positionController.text = widget.userModel.Position;
     emailController.text = widget.userModel.Email;
+    dropdownKindValue = widget.userModel.Position;
   }
 
   @override
@@ -105,8 +108,8 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Phone number',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 12),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -135,8 +138,8 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
                     filled: true,
                     fillColor: ColorPalette.bgTextFieldColor,
                     labelText: 'Full Name',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
+                    labelStyle: TextStyle(
+                        color: ColorPalette.primaryColor, fontSize: 12),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: ColorPalette.primaryColor, width: 2),
@@ -151,31 +154,58 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
               SizedBox(
                 height: kMediumPadding,
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty || RegExp(r'^[1 9]+$').hasMatch(value)) {
-                    return "Position is invalid!";
-                  } else
-                    return null;
-                },
-                controller: positionController,
-                decoration: InputDecoration(
-                    isDense: true,
-                    filled: true,
-                    fillColor: ColorPalette.bgTextFieldColor,
-                    labelText: 'Position',
-                    labelStyle:
-                        TextStyle(color: ColorPalette.grayText, fontSize: 12),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: ColorPalette.primaryColor, width: 2),
-                        borderRadius: BorderRadius.circular(kMediumPadding)),
-                    errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(kMediumPadding)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(kMediumPadding))),
+              Container(
+                height: 50,
+                margin: EdgeInsets.only(top: 20),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    border: Border.all(color: ColorPalette.primaryColor),
+                    borderRadius: BorderRadius.circular(kMediumPadding)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    alignment: Alignment.center,
+                    iconStyleData: IconStyleData(
+                        iconEnabledColor: ColorPalette.primaryColor),
+                    dropdownStyleData: DropdownStyleData(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kMinPadding))),
+                    hint: Center(
+                      child: Text(
+                        'Position',
+                        style: TextStyles.defaultStyle.grayText,
+                      ),
+                    ),
+                    items: kindItems
+                        .map((e) => DropdownMenuItem<String>(
+                            value: e,
+                            onTap: () {
+                              setState(() {
+                                dropdownKindValue = e;
+                              });
+                            },
+                            child: Text(
+                              e,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyles.defaultStyle.primaryTextColor
+                                  .copyWith(fontSize: 14),
+                            )))
+                        .toList(),
+                    buttonStyleData: const ButtonStyleData(
+                      padding: const EdgeInsets.only(left: 12),
+                      height: 28,
+                      width: 10,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 28,
+                    ),
+                    value: dropdownKindValue,
+                    onChanged: (value) {
+                      setState(() {
+                        dropdownKindValue = value!;
+                      });
+                    },
+                  ),
+                ),
               ),
               Container(
                   margin: EdgeInsets.only(top: 60),
@@ -184,11 +214,23 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
                       label: 'Save',
                       onTap: () {
                         if (formRegisterKey.currentState!.validate()) {
-                          UpdateStaff(
-                              name: nameController.text,
-                              email: emailController.text,
-                              phoneNumber: phoneController.text,
-                              position: positionController.text);
+                          if (widget.userModel.ID !=
+                              FirebaseAuth.instance.currentUser!.uid) {
+                            UpdateStaff(
+                                name: nameController.text,
+                                email: emailController.text,
+                                phoneNumber: phoneController.text,
+                                position: dropdownKindValue);
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DialogOverlay(
+                                    task: 'Create Room',
+                                    isSuccess: true,
+                                  );
+                                });
+                          }
                         }
                       })),
               Container(
