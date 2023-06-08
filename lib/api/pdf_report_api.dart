@@ -28,7 +28,7 @@ class PdfReportApi {
       ];
     }));
     if (month == null) {
-      return PdfApi.saveDocument(name: '${year}_reportt.pdf', pdf: pdf);
+      return PdfApi.saveDocument(name: '${year}_report.pdf', pdf: pdf);
     }
     return PdfApi.saveDocument(name: '${month}_${year}_report.pdf', pdf: pdf);
   }
@@ -60,18 +60,19 @@ class PdfReportApi {
           return [
             '$index',
             '${e.roomType}',
-            '${e.revenue}',
+            '${NumberFormat.decimalPattern().format(e.revenue)}',
             '${NumberFormat('#.##', 'en_US').format(e.rate * 100)}%'
           ];
         }).toList(),
-        headers: ['No', 'Room Type', 'Revenue (VND)', 'Rate']);
+        headers: ['No', 'Room Kind', 'Revenue (VND)', 'Rate']);
   }
 
   static Widget buildToTalPrice(int total) {
     return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
       Text('TOTAL', style: TextStyle(fontSize: 24)),
       SizedBox(width: kMaxPadding),
-      Text('$total', style: TextStyle(fontSize: 24))
+      Text('${NumberFormat.decimalPattern().format(total)} VND',
+          style: TextStyle(fontSize: 24))
     ]);
   }
 }
