@@ -277,7 +277,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
           context: context,
           builder: (_context) {
             return QuestionYesNoDialog(
-              task: 'Delete Staff',
+              task: 'Delete User',
               icon: FontAwesomeIcons.solidTrashCan,
               yesOnTap: () async {
                 final doc = await FirebaseFirestore.instance
@@ -291,7 +291,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
                     builder: (_context) {
                       return DialogOverlay(
                         isSuccess: true,
-                        task: 'Delete Staff',
+                        task: 'Delete User',
                       );
                     }); //.whenComplete(() => Navigator.of(context).pop());
                 Navigator.of(context).pop();
@@ -307,7 +307,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Delete Staff',
+              task: 'Delete User',
               error: e.toString(),
             );
           });
@@ -326,7 +326,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Edit Staff',
+                task: 'Edit User',
                 error: "Input Type Name, please!!!",
               );
             });
@@ -336,7 +336,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Edit Staff',
+                task: 'Edit User',
                 error: "Input Type Position, please!!!",
               );
             });
@@ -346,7 +346,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
             builder: (context) {
               return DialogOverlay(
                 isSuccess: false,
-                task: 'Edit Staff',
+                task: 'Edit User',
                 error: "Input Type Phone Number, please!!!",
               );
             });
@@ -365,7 +365,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
             builder: (context) {
               return DialogOverlay(
                 isSuccess: true,
-                task: 'Update Staff',
+                task: 'Update User',
               );
             });
       }
@@ -375,7 +375,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
           builder: (context) {
             return DialogOverlay(
               isSuccess: false,
-              task: 'Update Staff',
+              task: 'Update User',
               error: e.toString(),
             );
           });

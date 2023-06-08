@@ -290,8 +290,8 @@ class _AddReceiptState extends State<AddReceipt> {
           ),
           title: Container(
             child: Text(
-              'Create Receipt',
-              style: TextStyles.slo.bold.copyWith(
+              'CREATE RECEIPT',
+              style: TextStyles.h8.bold.copyWith(
                 shadows: [
                   Shadow(
                     color: Colors.black12,
@@ -299,9 +299,9 @@ class _AddReceiptState extends State<AddReceipt> {
                     blurRadius: 6,
                   )
                 ],
+                letterSpacing: 1.175,
               ),
             ),
-            //alignment: Alignment.center,
           ),
           centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,

@@ -7,6 +7,7 @@ import 'package:paradise/presentations/widgets/question_yes_no_dialog.dart';
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
 import '../../../../core/models/room_kind_model.dart';
+import '../../../core/constants/dimension_constants.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/dialog.dart';
 import '../../widgets/inputTitleWidget.dart';
@@ -33,10 +34,40 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: ColorPalette.primaryColor,
-        title: Text('EDIT ROOM TYPE'),
-         toolbarHeight: kToolbarHeight * 1.5,
-         centerTitle: true,
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
+            customBorder: CircleBorder(),
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              child: Icon(FontAwesomeIcons.arrowLeft),
+            ),
+          ),
+        ),
+        title: Container(
+          child: Text(
+            'EDIT ROOM KIND',
+            style: TextStyles.h8.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
+                )
+              ],
+              letterSpacing: 1.175,
+            ),
+          ),
+        ),
+        centerTitle: true,
+        toolbarHeight: kToolbarHeight * 1.5,
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -50,7 +81,7 @@ class _EditRoomKindScreenState extends State<EditRoomKindScreen> {
             ),
           ),
           InputTitleWidget(
-            Title: 'Type name',
+            Title: 'Room Kind Name',
             controller: nameController,
             hintInput: 'Type here',
           ),

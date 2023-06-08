@@ -82,7 +82,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                       ),
                       Container(
                         child: Text(
-                          'Type of room',
+                          'Room Kind',
                           style: TextStyles.h6.copyWith(
                               color: ColorPalette.darkBlueText,
                               fontWeight: FontWeight.w500),
@@ -211,7 +211,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                       ),
                       Container(
                         child: Text(
-                          'Number Guest Begin SubCharge',
+                          'Number Guest Begin Surcharge',
                           style: TextStyles.h6.copyWith(
                               color: ColorPalette.darkBlueText,
                               fontWeight: FontWeight.w500),
@@ -355,7 +355,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             return DialogOverlay(
               isSuccess: false,
               task: 'Create Room',
-              error: 'Select a Type of room, please!!!',
+              error: 'Select a room kind, please!!!',
             );
           });
     } else if (await checkIfDocExists(RoomID)) {

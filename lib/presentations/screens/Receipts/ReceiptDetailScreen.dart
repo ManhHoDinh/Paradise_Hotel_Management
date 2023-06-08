@@ -13,7 +13,7 @@ import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
 import 'package:paradise/core/models/firebase_request.dart';
-import 'package:paradise/presentations/screens/Receipts/%20PrintReceipt.dart';
+import 'package:paradise/presentations/screens/Receipts/PrintReceipt.dart';
 import 'package:paradise/presentations/screens/Receipts/RentalFormItem.dart';
 import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/dialog.dart';
@@ -68,16 +68,20 @@ class _ReceiptDetailScreenState extends State<ReceiptDetailScreen> {
           ),
         ),
         title: Container(
-            child: Text('RECEIPT DETAIL',
-                style: TextStyles.slo.bold.copyWith(
-                  shadows: [
-                    Shadow(
-                      color: Colors.black12,
-                      offset: Offset(3, 6),
-                      blurRadius: 6,
-                    )
-                  ],
-                ))),
+          child: Text(
+            'RECEIPT DETAIL',
+            style: TextStyles.h8.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
+                )
+              ],
+              letterSpacing: 1.175,
+            ),
+          ),
+        ),
         centerTitle: true,
         toolbarHeight: kToolbarHeight * 1.5,
       ),

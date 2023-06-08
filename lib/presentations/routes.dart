@@ -9,7 +9,7 @@ import 'package:paradise/presentations/screens/Onboardings/login_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/otp_screen.dart';
 import 'package:paradise/presentations/screens/Staffs/register_form_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/splash_screen.dart';
-import 'package:paradise/presentations/screens/Receipts/%20PrintReceipt.dart';
+import 'package:paradise/presentations/screens/Receipts/PrintReceipt.dart';
 import 'package:paradise/presentations/screens/Receipts/AddReceipt.dart';
 import 'package:paradise/presentations/screens/Receipts/SeeAllReceipt.dart';
 import 'package:paradise/presentations/screens/RoomKinds/RoomKindView.dart';

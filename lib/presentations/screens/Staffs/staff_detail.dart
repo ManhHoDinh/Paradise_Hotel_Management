@@ -107,7 +107,7 @@ class _StaffDetailState extends State<StaffDetail> {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Staff details',
+                  'User details',
                   style: TextStyles.labelStaffDetail,
                 ),
               ),

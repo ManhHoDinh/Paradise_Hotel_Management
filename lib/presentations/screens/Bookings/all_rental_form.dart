@@ -102,30 +102,37 @@ class _AllRentalFormState extends State<AllRentalForm> {
           },
         ),
         appBar: AppBar(
-          elevation: 5,
+          elevation: 0,
           backgroundColor: ColorPalette.primaryColor,
-          leading: InkWell(
-            customBorder: CircleBorder(),
-            onHighlightChanged: (param) {
-              setState(() {
-                isPressed = param;
-              });
-            },
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              child: Icon(
-                FontAwesomeIcons.arrowLeft,
-                color: isPressed
-                    ? ColorPalette.primaryColor
-                    : ColorPalette.backgroundColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
               ),
             ),
           ),
-          title: Text(
-            'RENTAL FORMS',
-            style: TextStyles.h8.copyWith(letterSpacing: 3.05),
+          title: Container(
+            child: Text(
+              'RENTAL FORMS',
+              style: TextStyles.h8.bold.copyWith(
+                shadows: [
+                  Shadow(
+                    color: Colors.black12,
+                    offset: Offset(3, 6),
+                    blurRadius: 6,
+                  )
+                ],
+                letterSpacing: 1.175,
+              ),
+            ),
           ),
           centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,

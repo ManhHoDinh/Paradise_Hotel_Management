@@ -48,13 +48,16 @@ class _StaffItemState extends State<StaffItem> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.userModel.Name,
-                      textAlign: TextAlign.center,
-                      style: TextStyles.h6.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: ColorPalette.darkBlueText),
-                      overflow: TextOverflow.ellipsis,
+                    Container(
+                      width: 110,
+                      child: Text(
+                        widget.userModel.Name,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.visible,
+                        style: TextStyles.h6.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: ColorPalette.darkBlueText),
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {

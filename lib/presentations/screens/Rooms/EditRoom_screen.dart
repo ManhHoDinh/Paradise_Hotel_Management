@@ -141,9 +141,10 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                     ),
                     Container(
                       child: Text(
-                        'Room Type',
-                        style: TextStyles.h6
-                            .copyWith(color: ColorPalette.darkBlueText),
+                        'Room Kind',
+                        style: TextStyles.h6.copyWith(
+                            color: ColorPalette.darkBlueText,
+                            fontWeight: FontWeight.w500),
                       ),
                       margin: const EdgeInsets.only(left: kMaxPadding * 1.5),
                     ),
@@ -219,7 +220,8 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                                 child: Text(
                                   'Price',
                                   style: TextStyles.h6.copyWith(
-                                      color: ColorPalette.darkBlueText),
+                                      color: ColorPalette.darkBlueText,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
                               Spacer(),
@@ -261,7 +263,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                     ),
                     Container(
                       child: Text(
-                        'Number Guest Begin SubCharge',
+                        'Number Guest Begin Surcharge',
                         style: TextStyles.h6.copyWith(
                             color: ColorPalette.darkBlueText,
                             fontWeight: FontWeight.w500),

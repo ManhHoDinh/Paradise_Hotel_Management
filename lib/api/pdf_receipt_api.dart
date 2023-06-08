@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:paradise/api/pdf_api.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
@@ -34,7 +35,9 @@ class PdfReceiptApi {
               ),
               Spacer(),
               Container(
-                child: Text('${receipt.total} ' + ' VND',
+                child: Text(
+                    '${NumberFormat.decimalPattern().format(receipt.total)} ' +
+                        ' VND',
                     style: TextStyle(fontSize: 24)),
               ),
             ],

@@ -478,26 +478,40 @@ class _EditFormState extends State<EditForm> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          toolbarHeight: kMaxPadding * 1.5,
-          backgroundColor: ColorPalette.primaryColor.withOpacity(0.75),
-          leading: InkWell(
-            customBorder: CircleBorder(),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              child: Icon(
-                FontAwesomeIcons.arrowLeft,
-                color: isPressed
-                    ? ColorPalette.primaryColor
-                    : ColorPalette.backgroundColor,
+          elevation: 0,
+          backgroundColor: ColorPalette.primaryColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
               ),
             ),
           ),
           title: Container(
-            child: Text('RENTAL FORM', style: TextStyles.h8),
+            child: Text(
+              'RENTAL FORM',
+              style: TextStyles.h8.bold.copyWith(
+                shadows: [
+                  Shadow(
+                    color: Colors.black12,
+                    offset: Offset(3, 6),
+                    blurRadius: 6,
+                  )
+                ],
+                letterSpacing: 1.175,
+              ),
+            ),
           ),
           centerTitle: true,
+          toolbarHeight: kToolbarHeight * 1.5,
         ),
         body: SingleChildScrollView(
           //       padding: const EdgeInsets.symmetric(horizontal: 24),

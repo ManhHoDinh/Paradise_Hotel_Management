@@ -102,33 +102,40 @@ class _ReportScreenState extends State<ReportScreen> {
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: kMaxPadding * 2,
-          elevation: 5,
-          //
-          backgroundColor: ColorPalette.primaryColor.withOpacity(0.75),
-          leading: InkWell(
-            customBorder: CircleBorder(),
-            onHighlightChanged: (param) {
-              setState(() {
-                isPressed = param;
-              });
-            },
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              child: Icon(
-                FontAwesomeIcons.arrowLeft,
-                color: isPressed
-                    ? ColorPalette.primaryColor
-                    : ColorPalette.backgroundColor,
+          elevation: 0,
+          backgroundColor: ColorPalette.primaryColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
               ),
             ),
           ),
           title: Container(
-            child: Text('REPORT', style: TextStyles.h8),
+            child: Text(
+              'REPORT',
+              style: TextStyles.h8.bold.copyWith(
+                shadows: [
+                  Shadow(
+                    color: Colors.black12,
+                    offset: Offset(3, 6),
+                    blurRadius: 6,
+                  )
+                ],
+                letterSpacing: 1.175,
+              ),
+            ),
           ),
           centerTitle: true,
+          toolbarHeight: kToolbarHeight * 1.5,
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -157,7 +164,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 children: [
                   Container(
                     height: 42,
-                    width: 150,
+                    width: 160,
                     margin: EdgeInsets.only(right: 10, left: 20),
                     decoration: BoxDecoration(
                         border: Border.all(color: ColorPalette.grayText),
@@ -215,7 +222,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   Spacer(),
                   Container(
                     height: 42,
-                    width: 150,
+                    width: 160,
                     margin: EdgeInsets.only(right: 20),
                     alignment: Alignment.topRight,
                     decoration: BoxDecoration(
@@ -343,7 +350,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       width: width * .25,
                       alignment: Alignment.center,
                       child: Text(
-                        'Room Type',
+                        'Room Kind',
                         textAlign: TextAlign.center,
                         style: TextStyles.defaultStyle.copyWith(
                             color: ColorPalette.primaryColor,
@@ -452,7 +459,7 @@ class _ReportScreenState extends State<ReportScreen> {
               ),
               Container(
                 height: 42,
-                margin: const EdgeInsets.symmetric(horizontal: 40),
+                width: 195,
                 decoration: BoxDecoration(
                     border: Border.all(color: ColorPalette.grayText),
                     borderRadius: BorderRadius.circular(kMediumPadding)),
@@ -572,7 +579,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       width: width * .25,
                       alignment: Alignment.center,
                       child: Text(
-                        'Room Type',
+                        'Room Kind',
                         textAlign: TextAlign.center,
                         style: TextStyles.defaultStyle.copyWith(
                             color: ColorPalette.primaryColor,

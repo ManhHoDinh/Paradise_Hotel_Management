@@ -216,7 +216,7 @@ class _StaffScreenState extends State<StaffScreen> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 24,
                             crossAxisSpacing: 24,
-                            childAspectRatio: 0.8,
+                            childAspectRatio: 0.9,
                             children: LoadUser(listUser)
                                 .map((e) => StaffItem(
                                       userModel: e,

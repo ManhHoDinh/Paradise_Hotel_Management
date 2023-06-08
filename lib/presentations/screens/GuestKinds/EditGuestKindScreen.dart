@@ -6,6 +6,7 @@ import 'package:paradise/presentations/widgets/question_yes_no_dialog.dart';
 
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
+import '../../../core/constants/dimension_constants.dart';
 import '../../../core/models/guest_kind_model.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/dialog.dart';
@@ -33,15 +34,45 @@ class _EditGuestKindScreenState extends State<EditGuestKindScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: ColorPalette.primaryColor,
-        title: Text('EDIT GUEST TYPE'),
-        toolbarHeight: kToolbarHeight * 1.5,
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
+            customBorder: CircleBorder(),
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              child: Icon(FontAwesomeIcons.arrowLeft),
+            ),
+          ),
+        ),
+        title: Container(
+          child: Text(
+            'EDIT GUEST KIND',
+            style: TextStyles.h8.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
+                )
+              ],
+              letterSpacing: 1.175,
+            ),
+          ),
+        ),
         centerTitle: true,
+        toolbarHeight: kToolbarHeight * 1.5,
       ),
       body: SingleChildScrollView(
         child: Column(children: [
           Container(
-            margin: EdgeInsets.only(top: 80, bottom: 40),
+            margin: EdgeInsets.only(top: 60, bottom: 40),
             child: Text(
               'GUEST KIND',
               style: TextStyles.h2.copyWith(

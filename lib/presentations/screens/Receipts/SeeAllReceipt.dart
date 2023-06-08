@@ -113,16 +113,20 @@ class _SeeAllReceiptsState extends State<SeeAllReceipts> {
             ),
           ),
           title: Container(
-              child: Text('Receipts',
-                  style: TextStyles.slo.bold.copyWith(
-                    shadows: [
-                      Shadow(
-                        color: Colors.black12,
-                        offset: Offset(3, 6),
-                        blurRadius: 6,
-                      )
-                    ],
-                  ))),
+            child: Text(
+              'RECEIPTS',
+              style: TextStyles.h8.bold.copyWith(
+                shadows: [
+                  Shadow(
+                    color: Colors.black12,
+                    offset: Offset(3, 6),
+                    blurRadius: 6,
+                  )
+                ],
+                letterSpacing: 1.175,
+              ),
+            ),
+          ),
           centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,
         ),
