@@ -23,7 +23,8 @@ class _InputDefaultState extends State<InputDefault> {
       child: TextField(
         controller: widget.controller,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(left: 14, bottom: 14),
+          contentPadding:
+              const EdgeInsets.only(left: 14, right: 14, bottom: 14),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(100)),
           ),
