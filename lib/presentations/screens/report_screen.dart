@@ -164,7 +164,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 children: [
                   Container(
                     height: 42,
-                    width: 160,
+                    width: 170,
                     margin: EdgeInsets.only(right: 10, left: 20),
                     decoration: BoxDecoration(
                         border: Border.all(color: ColorPalette.grayText),
@@ -459,7 +459,7 @@ class _ReportScreenState extends State<ReportScreen> {
               ),
               Container(
                 height: 42,
-                width: 195,
+                width: 220,
                 decoration: BoxDecoration(
                     border: Border.all(color: ColorPalette.grayText),
                     borderRadius: BorderRadius.circular(kMediumPadding)),

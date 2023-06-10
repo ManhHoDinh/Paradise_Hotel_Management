@@ -274,7 +274,7 @@ class _SeeAllReceiptsState extends State<SeeAllReceipts> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 24,
                             crossAxisSpacing: 24,
-                            childAspectRatio: 0.8,
+                            childAspectRatio: 0.75,
                             children: loadReceipts(Receipts)
                                 .map((e) => ReceiptItem(
                                       Receipt: e,

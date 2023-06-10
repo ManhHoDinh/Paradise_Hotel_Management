@@ -336,7 +336,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         return GridView.count(
                             crossAxisCount: 1,
                             mainAxisSpacing: 32,
-                            childAspectRatio: 3.15,
+                            childAspectRatio: 2,
                             children: listNotification
                                 .map((e) => NotifiItem(
                                       notification: e,

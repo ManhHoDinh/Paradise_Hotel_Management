@@ -214,8 +214,8 @@ class _StaffScreenState extends State<StaffScreen> {
                             padding:
                                 const EdgeInsets.only(bottom: kMediumPadding),
                             crossAxisCount: 2,
-                            mainAxisSpacing: 24,
-                            crossAxisSpacing: 24,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
                             childAspectRatio: 0.9,
                             children: LoadUser(listUser)
                                 .map((e) => StaffItem(
