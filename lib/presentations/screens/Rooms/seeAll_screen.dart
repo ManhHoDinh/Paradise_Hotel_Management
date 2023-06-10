@@ -208,7 +208,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FilterContainerWidget(
-                            name: 'price',
+                            name: 'Price',
                             icon1: Icon(
                               FontAwesomeIcons.arrowDown,
                               size: 12,

@@ -52,7 +52,7 @@ class _StaffItemState extends State<StaffItem> {
                       width: 110,
                       child: Text(
                         widget.userModel.Name,
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                         overflow: TextOverflow.visible,
                         style: TextStyles.h6.copyWith(
                             fontWeight: FontWeight.bold,
@@ -68,10 +68,12 @@ class _StaffItemState extends State<StaffItem> {
                                       userModel: widget.userModel,
                                     )));
                       },
-                      child: Icon(
-                        FontAwesomeIcons.pen,
-                        color: ColorPalette.primaryColor,
-                        size: 15,
+                      child: Container(
+                        child: Icon(
+                          FontAwesomeIcons.pen,
+                          color: ColorPalette.primaryColor,
+                          size: 20,
+                        ),
                       ),
                     )
                   ]),
