@@ -60,14 +60,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
           elevation: 0,
           backgroundColor: ColorPalette.backgroundColor,
           title: Padding(
-            padding: const EdgeInsets.only(
-                left: 100, right: 10, top: 25, bottom: 20),
+            padding: const EdgeInsets.only(left: 100),
             child: Container(
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Spacer(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: const [
@@ -82,7 +81,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ],
                       ),
                       const SizedBox(width: 24),
-                      ImageHelper.loadFromAsset(AssetHelper.avatar, height: 40)
+                      InkWell(
+                        onTap: () {},
+                        child: ImageHelper.loadFromAsset(AssetHelper.avatar,
+                            height: 40),
+                      ),
+                      const SizedBox(width: 38),
                     ],
                   )
                 ],
