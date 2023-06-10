@@ -9,6 +9,7 @@ class ReceiptModel {
   DateTime checkOutDate;
   List<String> rentalFormIDs = [];
 
+
   ReceiptModel({
     required this.receiptID,
     required this.guestName,
