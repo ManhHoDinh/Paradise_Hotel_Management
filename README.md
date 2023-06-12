@@ -4,8 +4,7 @@
 <h3>Hotel Management Software</h3>
 <!-- PARADISE -->
 <a style="text-decoration: none;" href="#Top">
-    <img src="./assets/images/logo_app.png" alt="logo"
-    height="300" width="300">
+    <img src="./assets/images/logo_app.png" alt="Logo Spotify" width="250"/>
 </a>
 <!-- Table of Contents -->
 <ul id="nav">
@@ -150,10 +149,9 @@ Rental Vouchers and Invoices Management
 + flutter pub get
 5. Run the app by clicking the "Run" button in your IDE.
 The app should now run on your device or in the simulator.
+# Author
 
-</div>
 <div id="tacGia">
-    <h3>Author</h3>
 
 <ul>
     <li><a style="text-decoration: none;" href="https://github.com/ManhHoDinh">Ho Dinh Manh</a></li>
@@ -178,3 +176,6 @@ The app should now run on your device or in the simulator.
 
 
 </div>
+</div>
+</div>
+
