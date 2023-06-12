@@ -63,12 +63,8 @@
     <h4>Idea</h4>
     <p>* Aim to improve the quality of hotel management
         <br>
-        * Use the MVVM model to separate the interface and processing, increasing the reusability of components or changing the program interface without having to rewrite too much code, can develop applications quickly, easily upgrade, maintain, expand, or repair.
-        <br>
         * Programming in multithreading to optimize hardware, increase processing speed, and improve application speed.
-        <br>
-        * Use the MD5 encryption technique in managing user accounts to ensure security in managing user information.
-    </p>
+      </p>
 </div>
 
 <div id="congNghe">
@@ -104,8 +100,7 @@
 
 <p>
     * Easy information retrieval. <br>
-    * The application must be compatible with most common operating systems such as Windows Vista SP1, Windows 8.1,
-    Windows 10, Windows 11, etc. It should operate stably, avoiding system crashes that cause inconvenience to users
+    * The application must be compatible with most common operating systems such as Android 10, Android 11, Android 12, Ios 13, Ios 14, etc. It should operate stably, avoiding system crashes that cause inconvenience to users
     during use. Additionally, the application should be easy to expand and upgrade in the future. <br>
     * A friendly interface with a reasonable layout that is harmonious in color and highly synchronized, and allows
     granting of user permissions through an account.
@@ -139,9 +134,7 @@ Rental Vouchers and Invoices Management
     <h3>Installation Guide</h3>
     <p>
         * Step 1: Download source from: https://github.com/ManhHoDinh/Paradise_Hotel_Management <br>
-        * Step 2: Run local database: paradise.sql in the resource folder. <br>
-        * Step 3: Change the name of the local database from DinhManh\SQLEXPRESS to your local database inside the app.config file.
-
+        * Step 2: Run project
 </div>
 <div id="tacGia">
     <h3>Author</h3>
