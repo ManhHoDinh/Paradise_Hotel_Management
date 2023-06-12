@@ -4,7 +4,7 @@
 <h3>Hotel Management Software</h3>
 <!-- PARADISE -->
 <a style="text-decoration: none;" href="#Top">
-    <img src="./assets/images/logo_app.png" alt="Logo Spotify" width="250"/>
+    <img src="./assets/images/logo_app.png" alt="Logo Paradise" width="250"/>
 </a>
 <!-- Table of Contents -->
 <ul id="nav">
