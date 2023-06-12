@@ -4,7 +4,8 @@
 <h3>Hotel Management Software</h3>
 <!-- PARADISE -->
 <a style="text-decoration: none;" href="#Top">
-    <img src="./assets/images/logo_app.png" alt="logo">
+    <img src="./assets/images/logo_app.png" alt="logo"
+    height="300" width="300">
 </a>
 <!-- Table of Contents -->
 <ul id="nav">
@@ -131,10 +132,8 @@ Rental Vouchers and Invoices Management
 </div>
 </div>
 <div id="caiDat">
-    <h3>Installation Guide</h3>
-    <p>
-    # Installation Guide
-
+  
+# Install Guide
 ## Requirements
 
 * Flutter SDK
@@ -142,13 +141,6 @@ Rental Vouchers and Invoices Management
 * A code editor (e.g. Visual Studio Code, IntelliJ IDEA)
 
 ## Installation
-Requirements
-
-* Flutter SDK
-* Dart SDK
-* A code editor (e.g. Visual Studio Code, IntelliJ IDEA)
-
-Installation Step : 
 
 1. Download the Flutter SDK from [the Flutter website](https://flutter.dev/sdk/).
 2. Install the Dart SDK from [the Dart website](https://dart.dev/get-dart).
