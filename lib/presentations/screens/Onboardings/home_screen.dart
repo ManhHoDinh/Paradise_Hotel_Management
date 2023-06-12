@@ -11,6 +11,7 @@ import 'package:paradise/presentations/screens/Staffs/staff_screen.dart';
 import 'package:paradise/presentations/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise/core/helpers/text_styles.dart';
+import 'package:paradise/presentations/widgets/fetchDataWidget.dart';
 import 'package:paradise/presentations/widgets/room_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,109 +47,111 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _globalKey,
       drawer: Drawer(
         child: Center(
-          child: SingleChildScrollView(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                  child: ImageHelper.loadFromAsset(AssetHelper.avatar,
-                      width: 110, height: 110)),
-              Container(
-                  margin: EdgeInsets.only(
-                    top: 30,
-                    bottom: 10,
+          child: FetchAllData(
+            child: SingleChildScrollView(
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                    child: ImageHelper.loadFromAsset(AssetHelper.avatar,
+                        width: 110, height: 110)),
+                Container(
+                    margin: EdgeInsets.only(
+                      top: 30,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      'WHAT WOULD YOU DO?',
+                      style: TextStyles.h5.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: ColorPalette.primaryColor),
+                    )),
+                Container(
+                  padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                  child: ButtonWidget(
+                    label: 'Hotel Information',
+                    color: ColorPalette.primaryColor,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(HotelInforScreen.routeName);
+                    },
+                    textColor: ColorPalette.backgroundColor,
                   ),
-                  child: Text(
-                    'WHAT WOULD YOU DO?',
-                    style: TextStyles.h5.copyWith(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: ColorPalette.primaryColor),
-                  )),
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                child: ButtonWidget(
-                  label: 'Hotel Information',
-                  color: ColorPalette.primaryColor,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(HotelInforScreen.routeName);
-                  },
-                  textColor: ColorPalette.backgroundColor,
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                child: ButtonWidget(
-                  label: 'Guest Kind',
-                  color: ColorPalette.primaryColor,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(GuestKindView.routeName);
-                  },
-                  textColor: ColorPalette.backgroundColor,
+                Container(
+                  padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                  child: ButtonWidget(
+                    label: 'Guest Kind',
+                    color: ColorPalette.primaryColor,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(GuestKindView.routeName);
+                    },
+                    textColor: ColorPalette.backgroundColor,
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                child: ButtonWidget(
-                  label: 'Room Kind',
-                  color: ColorPalette.primaryColor,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(RoomKindView.routeName);
-                  },
-                  textColor: ColorPalette.backgroundColor,
+                Container(
+                  padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                  child: ButtonWidget(
+                    label: 'Room Kind',
+                    color: ColorPalette.primaryColor,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RoomKindView.routeName);
+                    },
+                    textColor: ColorPalette.backgroundColor,
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                child: ButtonWidget(
-                  label: 'Rental Form',
-                  color: ColorPalette.primaryColor,
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => AllRentalForm()));
-                  },
-                  textColor: ColorPalette.backgroundColor,
+                Container(
+                  padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                  child: ButtonWidget(
+                    label: 'Rental Form',
+                    color: ColorPalette.primaryColor,
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => AllRentalForm()));
+                    },
+                    textColor: ColorPalette.backgroundColor,
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                child: ButtonWidget(
-                  label: 'Receipt',
-                  color: ColorPalette.primaryColor,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
-                  },
-                  textColor: ColorPalette.backgroundColor,
+                Container(
+                  padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                  child: ButtonWidget(
+                    label: 'Receipt',
+                    color: ColorPalette.primaryColor,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(SeeAllReceipts.routeName);
+                    },
+                    textColor: ColorPalette.backgroundColor,
+                  ),
                 ),
-              ),
-              AuthServices.CurrentUserIsManager()
-                  ? Container(
-                      padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                      child: ButtonWidget(
-                        label: 'Report',
-                        color: ColorPalette.primaryColor,
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(ReportScreen.routeName);
-                        },
-                        textColor: ColorPalette.backgroundColor,
-                      ),
-                    )
-                  : Container(),
-              AuthServices.CurrentUserIsManager()
-                  ? Container(
-                      padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                      child: ButtonWidget(
-                        label: 'Users Management',
-                        color: ColorPalette.primaryColor,
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(StaffScreen.routeName);
-                        },
-                        textColor: ColorPalette.backgroundColor,
-                      ),
-                    )
-                  : Container(),
-            ]),
+                AuthServices.CurrentUserIsManager()
+                    ? Container(
+                        padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                        child: ButtonWidget(
+                          label: 'Report',
+                          color: ColorPalette.primaryColor,
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(ReportScreen.routeName);
+                          },
+                          textColor: ColorPalette.backgroundColor,
+                        ),
+                      )
+                    : Container(),
+                AuthServices.CurrentUserIsManager()
+                    ? Container(
+                        padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                        child: ButtonWidget(
+                          label: 'Users Management',
+                          color: ColorPalette.primaryColor,
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(StaffScreen.routeName);
+                          },
+                          textColor: ColorPalette.backgroundColor,
+                        ),
+                      )
+                    : Container(),
+              ]),
+            ),
           ),
         ),
       ),

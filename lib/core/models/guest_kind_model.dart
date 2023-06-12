@@ -55,8 +55,11 @@ class GuestKindModel {
           GuestModel.AllGuests.where((guest) => guest.guestID == GuestID).first;
       GuestKindModel kindSelected = GuestKindModel.AllGuestKinds.where(
           (guestKind) => guestKind.GuestKindID == guest.guestKindID).first;
+
+      print(kindSelected.ratio);
       return kindSelected.ratio;
     } catch (e) {
+      print("Error");
       return 0;
     }
   }

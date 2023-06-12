@@ -143,10 +143,14 @@ class _EditFormState extends State<EditForm> {
       rental = widget.rental;
       room = RoomModel.AllRooms.where(
           (element) => element.roomID == widget.rental.RoomID).first;
+      print(rental.GuestIDs);
       for (String guestID in rental.GuestIDs) {
+        print(guestID);
+        print(GuestModel.AllGuests.length);
         GuestModel guest =
             GuestModel.AllGuests.where((element) => element.guestID == guestID)
                 .first;
+        print('Guest -- ' + guest.name);
         if (rental.Status == "Paid") {
           RenTailPaidGuestInformation(guest);
         } else {

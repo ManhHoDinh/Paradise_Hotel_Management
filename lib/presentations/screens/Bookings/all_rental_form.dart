@@ -15,6 +15,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../../../core/helpers/assets_helper.dart';
 import '../../../core/models/guest_kind_model.dart';
 import '../../../core/models/guest_model.dart';
+import '../../widgets/fetchDataWidget.dart';
 
 class AllRentalForm extends StatefulWidget {
   static final String routeName = 'all_rental_form';
@@ -137,265 +138,271 @@ class _AllRentalFormState extends State<AllRentalForm> {
           centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,
         ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
-          color: ColorPalette.backgroundColor,
-          child: Column(
-            children: [
-              StreamBuilder(
-                  stream: FireBaseDataBase.readGuestKinds(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      GuestKindModel.kindItems.clear();
+        body: FetchAllData(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
+            color: ColorPalette.backgroundColor,
+            child: Column(
+              children: [
+                StreamBuilder(
+                    stream: FireBaseDataBase.readGuestKinds(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        GuestKindModel.kindItems.clear();
 
-                      GuestKindModel.AllGuestKinds = snapshot.data!;
-                      for (GuestKindModel k in GuestKindModel.AllGuestKinds) {
-                        GuestKindModel.kindItems.add(k.Name);
+                        GuestKindModel.AllGuestKinds = snapshot.data!;
+                        for (GuestKindModel k in GuestKindModel.AllGuestKinds) {
+                          GuestKindModel.kindItems.add(k.Name);
+                          print("Updated Guest Kind");
+                        }
                       }
-                    }
-                    return Container();
-                  }),
-              StreamBuilder(
-                  stream: FireBaseDataBase.readGuests(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      GuestModel.AllGuests = snapshot.data!;
-                    }
-                    return Container();
-                  }),
-              StreamBuilder(
-                  stream: FireBaseDataBase.readRooms(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      RoomModel.AllRooms = snapshot.data!;
-                    }
-                    return Container();
-                  }),
-              const SizedBox(height: 36),
-              Container(
-                child: Container(
-                  child: SizedBox(
-                    height: 42,
-                    width: double.infinity,
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          valueSearch = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(top: 4),
-                          prefixIcon: InkWell(
-                            customBorder: CircleBorder(),
-                            onTap: () {},
-                            child: Icon(
-                              FontAwesomeIcons.magnifyingGlass,
-                              size: 16,
-                              color: ColorPalette.greenText,
-                            ),
-                          ),
-                          suffixIcon: InkWell(
+                      return Container();
+                    }),
+                StreamBuilder(
+                    stream: FireBaseDataBase.readGuests(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        GuestModel.AllGuests = snapshot.data!;
+                        print("Updated");
+                      }
+                      return Container();
+                    }),
+                StreamBuilder(
+                    stream: FireBaseDataBase.readRooms(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        RoomModel.AllRooms = snapshot.data!;
+                      }
+                      return Container();
+                    }),
+                const SizedBox(height: 36),
+                Container(
+                  child: Container(
+                    child: SizedBox(
+                      height: 42,
+                      width: double.infinity,
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            valueSearch = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.only(top: 4),
+                            prefixIcon: InkWell(
                               customBorder: CircleBorder(),
-                              onTap: () {
-                                setState(() {
-                                  isVisibleFilter = !isVisibleFilter;
-                                });
-                              },
-                              child: Image.asset(AssetHelper.iconFilter)),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                            fontSize: 14,
-                            color: ColorPalette.grayText,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorPalette.primaryColor, width: 2))),
+                              onTap: () {},
+                              child: Icon(
+                                FontAwesomeIcons.magnifyingGlass,
+                                size: 16,
+                                color: ColorPalette.greenText,
+                              ),
+                            ),
+                            suffixIcon: InkWell(
+                                customBorder: CircleBorder(),
+                                onTap: () {
+                                  setState(() {
+                                    isVisibleFilter = !isVisibleFilter;
+                                  });
+                                },
+                                child: Image.asset(AssetHelper.iconFilter)),
+                            hintText: 'Search',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: ColorPalette.grayText,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.primaryColor,
+                                    width: 2))),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Visibility(
-                  visible: isVisibleFilter,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.filter,
-                            size: 13.13,
-                            color: ColorPalette.greenText,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            'Filter',
-                            style: TextStyles.h9.copyWith(
-                                color: ColorPalette.primaryColor, fontSize: 12),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 20.64),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            child: FilterContainerWidget(
-                              name: 'ID',
-                              icon1: Icon(
-                                FontAwesomeIcons.arrowDown,
-                                size: 13,
-                                color: idDecrease
-                                    ? ColorPalette.primaryColor
-                                    : ColorPalette.blackText,
-                              ),
-                              icon2: Icon(
-                                FontAwesomeIcons.arrowUp,
-                                size: 13,
-                                color: idDecrease
-                                    ? ColorPalette.blackText
-                                    : ColorPalette.primaryColor,
-                              ),
-                              onTapIconDown: () {
-                                setState(() {
-                                  idDecrease = true;
-                                });
-                              },
-                              onTapIconUp: () {
-                                setState(() {
-                                  idDecrease = false;
-                                });
-                              },
+                const SizedBox(height: 24),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Visibility(
+                    visible: isVisibleFilter,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.filter,
+                              size: 13.13,
+                              color: ColorPalette.greenText,
                             ),
-                          ),
-                          Container(
-                            width: 100,
-                            alignment: Alignment.center,
-                            child: FilterContainerWidget(
-                              name: 'Date',
-                              icon1: Icon(
-                                FontAwesomeIcons.arrowDown,
-                                size: 13,
-                                color: dateDecrease
-                                    ? ColorPalette.primaryColor
-                                    : ColorPalette.blackText,
-                              ),
-                              icon2: Icon(
-                                FontAwesomeIcons.arrowUp,
-                                size: 13,
-                                color: dateDecrease
-                                    ? ColorPalette.blackText
-                                    : ColorPalette.primaryColor,
-                              ),
-                              onTapIconDown: () {
-                                setState(() {
-                                  dateDecrease = true;
-                                });
-                              },
-                              onTapIconUp: () {
-                                setState(() {
-                                  dateDecrease = false;
-                                });
-                              },
+                            SizedBox(
+                              width: 20,
                             ),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: ColorPalette.grayText),
-                                borderRadius:
-                                    BorderRadius.circular(kMediumPadding)),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                alignment: Alignment.centerLeft,
-                                value: dropdownStatusValue,
-                                hint: Text(
-                                  "Status",
-                                  style: TextStyles.defaultStyle.grayText
-                                      .copyWith(fontSize: 13),
+                            Text(
+                              'Filter',
+                              style: TextStyles.h9.copyWith(
+                                  color: ColorPalette.primaryColor,
+                                  fontSize: 12),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 20.64),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: FilterContainerWidget(
+                                name: 'ID',
+                                icon1: Icon(
+                                  FontAwesomeIcons.arrowDown,
+                                  size: 13,
+                                  color: idDecrease
+                                      ? ColorPalette.primaryColor
+                                      : ColorPalette.blackText,
                                 ),
-                                iconStyleData: IconStyleData(
-                                    iconEnabledColor:
-                                        ColorPalette.primaryColor),
-                                onChanged: (value) {
+                                icon2: Icon(
+                                  FontAwesomeIcons.arrowUp,
+                                  size: 13,
+                                  color: idDecrease
+                                      ? ColorPalette.blackText
+                                      : ColorPalette.primaryColor,
+                                ),
+                                onTapIconDown: () {
                                   setState(() {
-                                    dropdownStatusValue = value;
+                                    idDecrease = true;
                                   });
                                 },
-                                buttonStyleData: const ButtonStyleData(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  height: 28,
-                                  width: 100,
-                                ),
-                                menuItemStyleData: const MenuItemStyleData(
-                                  height: 28,
-                                ),
-                                dropdownStyleData: DropdownStyleData(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            kMinPadding))),
-                                items: statusItems
-                                    .map((e) => DropdownMenuItem(
-                                        value: e,
-                                        onTap: () {
-                                          setState(() {
-                                            status = e;
-                                            print(status);
-                                          });
-                                        },
-                                        child: Text(
-                                          e,
-                                          style:
-                                              TextStyles.defaultStyle.grayText,
-                                        )))
-                                    .toList(),
+                                onTapIconUp: () {
+                                  setState(() {
+                                    idDecrease = false;
+                                  });
+                                },
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 50),
-                    ],
+                            Container(
+                              width: 100,
+                              alignment: Alignment.center,
+                              child: FilterContainerWidget(
+                                name: 'Date',
+                                icon1: Icon(
+                                  FontAwesomeIcons.arrowDown,
+                                  size: 13,
+                                  color: dateDecrease
+                                      ? ColorPalette.primaryColor
+                                      : ColorPalette.blackText,
+                                ),
+                                icon2: Icon(
+                                  FontAwesomeIcons.arrowUp,
+                                  size: 13,
+                                  color: dateDecrease
+                                      ? ColorPalette.blackText
+                                      : ColorPalette.primaryColor,
+                                ),
+                                onTapIconDown: () {
+                                  setState(() {
+                                    dateDecrease = true;
+                                  });
+                                },
+                                onTapIconUp: () {
+                                  setState(() {
+                                    dateDecrease = false;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: ColorPalette.grayText),
+                                  borderRadius:
+                                      BorderRadius.circular(kMediumPadding)),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2(
+                                  alignment: Alignment.centerLeft,
+                                  value: dropdownStatusValue,
+                                  hint: Text(
+                                    "Status",
+                                    style: TextStyles.defaultStyle.grayText
+                                        .copyWith(fontSize: 13),
+                                  ),
+                                  iconStyleData: IconStyleData(
+                                      iconEnabledColor:
+                                          ColorPalette.primaryColor),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      dropdownStatusValue = value;
+                                    });
+                                  },
+                                  buttonStyleData: const ButtonStyleData(
+                                    padding: const EdgeInsets.only(left: 12),
+                                    height: 28,
+                                    width: 100,
+                                  ),
+                                  menuItemStyleData: const MenuItemStyleData(
+                                    height: 28,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              kMinPadding))),
+                                  items: statusItems
+                                      .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          onTap: () {
+                                            setState(() {
+                                              status = e;
+                                              print(status);
+                                            });
+                                          },
+                                          child: Text(
+                                            e,
+                                            style: TextStyles
+                                                .defaultStyle.grayText,
+                                          )))
+                                      .toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 50),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                  child: Container(
-                child: StreamBuilder<List<RentalFormModel>>(
-                    stream: FireBaseDataBase.readRentalForms(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child:
-                              Text('Something went wrong! ${snapshot.error}'),
-                        );
-                      } else if (snapshot.hasData) {
-                        listRentalForm = snapshot.data!;
-                        RentalFormModel.AllRentalFormModels = snapshot.data!;
-                        return GridView.count(
-                            padding:
-                                const EdgeInsets.only(bottom: kMediumPadding),
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 24,
-                            crossAxisSpacing: 24,
-                            childAspectRatio: 0.8,
-                            children: loadListForms(listRentalForm)
-                                .map((e) => FormItem(
-                                      form: e,
-                                    ))
-                                .toList());
-                      } else
-                        return Container();
-                    }),
-              )),
-            ],
+                Expanded(
+                    child: Container(
+                  child: StreamBuilder<List<RentalFormModel>>(
+                      stream: FireBaseDataBase.readRentalForms(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child:
+                                Text('Something went wrong! ${snapshot.error}'),
+                          );
+                        } else if (snapshot.hasData) {
+                          listRentalForm = snapshot.data!;
+                          RentalFormModel.AllRentalFormModels = snapshot.data!;
+                          return GridView.count(
+                              padding:
+                                  const EdgeInsets.only(bottom: kMediumPadding),
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 24,
+                              crossAxisSpacing: 24,
+                              childAspectRatio: 0.8,
+                              children: loadListForms(listRentalForm)
+                                  .map((e) => FormItem(
+                                        form: e,
+                                      ))
+                                  .toList());
+                        } else
+                          return Container();
+                      }),
+                )),
+              ],
+            ),
           ),
         ),
       ),
