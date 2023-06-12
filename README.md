@@ -4,7 +4,7 @@
 <h3>Hotel Management Software</h3>
 <!-- PARADISE -->
 <a style="text-decoration: none;" href="#Top">
-    <img style="background-color: #38A3A5;" src="./assets/images/logo.png" alt="logo">
+    <img src="./assets/images/logo_app.png" alt="logo">
 </a>
 <!-- Table of Contents -->
 <ul id="nav">
@@ -133,8 +133,32 @@ Rental Vouchers and Invoices Management
 <div id="caiDat">
     <h3>Installation Guide</h3>
     <p>
-        * Step 1: Download source from: https://github.com/ManhHoDinh/Paradise_Hotel_Management <br>
-        * Step 2: Run project
+    # Installation Guide
+
+## Requirements
+
+* Flutter SDK
+* Dart SDK
+* A code editor (e.g. Visual Studio Code, IntelliJ IDEA)
+
+## Installation
+Requirements
+
+* Flutter SDK
+* Dart SDK
+* A code editor (e.g. Visual Studio Code, IntelliJ IDEA)
+
+Installation Step : 
+
+1. Download the Flutter SDK from [the Flutter website](https://flutter.dev/sdk/).
+2. Install the Dart SDK from [the Dart website](https://dart.dev/get-dart).
+3. Download Paradise Hotel Management Source :  https://github.com/ManhHoDinh/Paradise_Hotel_Management.
+4. In the project directory, run the following command to install the dependencies:
+
++ flutter pub get
+5. Run the app by clicking the "Run" button in your IDE.
+The app should now run on your device or in the simulator.
+
 </div>
 <div id="tacGia">
     <h3>Author</h3>
