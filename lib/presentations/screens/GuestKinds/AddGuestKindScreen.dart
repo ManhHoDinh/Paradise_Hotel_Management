@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
+import '../../../core/constants/dimension_constants.dart';
 import '../../../core/models/guest_kind_model.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/dialog.dart';
@@ -23,10 +25,40 @@ class _AddGuestKindScreenState extends State<AddGuestKindScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: ColorPalette.primaryColor,
-        title: Text('NEW GUEST TYPE'),
-        toolbarHeight: kToolbarHeight * 1.5,
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
+            customBorder: CircleBorder(),
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              child: Icon(FontAwesomeIcons.arrowLeft),
+            ),
+          ),
+        ),
+        title: Container(
+          child: Text(
+            'NEW GUEST KIND',
+            style: TextStyles.h8.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
+                )
+              ],
+              letterSpacing: 1.175,
+            ),
+          ),
+        ),
         centerTitle: true,
+        toolbarHeight: kToolbarHeight * 1.5,
       ),
       body: GestureDetector(
         onTap: () {
@@ -35,7 +67,7 @@ class _AddGuestKindScreenState extends State<AddGuestKindScreen> {
         child: SingleChildScrollView(
           child: Column(children: [
             Container(
-              margin: EdgeInsets.only(top: 80, bottom: 40),
+              margin: EdgeInsets.only(top: 60, bottom: 40),
               child: Text(
                 'GUEST KIND',
                 style: TextStyles.h2.copyWith(

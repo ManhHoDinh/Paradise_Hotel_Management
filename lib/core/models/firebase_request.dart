@@ -6,6 +6,7 @@ import 'package:paradise/core/models/notification_model.dart';
 import 'package:paradise/core/models/receipt_model.dart';
 import 'package:paradise/core/models/room_kind_model.dart';
 import 'package:paradise/core/models/room_model.dart';
+import 'package:paradise/core/models/user_model.dart';
 import 'package:paradise/firebase_options.dart';
 import 'package:paradise/core/models/rental_form_model.dart';
 
@@ -61,4 +62,7 @@ class FireBaseDataBase {
           .map((snapshot) => snapshot.docs
               .map((doc) => NotificationModel.fromJson(doc.data()))
               .toList());
+  static Stream<List<UserModel>> readUsers() =>
+      FirebaseFirestore.instance.collection('Users').snapshots().map((event) =>
+          event.docs.map((e) => UserModel.fromJson(e.data())).toList());
 }

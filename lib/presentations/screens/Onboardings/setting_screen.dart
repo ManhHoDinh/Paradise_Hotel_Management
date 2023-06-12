@@ -40,6 +40,7 @@ class _SettingScreenState extends State<SettingScreen> {
               children: [
                 Row(
                   children: [
+                    Spacer(),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: const [
@@ -58,7 +59,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       onTap: () {},
                       child: ImageHelper.loadFromAsset(AssetHelper.avatar,
                           height: 40),
-                    )
+                    ),
+                    const SizedBox(width: 38),
                   ],
                 )
               ],

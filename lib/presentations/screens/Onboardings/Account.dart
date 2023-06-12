@@ -93,7 +93,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Container(
                         width: 150,
                         child: Text(
-                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.ID}',
+                          '${AuthServices.CurrentUser == null ? "" : AuthServices.CurrentUser!.identification ?? ''}',
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,

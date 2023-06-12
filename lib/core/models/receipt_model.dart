@@ -4,18 +4,19 @@ class ReceiptModel {
   String? guestName;
   String? address = '';
   String? receiptID;
-  int? total = 0;
+  int total = 0;
   String? phoneNumber = '';
-  DateTime? checkOutDate = DateTime.now();
+  DateTime checkOutDate;
   List<String> rentalFormIDs = [];
+
 
   ReceiptModel({
     required this.receiptID,
     required this.guestName,
     this.address,
-    this.total,
+    required this.total,
     this.phoneNumber,
-    this.checkOutDate,
+    required this.checkOutDate,
     required this.rentalFormIDs,
   });
 

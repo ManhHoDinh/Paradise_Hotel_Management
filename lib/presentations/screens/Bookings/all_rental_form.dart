@@ -13,6 +13,8 @@ import 'package:paradise/presentations/widgets/form_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../../../core/helpers/assets_helper.dart';
+import '../../../core/models/guest_kind_model.dart';
+import '../../../core/models/guest_model.dart';
 
 class AllRentalForm extends StatefulWidget {
   static final String routeName = 'all_rental_form';
@@ -100,30 +102,37 @@ class _AllRentalFormState extends State<AllRentalForm> {
           },
         ),
         appBar: AppBar(
-          elevation: 5,
+          elevation: 0,
           backgroundColor: ColorPalette.primaryColor,
-          leading: InkWell(
-            customBorder: CircleBorder(),
-            onHighlightChanged: (param) {
-              setState(() {
-                isPressed = param;
-              });
-            },
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              child: Icon(
-                FontAwesomeIcons.arrowLeft,
-                color: isPressed
-                    ? ColorPalette.primaryColor
-                    : ColorPalette.backgroundColor,
+          leadingWidth: kDefaultIconSize * 3,
+          leading: Container(
+            width: double.infinity,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onHighlightChanged: (param) {},
+              splashColor: ColorPalette.primaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                child: Icon(FontAwesomeIcons.arrowLeft),
               ),
             ),
           ),
-          title: Text(
-            'RENTAL FORMS',
-            style: TextStyles.h8.copyWith(letterSpacing: 3.05),
+          title: Container(
+            child: Text(
+              'RENTAL FORMS',
+              style: TextStyles.h8.bold.copyWith(
+                shadows: [
+                  Shadow(
+                    color: Colors.black12,
+                    offset: Offset(3, 6),
+                    blurRadius: 6,
+                  )
+                ],
+                letterSpacing: 1.175,
+              ),
+            ),
           ),
           centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,
@@ -133,6 +142,27 @@ class _AllRentalFormState extends State<AllRentalForm> {
           color: ColorPalette.backgroundColor,
           child: Column(
             children: [
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuestKinds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestKindModel.kindItems.clear();
+
+                      GuestKindModel.AllGuestKinds = snapshot.data!;
+                      for (GuestKindModel k in GuestKindModel.AllGuestKinds) {
+                        GuestKindModel.kindItems.add(k.Name);
+                      }
+                    }
+                    return Container();
+                  }),
+              StreamBuilder(
+                  stream: FireBaseDataBase.readGuests(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GuestModel.AllGuests = snapshot.data!;
+                    }
+                    return Container();
+                  }),
               StreamBuilder(
                   stream: FireBaseDataBase.readRooms(),
                   builder: (context, snapshot) {

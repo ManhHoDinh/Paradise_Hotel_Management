@@ -37,6 +37,7 @@ class _AddReceiptState extends State<AddReceipt> {
   List<TableRow> listRow = [];
   StreamController<int> TotalPriceStream = StreamController<int>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController IdController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   List<String> RentalFormIDs = [];
   List<String> RoomIDs = [];
@@ -91,9 +92,17 @@ class _AddReceiptState extends State<AddReceipt> {
                     height: 60,
                   ),
                   InputTitleWidget(
-                    Title: 'Guest name',
-                    controller: nameController,
+                    Title: 'Guest ID',
+                    controller: IdController,
                     hintInput: 'Type here',
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: InputTitleWidget(
+                      Title: 'Guest name',
+                      controller: nameController,
+                      hintInput: 'Type here',
+                    ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 20),
@@ -290,8 +299,8 @@ class _AddReceiptState extends State<AddReceipt> {
           ),
           title: Container(
             child: Text(
-              'Create Receipt',
-              style: TextStyles.slo.bold.copyWith(
+              'CREATE RECEIPT',
+              style: TextStyles.h8.bold.copyWith(
                 shadows: [
                   Shadow(
                     color: Colors.black12,
@@ -299,9 +308,9 @@ class _AddReceiptState extends State<AddReceipt> {
                     blurRadius: 6,
                   )
                 ],
+                letterSpacing: 1.175,
               ),
             ),
-            //alignment: Alignment.center,
           ),
           centerTitle: true,
           toolbarHeight: kToolbarHeight * 1.5,
@@ -592,14 +601,16 @@ class _AddReceiptState extends State<AddReceipt> {
         DocumentReference doc = FirebaseFirestore.instance
             .collection(ReceiptModel.CollectionName)
             .doc();
+
         ReceiptModel receipt = new ReceiptModel(
             receiptID: doc.id,
             guestName: nameController.text,
             rentalFormIDs: RentalFormIDs,
             phoneNumber: phoneNumberController.text,
-            checkOutDate: _selectedDay,
+            checkOutDate: _selectedDay ?? DateTime.now(),
             total: widget.TotalPrice,
             address: addressController.text);
+
         for (String rentalFormID in RentalFormIDs)
           changeRentalFormState(rentalFormID);
         for (String roomID in RoomIDs) changeStateRoom(roomID);
@@ -615,7 +626,7 @@ class _AddReceiptState extends State<AddReceipt> {
               });
 
           setState(() {
-            addressController.text = '';
+            IdController.text = addressController.text = '';
             nameController.text = '';
             phoneNumberController.text = '';
             _selectedDay = DateTime.now();

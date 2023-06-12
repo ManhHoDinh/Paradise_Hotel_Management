@@ -179,10 +179,9 @@ class TextStyles {
       fontWeight: FontWeight.w500,
       fontFamily: AppFonts.inter);
   static const TextStyle inforRoomDetail = TextStyle(
-      fontSize: 14,
-      color: Color(0xff1B1446),
-      fontWeight: FontWeight.w500,
-      fontFamily: AppFonts.poppins);
+    fontSize: 14,
+    color: Color(0xff1B1446),
+  );
   static const TextStyle descriptionRoom = TextStyle(
       fontSize: 14,
       color: ColorPalette.rankText,
@@ -212,6 +211,12 @@ class TextStyles {
     fontSize: 14,
     color: ColorPalette.detailBorder,
     letterSpacing: 0.8,
+  );
+  static const TextStyle titlehotelinfor = TextStyle(
+    fontFamily: AppFonts.poppins,
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    color: ColorPalette.primaryColor,
   );
 }
 

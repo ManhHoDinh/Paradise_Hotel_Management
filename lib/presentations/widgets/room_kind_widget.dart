@@ -15,7 +15,7 @@ class RoomKindWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 250,
+      width: 265,
       padding: EdgeInsets.all(20),
       margin: EdgeInsets.only(bottom: 25),
       height: 130,

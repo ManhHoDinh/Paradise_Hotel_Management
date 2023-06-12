@@ -5,6 +5,7 @@ import 'package:paradise/presentations/screens/Onboardings/Account.dart';
 import 'package:paradise/presentations/screens/Onboardings/notification_screen.dart';
 import 'package:paradise/presentations/screens/Onboardings/setting_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import '../../../core/helpers/AuthFunctions.dart';
 import 'home_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -16,7 +17,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  static final String routeName = 'home_screen';
+  @override
+  void initState() {
+    // TODO: implement initState
+    AuthServices.UpdateCurrentUser();
+    WidgetsFlutterBinding.ensureInitialized();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/constants/color_palatte.dart';
 import '../../../../core/helpers/text_styles.dart';
 import '../../../../core/models/room_kind_model.dart';
+import '../../../core/constants/dimension_constants.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/dialog.dart';
 import '../../widgets/inputTitleWidget.dart';
@@ -25,11 +27,40 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: ColorPalette.primaryColor,
-        title: Text('NEW ROOM TYPE'),
-          toolbarHeight: kToolbarHeight * 1.5,
-        
+        leadingWidth: kDefaultIconSize * 3,
+        leading: Container(
+          width: double.infinity,
+          child: InkWell(
+            customBorder: CircleBorder(),
+            onHighlightChanged: (param) {},
+            splashColor: ColorPalette.primaryColor,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              child: Icon(FontAwesomeIcons.arrowLeft),
+            ),
+          ),
+        ),
+        title: Container(
+          child: Text(
+            'NEW ROOM KIND',
+            style: TextStyles.h8.bold.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(3, 6),
+                  blurRadius: 6,
+                )
+              ],
+              letterSpacing: 1.175,
+            ),
+          ),
+        ),
         centerTitle: true,
+        toolbarHeight: kToolbarHeight * 1.5,
       ),
       body: GestureDetector(
         onTap: () {
@@ -47,7 +78,7 @@ class _AddRoomKindScreenState extends State<AddRoomKindScreen> {
               ),
             ),
             InputTitleWidget(
-              Title: 'Type name',
+              Title: 'Room Kind Name',
               controller: nameController,
               hintInput: 'Type here',
             ),

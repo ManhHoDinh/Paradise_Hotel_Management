@@ -152,7 +152,7 @@ class RentalFormItem extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
                     child: Text(
-                      '1.25 x',
+                      '${rentalFormModel.SurchargeRatio} x',
                       style:
                           TextStyles.h6.copyWith(color: ColorPalette.rankText),
                     ),

@@ -40,11 +40,6 @@ class _NotifiItemState extends State<NotifiItem> {
                 notifiModel.heading,
                 style: TextStyles.titlenotifi,
               ),
-              Spacer(),
-              Text(
-                '${notifiModel.postTime.hour}:${notifiModel.postTime.minute} - ${notifiModel.postTime.day}/${notifiModel.postTime.month}/${notifiModel.postTime.year}',
-                style: TextStyles.titlenotifi,
-              ),
             ],
           ),
           SizedBox(height: 15),
@@ -53,10 +48,19 @@ class _NotifiItemState extends State<NotifiItem> {
             style: TextStyles.timenotifi,
           ),
           SizedBox(height: 15),
-          Text(
-            'By : ${notifiModel.postAuthor}',
-            style: TextStyles.timenotifi.copyWith(fontSize: 10),
-          )
+          Row(
+            children: [
+              Text(
+                'By : ${notifiModel.postAuthor}',
+                style: TextStyles.timenotifi.copyWith(fontSize: 10),
+              ),
+              Spacer(),
+              Text(
+                '${notifiModel.postTime.hour}:${notifiModel.postTime.minute} - ${notifiModel.postTime.day}/${notifiModel.postTime.month}/${notifiModel.postTime.year}',
+                style: TextStyles.titlenotifi.copyWith(fontSize: 10),
+              ),
+            ],
+          ),
         ],
       ),
     );

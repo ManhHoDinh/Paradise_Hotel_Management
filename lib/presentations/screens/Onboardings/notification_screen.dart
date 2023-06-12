@@ -5,10 +5,7 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:paradise/core/helpers/AuthFunctions.dart';
 import 'package:paradise/core/models/firebase_request.dart';
 import 'package:paradise/core/models/notification_model.dart';
-import 'package:paradise/presentations/widgets/button_default.dart';
 import 'package:paradise/presentations/widgets/notifi_item.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
 import '../../../core/constants/color_palatte.dart';
 import '../../../core/constants/dimension_constants.dart';
 import '../../../core/helpers/assets_helper.dart';
@@ -63,14 +60,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
           elevation: 0,
           backgroundColor: ColorPalette.backgroundColor,
           title: Padding(
-            padding: const EdgeInsets.only(
-                left: 100, right: 10, top: 25, bottom: 20),
+            padding: const EdgeInsets.only(left: 100),
             child: Container(
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Spacer(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: const [
@@ -85,7 +81,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ],
                       ),
                       const SizedBox(width: 24),
-                      ImageHelper.loadFromAsset(AssetHelper.avatar, height: 40)
+                      InkWell(
+                        onTap: () {},
+                        child: ImageHelper.loadFromAsset(AssetHelper.avatar,
+                            height: 40),
+                      ),
+                      const SizedBox(width: 38),
                     ],
                   )
                 ],
@@ -96,11 +97,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
         body: Container(
           margin: EdgeInsets.only(top: 20),
           padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
+          // StreamBuilder<int>(
+          //                   stream: TotalPriceStream.stream,
+          //                   initialData: 0,
+          //                   builder: (BuildContext context,
+          //                       AsyncSnapshot<int> snapshot) {
+          //                     return Text(
+          //                       '${NumberFormat.decimalPattern().format(snapshot.data)} VND',
+          //                       style: TextStyles.h4.copyWith(
+          //                           color: ColorPalette.primaryColor,
+          //                           fontWeight: FontWeight.w500),
+          //                     );
+          //                   },
+          //                 )),
+          // child: StreamBuilder<bool>(
+          //     stream: AuthServices.CurrentUserIsManagerStream.stream,
+          //     initialData: false,
+          //     builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          //       if(snapshot.hasData)
+          //       {manager = snapshot.data!;
+          //       staff = !snapshot.data!;}
+          //       return }),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Visibility(
-                visible: manager,
+                visible: AuthServices.CurrentUserIsManager(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -285,7 +307,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
               ),
               Visibility(
-                visible: staff,
+                visible: !AuthServices.CurrentUserIsManager(),
                 child: Column(
                   children: [
                     Text(
@@ -318,7 +340,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         return GridView.count(
                             crossAxisCount: 1,
                             mainAxisSpacing: 32,
-                            childAspectRatio: 3.15,
+                            childAspectRatio: 3,
                             children: listNotification
                                 .map((e) => NotifiItem(
                                       notification: e,

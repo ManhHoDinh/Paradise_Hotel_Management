@@ -208,7 +208,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FilterContainerWidget(
-                            name: 'price',
+                            name: 'Price',
                             icon1: Icon(
                               FontAwesomeIcons.arrowDown,
                               size: 12,
@@ -235,7 +235,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                             },
                           ),
                           Container(
-                              width: 100,
+                              width: 120,
                               height: 28,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
@@ -263,7 +263,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                                   buttonStyleData: const ButtonStyleData(
                                     padding: const EdgeInsets.only(left: 12),
                                     height: 28,
-                                    width: 100,
+                                    width: 110,
                                   ),
                                   menuItemStyleData: const MenuItemStyleData(
                                     height: 28,
@@ -291,7 +291,7 @@ class _SeeAllRoomsScreenState extends State<SeeAllRoomsScreen> {
                               )),
                           Container(
                               height: 28,
-                              width: 140,
+                              width: 145,
                               decoration: BoxDecoration(
                                   border:
                                       Border.all(color: ColorPalette.grayText),

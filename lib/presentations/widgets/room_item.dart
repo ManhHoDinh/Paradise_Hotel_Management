@@ -60,7 +60,7 @@ class _RoomItemState extends State<RoomItem> {
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(kMinPadding * 1.5))),
                     height: 20,
-                    width: 55,
+                    width: 70,
                     alignment: Alignment.center,
                     child: Text(
                       '${widget.room.State}',

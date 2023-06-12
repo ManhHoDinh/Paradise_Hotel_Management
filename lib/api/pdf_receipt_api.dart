@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:paradise/api/pdf_api.dart';
 import 'package:paradise/core/constants/dimension_constants.dart';
 import 'package:paradise/core/helpers/assets_helper.dart';
@@ -10,6 +11,8 @@ import 'package:paradise/presentations/screens/Bookings/rental_form.dart';
 import 'package:path/path.dart';
 import 'package:pdf/widgets.dart';
 import 'package:pdf/pdf.dart';
+
+import '../core/constants/color_palatte.dart';
 
 class PdfReceiptApi {
   static Future<File> generate(
@@ -34,7 +37,9 @@ class PdfReceiptApi {
               ),
               Spacer(),
               Container(
-                child: Text('${receipt.total} ' + ' VND',
+                child: Text(
+                    '${NumberFormat.decimalPattern().format(receipt.total)} ' +
+                        ' VND',
                     style: TextStyle(fontSize: 24)),
               ),
             ],
@@ -119,21 +124,24 @@ class PdfReceiptApi {
       ReceiptModel receiptModel, RentalFormModel rentalFormModel) {
     int renDays =
         receiptModel.checkOutDate!.difference(rentalFormModel.BeginDate).inDays;
+    if (renDays == 0) renDays = 1;
     var inforReceipt = [
       [
         'R.ID',
         rentalFormModel.RoomID,
-        '${rentalFormModel.UnitPrice} x $renDays',
+        '${NumberFormat.decimalPattern().format(rentalFormModel.UnitPrice)} } : $renDays',
       ],
       [
         'G.K.S',
-        rentalFormModel.GuestKindSurcharge(renDays),
-        '${rentalFormModel.HighestGuestKindSurchargeRatio} x ${rentalFormModel.NumberOfHighestGuestKindRatioSurchargeGuest()}',
+        NumberFormat.decimalPattern()
+            .format(rentalFormModel.GuestKindSurcharge(renDays)),
+        '${rentalFormModel.HighestGuestKindSurchargeRatio} : ${rentalFormModel.NumberOfHighestGuestKindRatioSurchargeGuest()} Guest',
       ],
       [
         'E.C.S',
-        rentalFormModel.ExcessCustomerSurcharge(renDays),
-        '1.25 x ${rentalFormModel.NumberGuestBeginSubCharge}',
+        NumberFormat.decimalPattern()
+            .format(rentalFormModel.ExcessCustomerSurcharge(renDays)),
+        '1.25 : ${rentalFormModel.NumberGuestBeginSubCharge}',
       ]
     ];
     return Container(
@@ -210,7 +218,7 @@ class PdfReceiptApi {
                     width: 70,
                     child: Text(
                       style: TextStyle(fontSize: 18),
-                      '${rentalFormModel.GuestKindSurcharge(renDays)}',
+                      '${NumberFormat.decimalPattern().format(rentalFormModel.GuestKindSurcharge(renDays))}',
                     ),
                   ),
                   Container(
@@ -219,7 +227,7 @@ class PdfReceiptApi {
                     margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
                     child: Text(
                         style: TextStyle(fontSize: 18),
-                        '${rentalFormModel.ExcessCustomerSurcharge(renDays)}'),
+                        '${NumberFormat.decimalPattern().format(rentalFormModel.ExcessCustomerSurcharge(renDays))}'),
                   ),
                 ],
               ),
@@ -234,7 +242,7 @@ class PdfReceiptApi {
                     ),
                     child: Text(
                       style: TextStyle(fontSize: 18),
-                      '${rentalFormModel.UnitPrice}' +
+                      '${NumberFormat.decimalPattern().format(rentalFormModel.UnitPrice)}' +
                           ' x ' +
                           renDays.toString(),
                     ),
@@ -247,18 +255,17 @@ class PdfReceiptApi {
                       rentalFormModel.HighestGuestKindSurchargeRatio
                               .toString() +
                           ' x ' +
-                          '${rentalFormModel.NumberOfHighestGuestKindRatioSurchargeGuest()}',
+                          '[${rentalFormModel.HighestGuestKindRatioName}|'
+                              '${rentalFormModel.NumberOfHighestGuestKindRatioSurchargeGuest()}]',
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
-                    child: Text(
-                      '1.25 x ' +
-                          '${rentalFormModel.NumberGuestBeginSubCharge}',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
+                      margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
+                      child: Text(
+                        '${rentalFormModel.SurchargeRatio} x [${rentalFormModel.GuestIDs.length} |  ${rentalFormModel.NumberGuestBeginSubCharge}]',
+                        style: TextStyle(fontSize: 18),
+                      )),
                 ],
               ),
             ],
@@ -281,7 +288,7 @@ class PdfReceiptApi {
                     top: kMinPadding, bottom: kDefaultPadding),
                 child: Text(
                   style: TextStyle(fontSize: 18),
-                  '${rentalFormModel.ExcessCustomerSurcharge(renDays) + rentalFormModel.GuestKindSurcharge(renDays)} VND',
+                  '${NumberFormat.decimalPattern().format(rentalFormModel.ExcessCustomerSurcharge(renDays) + rentalFormModel.GuestKindSurcharge(renDays))} VND',
                   softWrap: true,
                 ),
               ),
@@ -303,7 +310,7 @@ class PdfReceiptApi {
                 margin: const EdgeInsets.only(bottom: kDefaultPadding),
                 child: Text(
                   style: TextStyle(fontSize: 20),
-                  '${rentalFormModel.Total(renDays)} VND',
+                  '${NumberFormat.decimalPattern().format(rentalFormModel.Total(renDays))} VND',
                   softWrap: true,
                 ),
               ),
