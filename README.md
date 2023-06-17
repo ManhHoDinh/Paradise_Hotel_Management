@@ -73,9 +73,9 @@
 <p>The application is developed using the following technologies:</p>
 
 <ul>
-    <li>API System: WPF - MVVM model</li>
-    <li>IDE: Visual Studio 2022 (C#/.Net)</li>
-    <li>Database: SQL Server</li>
+    <li>Tool : Flutter</li>
+    <li>IDE: Visual Studio Code</li>
+    <li>Database: Firebase</li>
     <li>Management tools: Git, GitHub</li>
 </ul>
 
@@ -128,6 +128,7 @@ Customer Management
 Rental Vouchers and Invoices Management 
 * Users can input and edit information related to rental vouchers and invoices.
 * Users can perform lookup of rental vouchers and invoices.
+* Realtime Feature
 </div>
 </div>
 <div id="caiDat">
