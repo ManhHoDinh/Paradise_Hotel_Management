@@ -150,7 +150,6 @@ Rental Vouchers and Invoices Management
 + flutter pub get
 5. Run the app by clicking the "Run" button in your IDE.
 The app should now run on your device or in the simulator.
-</div>
 # Author
 
 <div id="tacGia">
@@ -179,4 +178,4 @@ The app should now run on your device or in the simulator.
 
 </div>
 </div>
-
+</div>
