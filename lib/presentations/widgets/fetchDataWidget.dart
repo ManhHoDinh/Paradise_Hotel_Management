@@ -9,7 +9,7 @@ import '../../core/models/firebase_request.dart';
 import '../../core/models/rental_form_model.dart';
 
 class FetchAllData extends StatelessWidget {
-   FetchAllData({super.key, required this.child});
+  FetchAllData({super.key, required this.child});
   Widget child;
   @override
   Widget build(BuildContext context) {

@@ -72,11 +72,7 @@ packages:
       sha256: e6a326c8af69605aec75ed6c187d06b349707a27fbff8222ca9cc2cff167975c
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "1.2.1"
-=======
     version: "1.3.0"
->>>>>>> edf54ad36d29e30fc5213186e25ecb562bda6d37
   checked_yaml:
     dependency: transitive
     description:
@@ -531,11 +527,7 @@ packages:
       sha256: "5528c2f391ededb7775ec1daa69e65a2d61276f7552de2b5f7b8d34ee9fd4ab7"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
     version: "0.6.5"
-=======
-    version: "0.6.7"
->>>>>>> edf54ad36d29e30fc5213186e25ecb562bda6d37
   json_annotation:
     dependency: transitive
     description:

@@ -64,7 +64,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     children: [
                       Container(
                         child: Text(
-                          'Identity Card',
+                          'ID',
                           style: TextStyles.h6
                               .copyWith(color: ColorPalette.primaryColor),
                         ),
