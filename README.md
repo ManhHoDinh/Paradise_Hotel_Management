@@ -4,7 +4,7 @@
 <h3>Hotel Management Software</h3>
 <!-- PARADISE -->
 <a style="text-decoration: none;" href="#Top">
-    <img style="background-color: #38A3A5;" src="./assets/images/logo.png" alt="logo">
+    <img src="./assets/images/logo_app.png" alt="Logo Paradise" width="250"/>
 </a>
 <!-- Table of Contents -->
 <ul id="nav">
@@ -63,12 +63,8 @@
     <h4>Idea</h4>
     <p>* Aim to improve the quality of hotel management
         <br>
-        * Use the MVVM model to separate the interface and processing, increasing the reusability of components or changing the program interface without having to rewrite too much code, can develop applications quickly, easily upgrade, maintain, expand, or repair.
-        <br>
         * Programming in multithreading to optimize hardware, increase processing speed, and improve application speed.
-        <br>
-        * Use the MD5 encryption technique in managing user accounts to ensure security in managing user information.
-    </p>
+      </p>
 </div>
 
 <div id="congNghe">
@@ -77,9 +73,9 @@
 <p>The application is developed using the following technologies:</p>
 
 <ul>
-    <li>API System: WPF - MVVM model</li>
-    <li>IDE: Visual Studio 2022 (C#/.Net)</li>
-    <li>Database: SQL Server</li>
+    <li>Tool : Flutter</li>
+    <li>IDE: Visual Studio Code</li>
+    <li>Database: Firebase</li>
     <li>Management tools: Git, GitHub</li>
 </ul>
 
@@ -104,8 +100,7 @@
 
 <p>
     * Easy information retrieval. <br>
-    * The application must be compatible with most common operating systems such as Windows Vista SP1, Windows 8.1,
-    Windows 10, Windows 11, etc. It should operate stably, avoiding system crashes that cause inconvenience to users
+    * The application must be compatible with most common operating systems such as Android 10, Android 11, Android 12, Ios 13, Ios 14, etc. It should operate stably, avoiding system crashes that cause inconvenience to users
     during use. Additionally, the application should be easy to expand and upgrade in the future. <br>
     * A friendly interface with a reasonable layout that is harmonious in color and highly synchronized, and allows
     granting of user permissions through an account.
@@ -133,18 +128,31 @@ Customer Management
 Rental Vouchers and Invoices Management 
 * Users can input and edit information related to rental vouchers and invoices.
 * Users can perform lookup of rental vouchers and invoices.
+* Realtime Feature
 </div>
 </div>
 <div id="caiDat">
-    <h3>Installation Guide</h3>
-    <p>
-        * Step 1: Download source from: https://github.com/ManhHoDinh/Paradise_Hotel_Management <br>
-        * Step 2: Run local database: paradise.sql in the resource folder. <br>
-        * Step 3: Change the name of the local database from DinhManh\SQLEXPRESS to your local database inside the app.config file.
+  
+# Install Guide
+## Requirements
 
-</div>
+* Flutter SDK
+* Dart SDK
+* A code editor (e.g. Visual Studio Code, IntelliJ IDEA)
+
+## Installation
+
+1. Download the Flutter SDK from [the Flutter website](https://flutter.dev/sdk/).
+2. Install the Dart SDK from [the Dart website](https://dart.dev/get-dart).
+3. Download Paradise Hotel Management Source :  https://github.com/ManhHoDinh/Paradise_Hotel_Management.
+4. In the project directory, run the following command to install the dependencies:
+
++ flutter pub get
+5. Run the app by clicking the "Run" button in your IDE.
+The app should now run on your device or in the simulator.
+# Author
+
 <div id="tacGia">
-    <h3>Author</h3>
 
 <ul>
     <li><a style="text-decoration: none;" href="https://github.com/ManhHoDinh">Ho Dinh Manh</a></li>
@@ -168,4 +176,6 @@ Rental Vouchers and Invoices Management
     Thank you for your interest!
 
 
+</div>
+</div>
 </div>
