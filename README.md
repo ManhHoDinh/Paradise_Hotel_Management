@@ -155,10 +155,10 @@ The app should now run on your device or in the simulator.
 <div id="tacGia">
 
 <ul>
-    <li><a style="text-decoration: none;" href="https://github.com/ManhHoDinh">Ho Dinh Manh</a></li>
-    <li><a style="text-decoration: none;" href="https://github.com/TuongPhamCT">Pham Thanh Tuong </a></li>
-    <li><a style="text-decoration: none;" href="https://github.com/vocongbinh">Vo Cong Binh</a></li>
-    <li><a style="text-decoration: none;" href="https://github.com/thienenpi">Nguyen Phuoc Thien</a></li>
+    <li><a style="text-decoration: none;" href="https://github.com/ManhHoDinh">Hồ Đình Mạnh</a></li>
+    <li><a style="text-decoration: none;" href="https://github.com/TuongPhamCT">Phạm Thanh Tường</a></li>
+    <li><a style="text-decoration: none;" href="https://github.com/vocongbinh">Võ Công Bình</a></li>
+    <li><a style="text-decoration: none;" href="https://github.com/thienenpi">Nguyễn Phước Thiện</a></li>
     <li><a style="text-decoration: none;" href="https://github.com/buubuu203">Châu Ngọc Bửu Đăng</a></li>
 </
    </div>
