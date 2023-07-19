@@ -53,31 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                        margin: EdgeInsets.only(bottom: 50),
                         child: ImageHelper.loadFromAsset(AssetHelper.avatar,
                             width: 110, height: 110)),
-                    Container(
-                        margin: EdgeInsets.only(
-                          top: 30,
-                          bottom: 10,
-                        ),
-                        child: Text(
-                          'WHAT WOULD YOU DO?',
-                          style: TextStyles.h5.copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: ColorPalette.primaryColor),
-                        )),
-                    Container(
-                        padding: EdgeInsets.only(top: 20, left: 25, right: 25),
-                        child: ButtonWidget(
-                          label: 'Hotel Information',
-                          color: ColorPalette.primaryColor,
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(HotelInforScreen.routeName);
-                          },
-                          textColor: ColorPalette.backgroundColor,
-                        )),
                     Text(
                       'WHAT WOULD YOU DO?',
                       style: TextStyles.h5.copyWith(
