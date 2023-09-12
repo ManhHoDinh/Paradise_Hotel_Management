@@ -59,6 +59,7 @@
 <div id="MoTa">
     <h3>Description</h3>
   <a href="https://www.youtube.com/watch?v=JpGrsWx2oIg"> <h4>App demo video</h4>
+  <a href="https://www.youtube.com/watch?v=JpGrsWx2oIg">https://www.youtube.com/watch?v=JpGrsWx2oIg</a>
 </a>
 <div id="yTuong">
     <h4>Idea</h4>
